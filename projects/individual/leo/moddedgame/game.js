@@ -224,7 +224,7 @@ var G = ( function () {
 
 		else if ( _exit_ready && ( _actor_x === _exit_x ) && ( _actor_y === _exit_y ) ) {
 			PS.timerStop( _id_timer ); // stop movement timer
-			PS.statusText( "I'm sorry. You're card was declined." );
+			PS.statusText( "I'm sorry. Your card was declined." );
 			PS.audioPlay( _SFX_WIN );
 			_won = true;
 			//Fade out entire grid
