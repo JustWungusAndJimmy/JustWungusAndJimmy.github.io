@@ -115,6 +115,16 @@ var G = ( function () {
 	    frameCount++;
 	}
 
+	//Everythnig needed to keep track of gold collection order
+	var goldOrder = [];
+
+	//Everything needed to keep track of total game time
+	var secondsPassed = 0;
+	var gameTimer = null;
+	var gameTick = function () {
+		secondsPassed++;
+	}
+
 
 	// This timer function moves the actor
 
@@ -150,6 +160,8 @@ var G = ( function () {
 		ptr = ( _actor_y * _MAP.height ) + _actor_x; // pointer to map data under actor
 		val = _MAP.data[ ptr ]; // get map data
 		if ( val === _MAP_GOLD ) {
+			PS.dbEvent("SampleGameJWJ", "GoldCollected", "("+_actor_x+"-"+_actor_y+")");
+			goldOrder.push("("+_actor_x+","+_actor_y+")"); //Don't think we need this
 			_MAP.data[ ptr ] = _MAP_FLOOR; // change gold to floor in map.data
 			PS.gridPlane( _PLANE_FLOOR ); // switch to floor plane
 			PS.color( _actor_x, _actor_y, _COLOR_FLOOR ); // change visible floor color
@@ -180,6 +192,10 @@ var G = ( function () {
 			PS.timerStop( _id_timer ); // stop movement timer
 			PS.statusText( "You escaped with " + _gold_found + " gold!" );
 			PS.audioPlay( _SOUND_WIN );
+            //report data
+            PS.timerStop(gameTimer);
+            PS.dbEvent("SampleGameJWJ","CompletionTime", secondsPassed);
+            PS.dbSend("SampleGameJWJ", "lrbunyea");
 			_won = true;
 			return;
 		}
@@ -281,6 +297,10 @@ var G = ( function () {
 			_step = 0;
 			_id_timer = PS.timerStart(6, _tick);
 			frameTimer = PS.timerStart(1, frameTick);
+			gameTimer = PS.timerStart(60, gameTick)
+
+			//Create analytics database
+			PS.dbInit("SampleGameJWJ");
 		},
 
 		// move( x, y )
@@ -289,7 +309,8 @@ var G = ( function () {
 		move : function ( x, y ) {
 			var line;
 
-			clickTimes.push(frameCount);
+			PS.dbEvent("SampleGameJWJ", "ClickTime", frameCount);
+			clickTimes.push(frameCount); //Don't think we need this
 			// Do nothing if game over
 
 			if ( _won ) {
