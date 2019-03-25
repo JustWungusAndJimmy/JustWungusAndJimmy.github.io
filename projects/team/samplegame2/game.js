@@ -10,6 +10,12 @@
 var G = ( function () {
 	"use strict";
 
+    //MODIFY THIS VAR TO CHANGE WHEN YOU ARE SUPPOSED TO CLICK
+    //false means you only should click on the first beat of the measure, when it plays the hoot sound effect
+    //true means you can click on any beat, whether it plays the hoot or the click sound effect
+	var anyBeat = false;
+
+
 	// Private constants are all upper-case, with underscore prefix
 
 	var _PLANE_FLOOR = 0; // z-plane of floor
@@ -111,8 +117,21 @@ var G = ( function () {
 	var clickTimes = [];
 	var frameCount = 0;
 	var frameTimer = null;
+	var beatCount = 0;
 	var frameTick = function () {
 	    frameCount++;
+
+	    if (beatCount == 120) beatCount = 0;
+
+	    if (beatCount == 0) PS.audioPlay(_SOUND_OPEN);
+	    if (beatCount % 30 == 0) PS.audioPlay(_SOUND_FLOOR);
+
+
+	    beatCount++;
+	}
+
+	var bgFade = function () {
+	    PS.gridFade(0);
 	}
 
 	//Everythnig needed to keep track of gold collection order
@@ -333,6 +352,24 @@ var G = ( function () {
 			}
 			else {
 				PS.audioPlay( _SOUND_WALL );
+			}
+
+			var clickTime = frameCount % 120;
+
+			if (anyBeat) {
+			    clickTime = clickTime % 30;
+			    if (clickTime < 4 || clickTime > 26) {
+			        PS.gridColor(0xb0b000);
+			        PS.gridFade(30, { onEnd: bgFade });
+			        PS.gridColor(_COLOR_BG);
+			    }
+			}
+			else {
+			    if (clickTime < 4 || clickTime > 116) {
+			        PS.gridColor(0xb0b000);
+			        PS.gridFade(30, { onEnd: bgFade });
+			        PS.gridColor(_COLOR_BG);
+			    }
 			}
 		}
 	};
