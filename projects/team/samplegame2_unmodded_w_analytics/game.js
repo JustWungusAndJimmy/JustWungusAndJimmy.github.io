@@ -214,7 +214,7 @@ var G = ( function () {
             //report data
             PS.timerStop(gameTimer);
             PS.dbEvent("SampleGameJWJ","CompletionTime", secondsPassed);
-            PS.dbSend("SampleGameJWJ", "lrbunyea");
+            PS.dbSend("SampleGameJWJ", "jacattelona");
 			_won = true;
 			return;
 		}
