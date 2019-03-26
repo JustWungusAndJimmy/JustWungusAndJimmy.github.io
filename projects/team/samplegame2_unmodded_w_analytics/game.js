@@ -13,7 +13,7 @@ var G = ( function () {
     //MODIFY THIS VAR TO CHANGE WHEN YOU ARE SUPPOSED TO CLICK
     //false means you only should click on the first beat of the measure, when it plays the hoot sound effect
     //true means you can click on any beat, whether it plays the hoot or the click sound effect
-	var anyBeat = true;
+	var anyBeat = false;
 
 
 	// Private constants are all upper-case, with underscore prefix
@@ -21,12 +21,12 @@ var G = ( function () {
 	var _PLANE_FLOOR = 0; // z-plane of floor
 	var _PLANE_ACTOR = 1; // z-plane of actor
 
-	var _COLOR_BG = [0, 0, 0]; // background color - black
-	var _COLOR_WALL = [255, 3, 188]; // wall color - neon pink
-	var _COLOR_FLOOR = [0, 0, 0]; // floor color - black
-	var _COLOR_GOLD = [217, 255, 3]; // gold color - neon yellow
-	var _COLOR_ACTOR = [74, 255, 3]; // actor color - neon green
-	var _COLOR_EXIT = [74, 255, 3]; // exit color - neon green
+	var _COLOR_BG = PS.COLOR_GRAY_DARK; // background color
+	var _COLOR_WALL = PS.COLOR_BLACK; // wall color
+	var _COLOR_FLOOR = PS.COLOR_GRAY; // floor color
+	var _COLOR_GOLD = PS.COLOR_YELLOW; // gold color
+	var _COLOR_ACTOR = PS.COLOR_GREEN; // actor color
+	var _COLOR_EXIT = PS.COLOR_BLUE; // exit color
 
 	var _SOUND_FLOOR = "fx_click"; // touch floor sound
 	var _SOUND_WALL = "fx_hoot"; // touch wall sound
@@ -37,19 +37,9 @@ var G = ( function () {
 
 	var _MAP_WALL = 0; // wall
 	var _MAP_FLOOR = 1; // floor
-	var _MAP_ACTOR = 2; // floor + actor
-	var _MAP_EXIT = 3; // floor + exit
-	//This is so that we can establish a collection order without hard coding
-    var _MAP_GOLD1 = 4; // floor + gold
-    var _MAP_GOLD2 = 5; // floor + gold
-    var _MAP_GOLD3 = 6; // floor + gold
-    var _MAP_GOLD4 = 7; // floor + gold
-    var _MAP_GOLD5 = 8; // floor + gold
-    var _MAP_GOLD6 = 9; // floor + gold
-    var _MAP_GOLD7 = 10; // floor + gold
-    var _MAP_GOLD8 = 11; // floor + gold
-    var _MAP_GOLD9 = 12; // floor + gold
-    var _MAP_GOLD10 = 13; // floor + gold
+	var _MAP_GOLD = 2; // floor + gold
+	var _MAP_ACTOR = 3; // floor + actor
+	var _MAP_EXIT = 4; // floor + exit
 
 	var _GOLD_MAX = 10; // maximum gold
 
@@ -67,27 +57,27 @@ var G = ( function () {
 		width : 23, height : 23, pixelSize : 1,
 		data : [
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 5, 0, 1, 1, 1, 1, 1, 1, 1, 0,
+			0, 3, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 0,
 			0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0,
 			0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0,
 			0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0,
-			0, 1, 1, 1, 1, 1, 0, 6, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0,
+			0, 1, 1, 1, 1, 1, 0, 2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0,
 			0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0,
-			0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 4, 0,
+			0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 2, 0,
 			0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0,
 			0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0,
 			0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-			0, 1, 1, 1, 0, 1, 1, 1, 1, 10, 1, 1, 0, 1, 1, 11, 1, 1, 0, 1, 1, 1, 0,
+			0, 1, 1, 1, 0, 1, 1, 1, 1, 2, 1, 1, 0, 1, 1, 2, 1, 1, 0, 1, 1, 1, 0,
 			0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0,
-			0, 1, 1, 7, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0,
+			0, 1, 1, 2, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0,
 			0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0,
-			0, 1, 0, 1, 0, 1, 1, 9, 0, 1, 1, 1, 1, 12, 0, 1, 1, 1, 0, 1, 1, 1, 0,
+			0, 1, 0, 1, 0, 1, 1, 2, 0, 1, 1, 1, 1, 2, 0, 1, 1, 1, 0, 1, 1, 1, 0,
 			0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-			0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 13, 1, 1, 0,
+			0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 2, 1, 1, 0,
 			0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0,
 			0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0,
 			0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0,
-			0, 1, 1, 1, 1, 8, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 3, 0,
+			0, 1, 1, 1, 1, 2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 4, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 		]
 	};
@@ -144,28 +134,6 @@ var G = ( function () {
 	    PS.gridFade(0);
 	}
 
-	//Everything needed to keep track of gold collection order & gold shrink
-	var x_gold_pos = [];
-	var y_gold_pos = [];
-	var cur_gold = 0;
-	var cur_scale = 100;
-	var shrinkTimer = null;
-	var shrinkTick = function () {
-		//Check to see if this bead is properly scaled down
-		if (cur_scale == 50) {
-			cur_gold++;
-			cur_scale = 100;
-		}
-        //Check to see if we're out of the gold range
-        if (cur_gold == 10) {
-            PS.timerStop(shrinkTimer);
-            return;
-        }
-		PS.scale(x_gold_pos[cur_gold], y_gold_pos[cur_gold], cur_scale)
-		cur_scale--;
-	}
-
-
 	//Everythnig needed to keep track of gold collection order
 	var goldOrder = [];
 
@@ -210,14 +178,12 @@ var G = ( function () {
 
 		ptr = ( _actor_y * _MAP.height ) + _actor_x; // pointer to map data under actor
 		val = _MAP.data[ ptr ]; // get map data
-		if ( val === _MAP_GOLD1 || val === _MAP_GOLD2 || val === _MAP_GOLD3 || val === _MAP_GOLD4 || val === _MAP_GOLD5 ||  val === _MAP_GOLD6 || val === _MAP_GOLD7 || val === _MAP_GOLD8 || val === _MAP_GOLD9 || val === _MAP_GOLD10) {
+		if ( val === _MAP_GOLD ) {
 			PS.dbEvent("SampleGameJWJ", "GoldCollected", "("+_actor_x+"-"+_actor_y+")");
 			goldOrder.push("("+_actor_x+","+_actor_y+")"); //Don't think we need this
 			_MAP.data[ ptr ] = _MAP_FLOOR; // change gold to floor in map.data
 			PS.gridPlane( _PLANE_FLOOR ); // switch to floor plane
 			PS.color( _actor_x, _actor_y, _COLOR_FLOOR ); // change visible floor color
-			PS.radius(_actor_x, _actor_y, 0); //reset radius
-			PS.scale(_actor_x, _actor_y, 100); //reset scale
 
 			// If last gold has been collected, activate the exit
 
@@ -293,126 +259,15 @@ var G = ( function () {
 					else if ( val === _MAP_FLOOR ) {
 						PS.color( x, y, _COLOR_FLOOR );
 					}
-                    else if ( val === _MAP_GOLD1 ) {
-                        _gold_count += 1;
-                        if ( _gold_count > _GOLD_MAX ) {
-                            PS.debug( "WARNING: More than " + _GOLD_MAX + " gold!\n" );
-                            PS.audioPlay( _SOUND_ERROR );
-                            return;
-                        }
-                        PS.color( x, y, _COLOR_GOLD );
-                        PS.radius(x, y, 50);
-                        x_gold_pos[0] = x;
-                        y_gold_pos[0] = y;
-                    }
-                    else if ( val === _MAP_GOLD2 ) {
-                        _gold_count += 1;
-                        if ( _gold_count > _GOLD_MAX ) {
-                            PS.debug( "WARNING: More than " + _GOLD_MAX + " gold!\n" );
-                            PS.audioPlay( _SOUND_ERROR );
-                            return;
-                        }
-                        PS.color( x, y, _COLOR_GOLD );
-                        PS.radius(x, y, 50);
-                        x_gold_pos[1] = x;
-                        y_gold_pos[1] = y;
-                    }
-                    else if ( val === _MAP_GOLD3 ) {
-                        _gold_count += 1;
-                        if ( _gold_count > _GOLD_MAX ) {
-                            PS.debug( "WARNING: More than " + _GOLD_MAX + " gold!\n" );
-                            PS.audioPlay( _SOUND_ERROR );
-                            return;
-                        }
-                        PS.color( x, y, _COLOR_GOLD );
-                        PS.radius(x, y, 50);
-                        x_gold_pos[2] = x;
-                        y_gold_pos[2] = y;
-                    }
-                    else if ( val === _MAP_GOLD4 ) {
-                        _gold_count += 1;
-                        if ( _gold_count > _GOLD_MAX ) {
-                            PS.debug( "WARNING: More than " + _GOLD_MAX + " gold!\n" );
-                            PS.audioPlay( _SOUND_ERROR );
-                            return;
-                        }
-                        PS.color( x, y, _COLOR_GOLD );
-                        PS.radius(x, y, 50);
-                        x_gold_pos[3] = x;
-                        y_gold_pos[3] = y;
-                    }
-                    else if ( val === _MAP_GOLD5 ) {
-                        _gold_count += 1;
-                        if ( _gold_count > _GOLD_MAX ) {
-                            PS.debug( "WARNING: More than " + _GOLD_MAX + " gold!\n" );
-                            PS.audioPlay( _SOUND_ERROR );
-                            return;
-                        }
-                        PS.color( x, y, _COLOR_GOLD );
-                        PS.radius(x, y, 50);
-                        x_gold_pos[4] = x;
-                        y_gold_pos[4] = y;
-                    }
-                    else if ( val === _MAP_GOLD6 ) {
-                        _gold_count += 1;
-                        if ( _gold_count > _GOLD_MAX ) {
-                            PS.debug( "WARNING: More than " + _GOLD_MAX + " gold!\n" );
-                            PS.audioPlay( _SOUND_ERROR );
-                            return;
-                        }
-                        PS.color( x, y, _COLOR_GOLD );
-                        PS.radius(x, y, 50);
-                        x_gold_pos[5] = x;
-                        y_gold_pos[5] = y;
-                    }
-                    else if ( val === _MAP_GOLD7 ) {
-                        _gold_count += 1;
-                        if ( _gold_count > _GOLD_MAX ) {
-                            PS.debug( "WARNING: More than " + _GOLD_MAX + " gold!\n" );
-                            PS.audioPlay( _SOUND_ERROR );
-                            return;
-                        }
-                        PS.color( x, y, _COLOR_GOLD );
-                        PS.radius(x, y, 50);
-                        x_gold_pos[6] = x;
-                        y_gold_pos[6] = y;
-                    }
-                    else if ( val === _MAP_GOLD8 ) {
-                        _gold_count += 1;
-                        if ( _gold_count > _GOLD_MAX ) {
-                            PS.debug( "WARNING: More than " + _GOLD_MAX + " gold!\n" );
-                            PS.audioPlay( _SOUND_ERROR );
-                            return;
-                        }
-                        PS.color( x, y, _COLOR_GOLD );
-                        PS.radius(x, y, 50);
-                        x_gold_pos[7] = x;
-                        y_gold_pos[7] = y;
-                    }
-                    else if ( val === _MAP_GOLD9 ) {
-                        _gold_count += 1;
-                        if ( _gold_count > _GOLD_MAX ) {
-                            PS.debug( "WARNING: More than " + _GOLD_MAX + " gold!\n" );
-                            PS.audioPlay( _SOUND_ERROR );
-                            return;
-                        }
-                        PS.color( x, y, _COLOR_GOLD );
-                        PS.radius(x, y, 50);
-                        x_gold_pos[8] = x;
-                        y_gold_pos[8] = y;
-                    }
-                    else if ( val === _MAP_GOLD10 ) {
-                        _gold_count += 1;
-                        if ( _gold_count > _GOLD_MAX ) {
-                            PS.debug( "WARNING: More than " + _GOLD_MAX + " gold!\n" );
-                            PS.audioPlay( _SOUND_ERROR );
-                            return;
-                        }
-                        PS.color( x, y, _COLOR_GOLD );
-                        PS.radius(x, y, 50);
-                        x_gold_pos[9] = x;
-                        y_gold_pos[9] = y;
-                    }
+					else if ( val === _MAP_GOLD ) {
+						_gold_count += 1;
+						if ( _gold_count > _GOLD_MAX ) {
+							PS.debug( "WARNING: More than " + _GOLD_MAX + " gold!\n" );
+							PS.audioPlay( _SOUND_ERROR );
+							return;
+						}
+						PS.color( x, y, _COLOR_GOLD );
+					}
 					else if ( val === _MAP_ACTOR ) {
 						if ( _actor_x >= 0 ) {
 							PS.debug( "WARNING: More than one actor!\n" );
@@ -461,8 +316,7 @@ var G = ( function () {
 			_step = 0;
 			_id_timer = PS.timerStart(6, _tick);
 			frameTimer = PS.timerStart(1, frameTick);
-			shrinkTimer = PS.timerStart(6, shrinkTick);
-			gameTimer = PS.timerStart(60, gameTick);
+			gameTimer = PS.timerStart(60, gameTick)
 
 			//Create analytics database
 			PS.dbInit("SampleGameJWJ");
@@ -505,14 +359,14 @@ var G = ( function () {
 			if (anyBeat) {
 			    clickTime = clickTime % 30;
 			    if (clickTime < 4 || clickTime > 26) {
-			        PS.gridColor(_COLOR_GOLD);
+			        PS.gridColor(0xb0b000);
 			        PS.gridFade(30, { onEnd: bgFade });
 			        PS.gridColor(_COLOR_BG);
 			    }
 			}
 			else {
 			    if (clickTime < 4 || clickTime > 116) {
-			        PS.gridColor(_COLOR_GOLD);
+			        PS.gridColor(0xb0b000);
 			        PS.gridFade(30, { onEnd: bgFade });
 			        PS.gridColor(_COLOR_BG);
 			    }
