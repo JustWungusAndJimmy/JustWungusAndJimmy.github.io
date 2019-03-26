@@ -123,8 +123,8 @@ var G = ( function () {
 
 	    if (beatCount == 120) beatCount = 0;
 
-	    if (beatCount == 0) PS.audioPlay(_SOUND_OPEN);
-	    if (beatCount % 30 == 0) PS.audioPlay(_SOUND_FLOOR);
+	    //if (beatCount == 0) PS.audioPlay(_SOUND_OPEN);
+	    //if (beatCount % 30 == 0) PS.audioPlay(_SOUND_FLOOR);
 
 
 	    beatCount++;
@@ -328,7 +328,7 @@ var G = ( function () {
 		move : function ( x, y ) {
 			var line;
 
-			PS.dbEvent("SampleGameJWJ", "ClickTime", frameCount);
+			PS.dbEvent("SampleGameJWJ", "ClickTime", frameCount % 30);
 			clickTimes.push(frameCount); //Don't think we need this
 			// Do nothing if game over
 
@@ -355,7 +355,7 @@ var G = ( function () {
 			}
 
 			var clickTime = frameCount % 120;
-
+            /*
 			if (anyBeat) {
 			    clickTime = clickTime % 30;
 			    if (clickTime < 4 || clickTime > 26) {
@@ -371,6 +371,7 @@ var G = ( function () {
 			        PS.gridColor(_COLOR_BG);
 			    }
 			}
+            */
 		}
 	};
 } () ); // end of IIFE
