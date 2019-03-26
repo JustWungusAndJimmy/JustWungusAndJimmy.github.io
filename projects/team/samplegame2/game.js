@@ -27,6 +27,7 @@ var G = ( function () {
 	var _COLOR_GOLD = [217, 255, 3]; // gold color - neon yellow
 	var _COLOR_ACTOR = [74, 255, 3]; // actor color - neon green
 	var _COLOR_EXIT = [74, 255, 3]; // exit color - neon green
+	var _COLOR_SHRINK = [0, 255, 255];
 
 	var _SOUND_FLOOR = "fx_click"; // touch floor sound
 	var _SOUND_WALL = "fx_hoot"; // touch wall sound
@@ -34,6 +35,9 @@ var G = ( function () {
 	var _SOUND_OPEN = "fx_powerup8"; // open exit sound
 	var _SOUND_WIN = "fx_tada"; // win sound
 	var _SOUND_ERROR = "fx_uhoh"; // error sound
+
+	var _SFX_DRUM = "perc_drum_tom3";
+	var _SFX_HI = "perc_hihat_closed";
 
 	var _MAP_WALL = 0; // wall
 	var _MAP_FLOOR = 1; // floor
@@ -133,10 +137,34 @@ var G = ( function () {
 
 	    if (beatCount == 120) beatCount = 0;
 
-	    if (beatCount == 0) PS.audioPlay(_SOUND_OPEN);
-	    if (beatCount % 30 == 0) PS.audioPlay(_SOUND_FLOOR);
+	    //if (beatCount == 0) PS.audioPlay(_SOUND_OPEN);
+	    //if (beatCount % 30 == 0) PS.audioPlay(_SOUND_FLOOR);
+
+	    if (beatCount == 0) 
+	        PS.audioPlay(_SFX_DRUM);
+
+	    if (beatCount == 15)
+	        PS.audioPlay(_SFX_DRUM);
+
+	    if (beatCount == 30)
+	        PS.audioPlay(_SFX_DRUM);
+
+	    if (beatCount == 39)
+	        PS.audioPlay(_SFX_DRUM);
+
+	    if (beatCount == 60)
+	        PS.audioPlay(_SFX_DRUM);
 
 
+	    if (beatCount == 85)
+	        PS.audioPlay(_SFX_DRUM);
+
+	    if (beatCount == 100)
+	        PS.audioPlay(_SFX_DRUM);
+
+
+	    if ((beatCount % 30) == 15)
+	        PS.audioPlay(_SFX_HI);
 	    beatCount++;
 	}
 
@@ -151,17 +179,27 @@ var G = ( function () {
 	var cur_scale = 100;
 	var shrinkTimer = null;
 	var shrinkTick = function () {
-		//Check to see if this bead is properly scaled down
+	    //Check to see if this bead is properly scaled down
+
 		if (cur_scale == 50) {
 			cur_gold++;
 			cur_scale = 100;
+		}
+
+		var spot = (y_gold_pos[cur_gold] * _MAP.height) + x_gold_pos[cur_gold];
+		var mapSpot = _MAP.data[spot];
+		if (mapSpot < 4) {
+		    cur_gold++;
+		    cur_scale = 100;
 		}
         //Check to see if we're out of the gold range
         if (cur_gold == 10) {
             PS.timerStop(shrinkTimer);
             return;
         }
-		PS.scale(x_gold_pos[cur_gold], y_gold_pos[cur_gold], cur_scale)
+        
+        PS.scale(x_gold_pos[cur_gold], y_gold_pos[cur_gold], cur_scale)
+        PS.color(x_gold_pos[cur_gold], y_gold_pos[cur_gold], _COLOR_SHRINK);
 		cur_scale--;
 	}
 
@@ -215,7 +253,14 @@ var G = ( function () {
 			goldOrder.push("("+_actor_x+","+_actor_y+")"); //Don't think we need this
 			_MAP.data[ ptr ] = _MAP_FLOOR; // change gold to floor in map.data
 			PS.gridPlane( _PLANE_FLOOR ); // switch to floor plane
-			PS.color( _actor_x, _actor_y, _COLOR_FLOOR ); // change visible floor color
+			PS.color(_actor_x, _actor_y, _COLOR_FLOOR); // change visible floor color
+
+            /*
+			if (_actor_x == x_gold_pos[cur_gold] && _actor_y == y_gold_pos[cur_gold]) {
+			    cur_gold++;
+			    cur_scale = 100;
+			}
+            */
 			PS.radius(_actor_x, _actor_y, 0); //reset radius
 			PS.scale(_actor_x, _actor_y, 100); //reset scale
 
@@ -248,7 +293,7 @@ var G = ( function () {
             //report data
             PS.timerStop(gameTimer);
             PS.dbEvent("SampleGameJWJ","CompletionTime", secondsPassed);
-            PS.dbSend("SampleGameJWJ", "lrbunyea");
+            PS.dbSend("SampleGameJWJ", "jacattelona");
 			_won = true;
 			return;
 		}
@@ -439,7 +484,7 @@ var G = ( function () {
 			}
 
 			PS.statusColor( PS.COLOR_WHITE );
-			PS.statusText( "Click/touch to move" );
+			PS.statusText( "Click to the Beat to Move Fast!" );
 
 			// Create 1x1 solid sprite for actor
 			// Place on actor plane in initial actor position
@@ -474,8 +519,8 @@ var G = ( function () {
 		move : function ( x, y ) {
 			var line;
 
-			PS.dbEvent("SampleGameJWJ", "ClickTime", frameCount);
-			clickTimes.push(frameCount); //Don't think we need this
+			
+			//clickTimes.push(frameCount); //Don't think we need this
 			// Do nothing if game over
 
 			if ( _won ) {
@@ -501,22 +546,23 @@ var G = ( function () {
 			}
 
 			var clickTime = frameCount % 120;
+			clickTime = clickTime % 30;
 
-			if (anyBeat) {
-			    clickTime = clickTime % 30;
-			    if (clickTime < 4 || clickTime > 26) {
-			        PS.gridColor(_COLOR_GOLD);
-			        PS.gridFade(30, { onEnd: bgFade });
-			        PS.gridColor(_COLOR_BG);
-			    }
-			}
-			else {
-			    if (clickTime < 4 || clickTime > 116) {
-			        PS.gridColor(_COLOR_GOLD);
-			        PS.gridFade(30, { onEnd: bgFade });
-			        PS.gridColor(_COLOR_BG);
-			    }
-			}
+			PS.dbEvent("SampleGameJWJ", "ClickTime", clickTime);
+		    if (clickTime < 4 || clickTime > 26) {
+		        PS.gridColor(_COLOR_GOLD);
+		        PS.gridFade(20, { onEnd: bgFade });
+		        PS.gridColor(_COLOR_BG);
+		    }
+		    else {
+		        PS.statusText("Click to the Beat to Move Fast!");
+		        var newpath = [];
+		        if (line.length > 0) {
+		            newpath.push(line[0]);
+		            _path = newpath;
+		            _step = 0;
+		        }
+		    }
 		}
 	};
 } () ); // end of IIFE
