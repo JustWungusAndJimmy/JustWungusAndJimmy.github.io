@@ -9,7 +9,7 @@ body {
 
 a {
     color: rgb(250,250,250); /*Light Purple*/
-    font-size: .9vw;
+    font-size: 18px;
     font-family: "Arial";
     padding-left: 60px;
 }
@@ -19,7 +19,6 @@ h1, h2 {
     text-align: center;
     text-transform: uppercase;
     font-family: "Arial Black";
-    border-radius: 5px;
     margin-left: 25%;
     margin-right: 25%;
     padding-right: 10px;
@@ -28,15 +27,16 @@ h1, h2 {
 }
 
 h1 {
-    font-size: 4vw;
+    font-size: 60px;
     margin-top: 10px;
     margin-bottom: 5px;
 }
 
 h2 {
-    font-size: 2vw;
+    font-size: 30px;
     margin-top: 5px;
     margin-bottom: 50px;
+    border-bottom: 3px solid rgb(236,242,244);
 }
 
 h3 {
@@ -45,11 +45,11 @@ h3 {
     font-family: "Arial Black";
     text-shadow: 1px 1px rgb(14, 17, 17); /*Black*/
     margin-left: 10%;
-    font-size: 2vw;
+    font-size: 28px;
 }
 
 h4 {
-    font-size: 1.5vw;
+    font-size: 24px;
     color: rgb(236,242,244); /*Pale Blue*/
     text-shadow: 1px 1px rgb(14, 17, 17); /*Black*/
     font-family: "Arial Black";
@@ -62,7 +62,7 @@ h4 {
 }
 
 h5 {
-    font-size: 1.5vw;
+    font-size: 28px;
     color: rgb(236,242,244); /*Pale Blue*/
     font-family: "Arial Black";
     text-align: center;
@@ -78,64 +78,7 @@ h5 {
 
 p {
     color: rgb(236,242,244); /*Pale Blue*/
-    font-size: .9vw;
+    font-size: 18px;
     font-family: "Arial Black";
     margin-left: 15%;
-}
-
-/* Style the tab */
-.tab {
-    overflow: hidden;
-    border: 1px solid rgb(65, 74, 76); /*Pale Green*/
-    border-radius: 15px;
-    background-color: rgb(53, 56, 57); /*Dark Grey*/
-}
-
-/* Style the buttons that are used to open the tab content */
-.tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    width: 50%;
-    transition: 0.3s;
-    color: rgb(94, 104, 107); /*Light Pale Green*/
-    text-transform: uppercase;
-    font-family: "Arial Black";
-    text-shadow: 1px 1px rgb(14, 17, 17); /*Black*/
-    font-size: 1.5vw;
-}
-
-
-/*COLUMN CODE*/
-.column {
-    float: left;
-    width: 50%;
-}
-
-/* Clear floats after the columns */
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-
-/*IMAGE GALLERY CODE*/
-div.gallery {
-    margin: 5px;
-    border: 1px rgb(59, 68, 75); /*Pale Blue*/
-    float: left;
-    width: 180px;
-}
-
-div.gallery:hover {
-    border: 1px rgb(65, 74, 76); /*Pale Green*/
-}
-
-div.gallery img {
-    width: 100%;
-    height: auto;
 }
