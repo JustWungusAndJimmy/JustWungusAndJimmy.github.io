@@ -18,6 +18,7 @@ var COLOR_PUZZLE_HOLE = [117, 117, 117];
 var COLOR_COLOR_1 = PS.COLOR_BLUE;
 var COLOR_COLOR_2 = PS.COLOR_RED;
 var COLOR_COLOR_3 = PS.COLOR_YELLOW;
+var COLOR_EXITS = PS.COLOR_VIOLET;
 //map values
 var PUZZLE_WALL = 0;
 var COLOR_GOAL = 1;
@@ -35,7 +36,9 @@ var level1 = {
     ],
     //the path that the colored beads must be lined up in to bet the level
     x_path : [1, 1, 1],
-    y_path : [0, 1, 2],
+    y_path: [0, 1, 2],
+    entrance: [1, 0],
+    exit: [1, 2],
 }
 
 var level2 = {
@@ -49,21 +52,25 @@ var level2 = {
     ],
     //the path that the colored beads must be lined up in to bet the level
     x_path : [ 2, 2, 2, 2, 2 ],
-    y_path : [ 0, 1, 2, 3, 4 ],
+    y_path: [0, 1, 2, 3, 4],
+    entrance: [2, 0],
+    exit: [2, 4],
 }
 
 var level3 = {
     width : 5, height : 5, pixelSize : 1,
     data : [
         0, 0, 0, 0, 0,
-        0, 1, 3, 3, 0,
-        1, 3, 2, 3, 0,
         0, 1, 1, 3, 0,
+        1, 3, 2, 3, 0,
+        0, 0, 1, 3, 0,
         0, 0, 1, 0, 0
     ],
     //the path that the colored beads must be lined up in to bet the level
     x_path : [ 0, 1, 2, 2, 2 ],
-    y_path : [ 2, 2, 2, 3, 4 ],
+    y_path: [2, 2, 2, 3, 4],
+    entrance: [0, 2],
+    exit: [2, 4],
 }
 
 var level4 = {
@@ -77,7 +84,9 @@ var level4 = {
     ],
     //the path that the colored beads must be lined up in to bet the level
     x_path : [ 1, 1, 4, 5, 1, 2, 3, 4 ],
-    y_path : [ 0, 1, 1, 1, 2, 2, 2, 2 ],
+    y_path: [0, 1, 1, 1, 2, 2, 2, 2],
+    entrance: [1, 0],
+    exit: [5, 1],
 }
 
 var level5 = {
@@ -91,7 +100,9 @@ var level5 = {
     ],
     //the path that the colored beads must be lined up in to bet the level
     x_path : [ 0, 1, 1, 1, 1 ],
-    y_path : [ 1, 1, 2, 3, 4 ],
+    y_path: [1, 1, 2, 3, 4],
+    entrance: [0, 1],
+    exit: [1, 4],
 }
 
 var levels = [level1, level2, level3, level4, level5];
@@ -147,6 +158,9 @@ var loadBoard = function() {
 
     x_bead_path = levels[level_index].x_path;
     y_bead_path = levels[level_index].y_path;
+
+    PS.borderColor(levels[level_index].entrance[0], levels[level_index].entrance[1], COLOR_EXITS);
+    PS.borderColor(levels[level_index].exit[0], levels[level_index].exit[1], COLOR_EXITS);
 }
 
 var initializeValues = function() {
@@ -213,6 +227,8 @@ var swapBeads = function(x, y) {
     x_hole_bead = x_selected;
     y_hole_bead = y_selected;
 
+    PS.borderColor(levels[level_index].entrance[0], levels[level_index].entrance[1], COLOR_EXITS);
+    PS.borderColor(levels[level_index].exit[0], levels[level_index].exit[1], COLOR_EXITS);
     //Check to see if the path has been formed
     for ( by = 0; by < levels[level_index].height; by += 1 ) {
         for (bx = 0; bx < levels[level_index].width; bx += 1) {
@@ -278,6 +294,8 @@ PS.touch = function( x, y, data, options ) {
                 return;
             } else {
                 PS.borderColor(x_selected, y_selected, COLOR_BG);
+                PS.borderColor(levels[level_index].entrance[0], levels[level_index].entrance[1], COLOR_EXITS);
+                PS.borderColor(levels[level_index].exit[0], levels[level_index].exit[1], COLOR_EXITS);
                 resetSelected();
                 return;
             }
@@ -285,6 +303,8 @@ PS.touch = function( x, y, data, options ) {
         if (isSelectable(x, y)){
             if (bead_selected){
                 PS.borderColor(x_selected, y_selected, COLOR_BG);
+                PS.borderColor(levels[level_index].entrance[0], levels[level_index].entrance[1], COLOR_EXITS);
+                PS.borderColor(levels[level_index].exit[0], levels[level_index].exit[1], COLOR_EXITS);
             }
             PS.borderColor(x, y, PS.COLOR_WHITE);
             x_selected = x;
@@ -293,6 +313,8 @@ PS.touch = function( x, y, data, options ) {
         } else {
             if (bead_selected) {
                 PS.borderColor(x_selected, y_selected, COLOR_BG);
+                PS.borderColor(levels[level_index].entrance[0], levels[level_index].entrance[1], COLOR_EXITS);
+                PS.borderColor(levels[level_index].exit[0], levels[level_index].exit[1], COLOR_EXITS);
                 resetSelected();
             }
         }
