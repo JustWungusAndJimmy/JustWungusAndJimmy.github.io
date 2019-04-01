@@ -27,6 +27,18 @@ var COLOR_2 = 4;
 var COLOR_3 = 5;
 
 var level1 = {
+    width : 4, height : 3, pixelSize : 1,
+    data : [
+        0, 1, 0, 0,
+        0, 2, 1, 0,
+        0, 1, 0, 0
+    ],
+    //the path that the colored beads must be lined up in to bet the level
+    x_path : [1, 1, 1],
+    y_path : [0, 1, 2],
+}
+
+var level2 = {
     width : 5, height : 5, pixelSize : 1,
     data : [
         0, 0, 1, 0, 0,
@@ -37,10 +49,53 @@ var level1 = {
     ],
     //the path that the colored beads must be lined up in to bet the level
     x_path : [ 2, 2, 2, 2, 2 ],
-    y_path : [ 0, 1, 2, 3, 4 ]
+    y_path : [ 0, 1, 2, 3, 4 ],
 }
 
-var levels = [level1];
+var level3 = {
+    width : 5, height : 5, pixelSize : 1,
+    data : [
+        0, 0, 0, 0, 0,
+        0, 1, 3, 3, 0,
+        1, 3, 2, 3, 0,
+        0, 1, 1, 3, 0,
+        0, 0, 1, 0, 0
+    ],
+    //the path that the colored beads must be lined up in to bet the level
+    x_path : [ 0, 1, 2, 2, 2 ],
+    y_path : [ 2, 2, 2, 3, 4 ],
+}
+
+var level4 = {
+    width : 6, height : 5, pixelSize : 1,
+    data : [
+        0, 1, 0, 0, 0, 0,
+        0, 1, 0, 0, 2, 1,
+        0, 3, 1, 3, 1, 0,
+        0, 1, 1, 3, 1, 0,
+        0, 0, 0, 0, 0, 0
+    ],
+    //the path that the colored beads must be lined up in to bet the level
+    x_path : [ 1, 1, 4, 5, 1, 2, 3, 4 ],
+    y_path : [ 0, 1, 1, 1, 2, 2, 2, 2 ],
+}
+
+var level5 = {
+    width : 5, height : 5, pixelSize : 1,
+    data : [
+        0, 0, 0, 0, 0,
+        1, 3, 4, 2, 0,
+        0, 4, 3, 1, 0,
+        0, 3, 1, 1, 0,
+        0, 1, 0, 0, 0
+    ],
+    //the path that the colored beads must be lined up in to bet the level
+    x_path : [ 0, 1, 1, 1, 1 ],
+    y_path : [ 1, 1, 2, 3, 4 ],
+}
+
+var levels = [level1, level2, level3, level4, level5];
+var num_levels = levels.length;
 
 //VARIABLES
 var level_index = 0;
@@ -51,6 +106,7 @@ var y_hole_bead;
 var x_selected;
 var y_selected;
 var bead_selected = false;
+var touch_enabled = true;
 
 //FUNCTIONS
 //Loads the next level
@@ -61,9 +117,11 @@ var loadBoard = function() {
     var gridHeight = levels[level_index].height;
     PS.gridSize(gridWidth, gridHeight);
 
+    initializeValues();
+
     for ( y = 0; y < levels[level_index].height; y += 1 ) {
         for (x = 0; x < levels[level_index].width; x += 1) {
-            val = levels[level_index].data[(y * levels[level_index].height) + x]; // get map data
+            val = levels[level_index].data[(y * levels[level_index].width) + x]; // get map data
             if (val === PUZZLE_WALL) {
                 PS.color(x, y, COLOR_PUZZLE_WALL);
             }
@@ -90,11 +148,42 @@ var loadBoard = function() {
     x_bead_path = levels[level_index].x_path;
     y_bead_path = levels[level_index].y_path;
 }
-//Check to see if the bead that has been touched is along the perimeter of the hole bead
+
+var initializeValues = function() {
+    //Initialize beginning values
+    PS.bgColor(PS.ALL, PS.ALL, COLOR_BG);
+    PS.gridColor(COLOR_BG);
+    PS.statusColor( COLOR_STATUS );
+    PS.statusText("");
+    PS.border(PS.ALL, PS.ALL, {
+        top : 3,
+        left : 3,
+        bottom : 3,
+        right : 3,
+    });
+    PS.borderColor(PS.ALL, PS.ALL, COLOR_BG);
+}
+
+//Check to see if the bead that has been touched is along the cardinal perimeter of the hole bead
 var isSelectable = function(x, y) {
+    //Is the selected bead a wall?
+    if (levels[level_index].data[(y * levels[level_index].width) + x] === COLOR_PUZZLE_WALL) {
+        return false;
+    }
+    //Is the selectable bead on the perimeter?
     if ((x_hole_bead - 1) <= x && x <= (x_hole_bead + 1)){
         if ((y_hole_bead - 1) <= y && y <= (y_hole_bead + 1)) {
+            //If it's the hole bead, don't select it
             if (x == x_hole_bead && y == y_hole_bead){
+                return false;
+            //If it's a diagonal, don't select it
+            } else if (x == x_hole_bead - 1 && y == y_hole_bead + 1) {
+                return false;
+            } else if (x == x_hole_bead + 1 && y == y_hole_bead + 1) {
+                return false;
+            } else if (x == x_hole_bead - 1 && y == y_hole_bead - 1) {
+                return false;
+            } else if (x == x_hole_bead + 1 && y == y_hole_bead - 1) {
                 return false;
             } else {
                 return true;
@@ -121,6 +210,8 @@ var swapBeads = function(x, y) {
     PS.borderColor(x_selected, y_selected, COLOR_BG);
     PS.color(x, y, PS.color(x_selected, y_selected));
     PS.color(x_selected, y_selected, clickedColor);
+    x_hole_bead = x_selected;
+    y_hole_bead = y_selected;
 
     //Check to see if the path has been formed
     for ( by = 0; by < levels[level_index].height; by += 1 ) {
@@ -140,10 +231,14 @@ var swapBeads = function(x, y) {
 }
 
 var gameWon = function() {
-    //Other stuff
-    level_index++;
-    PS.debug("level won!");
-    //loadBoard();
+    level_index += 1;
+    if (level_index == num_levels) {
+        PS.statusText("You beat the game!");
+        touch_enabled = false;
+        return;
+    } else {
+        loadBoard();
+    }
 }
 
 
@@ -159,21 +254,8 @@ Any value returned is ignored.
 
 PS.init = function( system, options ) {
 	"use strict"; // Do not remove this directive!
-
     //Load current level
     loadBoard();
-
-    //Initialize other values
-    PS.bgColor(PS.ALL, PS.ALL, COLOR_BG);
-    PS.gridColor(COLOR_BG);
-    PS.statusColor( COLOR_STATUS );
-    PS.border(PS.ALL, PS.ALL, {
-        top : 3,
-        left : 3,
-        bottom : 3,
-        right : 3,
-    });
-    PS.borderColor(PS.ALL, PS.ALL, COLOR_BG);
 };
 
 /*
@@ -188,33 +270,34 @@ This function doesn't have to do anything. Any value returned is ignored.
 
 PS.touch = function( x, y, data, options ) {
 	"use strict"; // Do not remove this directive!
-
-    if (bead_selected) {
-        if (x_hole_bead == x && y_hole_bead == y) {
-            swapBeads(x, y);
-            x_hole_bead = x_selected;
-            y_hole_bead = y_selected;
-            resetSelected();
-            return;
-        } else {
-            PS.borderColor(x_selected, y_selected, COLOR_BG);
-            resetSelected();
-            return;
-        }
-    }
-    if (isSelectable(x, y)){
-        if (bead_selected){
-            PS.borderColor(x_selected, y_selected, COLOR_BG);
-        }
-        PS.borderColor(x, y, PS.COLOR_WHITE);
-        x_selected = x;
-        y_selected = y;
-        bead_selected = true;
-    } else {
+    if (touch_enabled) {
         if (bead_selected) {
-            PS.borderColor(x_selected, y_selected, COLOR_BG);
-            resetSelected();
+            if (x_hole_bead == x && y_hole_bead == y) {
+                swapBeads(x, y);
+                resetSelected();
+                return;
+            } else {
+                PS.borderColor(x_selected, y_selected, COLOR_BG);
+                resetSelected();
+                return;
+            }
         }
+        if (isSelectable(x, y)){
+            if (bead_selected){
+                PS.borderColor(x_selected, y_selected, COLOR_BG);
+            }
+            PS.borderColor(x, y, PS.COLOR_WHITE);
+            x_selected = x;
+            y_selected = y;
+            bead_selected = true;
+        } else {
+            if (bead_selected) {
+                PS.borderColor(x_selected, y_selected, COLOR_BG);
+                resetSelected();
+            }
+        }
+    } else {
+        return;
     }
 };
 
