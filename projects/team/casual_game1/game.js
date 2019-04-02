@@ -279,10 +279,14 @@ PS.init = function( system, options ) {
 	"use strict"; // Do not remove this directive!
     //Load current level
 	loadBoard();
+	touch_enabled= false;
 	var gotname = function (id, name){
-	    PS.statusText( "hello, " + name + "!");
+	    PS.statusText("hello, " + name + "!");
+	    touch_enabled = true;
 	}
 	PS.dbInit("home", { login: gotname });
+	
+	
 };
 
 /*
