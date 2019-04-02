@@ -27,6 +27,9 @@ var COLOR_1 = 3;
 var COLOR_2 = 4;
 var COLOR_3 = 5;
 
+var SFX_SWAP = "fx_boop";
+var SFX_COMPLETE = "fx_jump6";
+var SFX_WIN = "fx_tada";
 var level1 = {
     width : 4, height : 3, pixelSize : 1,
     data : [
@@ -226,9 +229,10 @@ var swapBeads = function(x, y) {
     PS.color(x_selected, y_selected, clickedColor);
     x_hole_bead = x_selected;
     y_hole_bead = y_selected;
-
+    PS.dbEvent("home", "x1", x_selected, "y1", y_selected, "x2", x, "y2", y);
     PS.borderColor(levels[level_index].entrance[0], levels[level_index].entrance[1], COLOR_EXITS);
     PS.borderColor(levels[level_index].exit[0], levels[level_index].exit[1], COLOR_EXITS);
+    PS.audioPlay(SFX_SWAP);
     //Check to see if the path has been formed
     for ( by = 0; by < levels[level_index].height; by += 1 ) {
         for (bx = 0; bx < levels[level_index].width; bx += 1) {
@@ -246,13 +250,16 @@ var swapBeads = function(x, y) {
     }
 }
 
-var gameWon = function() {
+var gameWon = function () {
     level_index += 1;
+    PS.dbEvent("home", "LevelCompleted", level_index);
     if (level_index == num_levels) {
         PS.statusText("You beat the game!");
+        PS.audioPlay(SFX_WIN);
         touch_enabled = false;
         return;
     } else {
+        PS.audioPlay(SFX_COMPLETE);
         loadBoard();
     }
 }
@@ -271,7 +278,11 @@ Any value returned is ignored.
 PS.init = function( system, options ) {
 	"use strict"; // Do not remove this directive!
     //Load current level
-    loadBoard();
+	loadBoard();
+	var gotname = function (id, name){
+	    PS.statusText( "hello, " + name + "!");
+	}
+	PS.dbInit("home", { login: gotname });
 };
 
 /*
@@ -515,11 +526,11 @@ NOTE: This event is generally needed only by applications utilizing networked te
 
 // UNCOMMENT the following code BLOCK to expose the PS.shutdown() event handler:
 
-/*
+
 
 PS.shutdown = function( options ) {
 	"use strict"; // Do not remove this directive!
-
+	PS.dbSend("home", "jacattelona", { discard: true });
 	// Uncomment the following code line to verify operation:
 
 	// PS.debug( "“Dave. My mind is going. I can feel it.”\n" );
@@ -527,4 +538,4 @@ PS.shutdown = function( options ) {
 	// Add code here to tidy up when Perlenspiel is about to close.
 };
 
-*/
+
