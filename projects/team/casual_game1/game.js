@@ -10,15 +10,15 @@ This file is part of the standard Perlenspiel 3.3.x devkit distribution.
 
 //MAPS FOR EACH LEVEL
 //map colors
-var COLOR_BG = [117, 117, 117];
+var COLOR_BG = 0xcdc6d6;
 var COLOR_STATUS = PS.COLOR_WHITE;
-var COLOR_PUZZLE_WALL = PS.COLOR_BLACK;
-var COLOR_COLOR_GOAL = PS.COLOR_GREEN;
-var COLOR_PUZZLE_HOLE = [117, 117, 117];
-var COLOR_COLOR_1 = PS.COLOR_BLUE;
-var COLOR_COLOR_2 = PS.COLOR_RED;
-var COLOR_COLOR_3 = PS.COLOR_YELLOW;
-var COLOR_EXITS = PS.COLOR_VIOLET;
+var COLOR_PUZZLE_WALL = 0xb9b9d1;
+var COLOR_COLOR_GOAL = 0xbaffc9;
+var COLOR_PUZZLE_HOLE = 0xcdc6d6;
+var COLOR_COLOR_1 = 0xffffba;
+var COLOR_COLOR_2 = 0xffb3ba;
+var COLOR_COLOR_3 = 0xffdfba;
+var COLOR_EXITS = PS.COLOR_WHITE;
 //map values
 var PUZZLE_WALL = 0;
 var COLOR_GOAL = 1;
@@ -181,7 +181,7 @@ var initializeValues = function() {
 //Check to see if the bead that has been touched is along the cardinal perimeter of the hole bead
 var isSelectable = function(x, y) {
     //Is the selected bead a wall?
-    if (levels[level_index].data[(y * levels[level_index].width) + x] === COLOR_PUZZLE_WALL) {
+    if (levels[level_index].data[(y * levels[level_index].width) + x] == COLOR_PUZZLE_WALL) {
         return false;
     }
     //Is the selectable bead on the perimeter?
@@ -233,7 +233,7 @@ var swapBeads = function(x, y) {
     for ( by = 0; by < levels[level_index].height; by += 1 ) {
         for (bx = 0; bx < levels[level_index].width; bx += 1) {
             val = PS.color(bx, by); // get map data
-            if (val === COLOR_COLOR_GOAL) {
+            if (val == COLOR_COLOR_GOAL) {
                 cur_x_bead_path.push(bx);
                 cur_y_bead_path.push(by);
             }
