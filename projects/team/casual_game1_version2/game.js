@@ -18,7 +18,7 @@ var COLOR_PUZZLE_HOLE = 0xcdc6d6;
 var COLOR_COLOR_1 = 0xffffba;
 var COLOR_COLOR_2 = 0xffb3ba;
 var COLOR_COLOR_3 = 0xffdfba;
-var COLOR_EXITS = PS.COLOR_WHITE;
+var COLOR_EXITS = 0x96cca2;
 //map values
 var PUZZLE_WALL = 0;
 var COLOR_GOAL = 1;
@@ -138,6 +138,7 @@ var loadBoard = function() {
             val = levels[level_index].data[(y * levels[level_index].width) + x]; // get map data
             if (val === PUZZLE_WALL) {
                 PS.color(x, y, COLOR_PUZZLE_WALL);
+                PS.border(x, y, 0);
             }
             else if (val === COLOR_GOAL) {
                 PS.color(x, y, COLOR_COLOR_GOAL);
