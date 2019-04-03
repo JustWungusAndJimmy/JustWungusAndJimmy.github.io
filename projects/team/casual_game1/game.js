@@ -184,7 +184,7 @@ var initializeValues = function() {
 //Check to see if the bead that has been touched is along the cardinal perimeter of the hole bead
 var isSelectable = function(x, y) {
     //Is the selected bead a wall?
-    if (levels[level_index].data[(y * levels[level_index].width) + x] == COLOR_PUZZLE_WALL) {
+    if (levels[level_index].data[(y * levels[level_index].width) + x] === PUZZLE_WALL) {
         return false;
     }
     //Is the selectable bead on the perimeter?
