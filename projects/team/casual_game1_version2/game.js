@@ -14,11 +14,12 @@ var COLOR_BG = 0xcdc6d6;
 var COLOR_STATUS = PS.COLOR_WHITE;
 var COLOR_PUZZLE_WALL = 0xb9b9d1;
 var COLOR_COLOR_GOAL = 0xbaffc9;
+var COLOR_DIAGONAL = 0xffffba;
 var COLOR_PUZZLE_HOLE = 0xcdc6d6;
-var COLOR_COLOR_1 = 0xffffba;
 var COLOR_COLOR_2 = 0xffb3ba;
 var COLOR_COLOR_3 = 0xffdfba;
 var COLOR_EXITS = 0x96cca2;
+var COLOR_TUT = 0xdbffe3;
 //map values
 var PUZZLE_WALL = 0;
 var COLOR_GOAL = 1;
@@ -37,12 +38,12 @@ var level1 = {
         0, 2, 1, 0,
         0, 1, 0, 0
     ],
-    //the path that the colored beads must be lined up in to bet the level
+    //the path that the colored beads must be lined up in to beat the level
     x_path : [1, 1, 1],
     y_path: [0, 1, 2],
     entrance: [1, 0],
     exit: [1, 2],
-    //data strictly for the tutorial
+    //data strictly for the tutorial animation
     bead1 : [2, 1],
     bead2 : [1, 1]
 }
@@ -51,12 +52,12 @@ var level2 = {
     width : 5, height : 5, pixelSize : 1,
     data : [
         0, 0, 1, 0, 0,
-        0, 3, 1, 1, 0,
-        0, 3, 2, 3, 0,
-        0, 3, 1, 3, 0,
+        0, 4, 1, 1, 0,
+        0, 4, 2, 4, 0,
+        0, 4, 1, 4, 0,
         0, 0, 1, 0, 0
     ],
-    //the path that the colored beads must be lined up in to bet the level
+    //the path that the colored beads must be lined up in to beat the level
     x_path : [ 2, 2, 2, 2, 2 ],
     y_path: [0, 1, 2, 3, 4],
     entrance: [2, 0],
@@ -67,12 +68,12 @@ var level3 = {
     width : 5, height : 5, pixelSize : 1,
     data : [
         0, 0, 0, 0, 0,
-        0, 1, 1, 3, 0,
-        1, 3, 2, 3, 0,
-        0, 0, 1, 3, 0,
+        0, 1, 1, 4, 0,
+        1, 4, 2, 4, 0,
+        0, 0, 1, 4, 0,
         0, 0, 1, 0, 0
     ],
-    //the path that the colored beads must be lined up in to bet the level
+    //the path that the colored beads must be lined up in to beat the level
     x_path : [ 0, 1, 2, 2, 2 ],
     y_path: [2, 2, 2, 3, 4],
     entrance: [0, 2],
@@ -84,11 +85,11 @@ var level4 = {
     data : [
         0, 1, 0, 0, 0, 0,
         0, 1, 0, 0, 2, 1,
-        0, 3, 1, 3, 1, 0,
-        0, 1, 1, 3, 1, 0,
+        0, 4, 1, 4, 1, 0,
+        0, 1, 1, 4, 1, 0,
         0, 0, 0, 0, 0, 0
     ],
-    //the path that the colored beads must be lined up in to bet the level
+    //the path that the colored beads must be lined up in to beat the level
     x_path : [ 1, 1, 4, 5, 1, 2, 3, 4 ],
     y_path: [0, 1, 1, 1, 2, 2, 2, 2],
     entrance: [1, 0],
@@ -99,19 +100,53 @@ var level5 = {
     width : 5, height : 5, pixelSize : 1,
     data : [
         0, 0, 0, 0, 0,
-        1, 3, 4, 2, 0,
-        0, 4, 3, 1, 0,
-        0, 3, 1, 1, 0,
+        1, 4, 4, 2, 0,
+        0, 4, 4, 1, 0,
+        0, 4, 1, 1, 0,
         0, 1, 0, 0, 0
     ],
-    //the path that the colored beads must be lined up in to bet the level
+    //the path that the colored beads must be lined up in to beat the level
     x_path : [ 0, 1, 1, 1, 1 ],
     y_path: [1, 1, 2, 3, 4],
     entrance: [0, 1],
     exit: [1, 4],
 }
 
-var levels = [level1, level2, level3, level4, level5];
+var level6 = {
+    width : 6, height : 4, pixelSize : 1,
+    data : [
+        0, 1, 0, 0, 0, 0,
+        0, 3, 1, 1, 4, 0,
+        2, 0, 4, 1, 4, 0,
+        0, 0, 1, 0, 0, 0
+    ],
+    //the path that the colored beads must be mined up in to beat the level
+    x_path : [ 1, 1, 2, 2, 2],
+    y_path : [ 0, 1, 1, 2, 3],
+    entrance : [1, 0],
+    exit : [2, 3],
+    //data strictly for tutorial animation
+    bead1 : [1, 1],
+    bead2 : [0, 2]
+}
+
+var level7 = {
+    width : 6, height : 5, pixelSize : 1,
+    data : [
+        0, 1, 0, 0, 0, 0,
+        0, 1, 1, 0, 4, 0,
+        0, 4, 1, 0, 2, 0,
+        0, 4, 3, 0, 4, 0,
+        0, 1, 0, 3, 0, 0
+    ],
+    //the path that the colored beads must be mined up in to beat the level
+    x_path : [ 1, 1, 1, 1, 1 ],
+    y_path : [ 0, 1, 2, 3, 4 ],
+    entrance : [1, 0],
+    exit : [1, 4]
+}
+
+var levels = [level1, level2, level3, level4, level5, level6, level7];
 var num_levels = levels.length;
 
 //VARIABLES
@@ -157,7 +192,7 @@ var loadBoard = function() {
                 y_hole_bead = y;
             }
             else if (val === COLOR_1) {
-                PS.color(x, y, COLOR_COLOR_1);
+                PS.color(x, y, COLOR_DIAGONAL);
             }
             else if (val === COLOR_2){
                 PS.color(x, y, COLOR_COLOR_2);
@@ -173,6 +208,14 @@ var loadBoard = function() {
 
     PS.borderColor(levels[level_index].entrance[0], levels[level_index].entrance[1], COLOR_EXITS);
     PS.borderColor(levels[level_index].exit[0], levels[level_index].exit[1], COLOR_EXITS);
+
+    if (level_index == 5) {
+        tutorialTimer = null;
+        pulse_bead1 = true;
+        pulse_bead2 = false;
+        play_tutorial = true;
+        tutorialTimer = PS.timerStart(3, tutorialTick);
+    }
 }
 
 var initializeValues = function() {
@@ -192,6 +235,21 @@ var initializeValues = function() {
 
 //Check to see if the bead that has been touched is along the cardinal perimeter of the hole bead
 var isSelectable = function(x, y) {
+    //SPECIAL BEAD CHECKS
+    if (PS.color(x, y) == COLOR_DIAGONAL) {
+        //check to see if bead is diagonal from the hole
+        if (x == x_hole_bead - 1 && y == y_hole_bead + 1) {
+            return true;
+        } else if (x == x_hole_bead + 1 && y == y_hole_bead + 1) {
+            return true;
+        } else if (x == x_hole_bead - 1 && y == y_hole_bead - 1) {
+            return true;
+        } else if (x == x_hole_bead + 1 && y == y_hole_bead - 1) {
+            return true;
+        }
+    }
+
+    //NONSPECIAL BEAD CHECKS
     //Is the selected bead a wall?
     if (levels[level_index].data[(y * levels[level_index].width) + x] === PUZZLE_WALL) {
         return false;
@@ -204,7 +262,7 @@ var isSelectable = function(x, y) {
     if (x == levels[level_index].exit[0] && y == levels[level_index].exit[1]){
         return false;
     }
-    //Is the selectable bead on the perimeter?
+    //Is the selectable, nonspecial bead on the perimeter?
     if ((x_hole_bead - 1) <= x && x <= (x_hole_bead + 1)){
         if ((y_hole_bead - 1) <= y && y <= (y_hole_bead + 1)) {
             //If it's the hole bead, don't select it
@@ -297,7 +355,7 @@ var resetTutorialAnimValues = function() {
 
 var tutorialTick = function() {
     if (pulse_bead1) {
-        PS.borderColor(levels[level_index].bead1[0], levels[level_index].bead1[1], COLOR_EXITS);
+        PS.borderColor(levels[level_index].bead1[0], levels[level_index].bead1[1], COLOR_TUT);
         PS.border(levels[level_index].bead1[0], levels[level_index].bead1[1], cur_border_size);
         if (cur_border_size == 20) {
             is_incrementing = false;
@@ -311,7 +369,7 @@ var tutorialTick = function() {
             cur_border_size -= 1;
         }
     } else if (pulse_bead2) {
-        PS.borderColor(levels[level_index].bead2[0], levels[level_index].bead2[1], COLOR_EXITS);
+        PS.borderColor(levels[level_index].bead2[0], levels[level_index].bead2[1], COLOR_TUT);
         PS.border(levels[level_index].bead2[0], levels[level_index].bead2[1], cur_border_size);
         if (cur_border_size == 20) {
             is_incrementing = false;
