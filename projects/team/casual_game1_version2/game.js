@@ -187,6 +187,14 @@ var isSelectable = function(x, y) {
     if (levels[level_index].data[(y * levels[level_index].width) + x] === PUZZLE_WALL) {
         return false;
     }
+    //Is the selected bead the entrance bead?
+    if (x == levels[level_index].entrance[0] && y == levels[level_index].entrance[1]){
+        return false;
+    }
+    //Is the selected bead the exit bead?
+    if (x == levels[level_index].exit[0] && y == levels[level_index].exit[1]){
+        return false;
+    }
     //Is the selectable bead on the perimeter?
     if ((x_hole_bead - 1) <= x && x <= (x_hole_bead + 1)){
         if ((y_hole_bead - 1) <= y && y <= (y_hole_bead + 1)) {
