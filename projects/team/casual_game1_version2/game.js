@@ -42,6 +42,9 @@ var level1 = {
     y_path: [0, 1, 2],
     entrance: [1, 0],
     exit: [1, 2],
+    //data strictly for the tutorial
+    bead1 : [2, 1],
+    bead2 : [1, 1]
 }
 
 var level2 = {
@@ -121,6 +124,11 @@ var x_selected;
 var y_selected;
 var bead_selected = false;
 var touch_enabled = true;
+var play_tutorial = true;
+var pulse_bead1 = true;
+var pulse_bead2 = false;
+var cur_border_size = 3;
+var is_incrementing = true;
 
 //FUNCTIONS
 //Loads the next level
@@ -273,6 +281,56 @@ var gameWon = function () {
     }
 }
 
+var resetTutorialAnimValues = function() {
+    if (play_tutorial) {
+        cur_border_size = 3;
+        PS.border(levels[level_index].bead1[0], levels[level_index].bead1[1], cur_border_size);
+        PS.borderColor(levels[level_index].bead1[0], levels[level_index].bead1[1], PS.COLOR_BG);
+        is_incrementing = true;
+    } else {
+        PS.borderColor(levels[level_index].bead2[0], levels[level_index].bead2[1], PS.COLOR_BG);
+        cur_border_size = 3;
+        PS.border(levels[level_index].bead2[0], levels[level_index].bead2[1], cur_border_size);
+        is_incrementing = false;
+    }
+}
+
+var tutorialTick = function() {
+    if (pulse_bead1) {
+        PS.borderColor(levels[level_index].bead1[0], levels[level_index].bead1[1], COLOR_EXITS);
+        PS.border(levels[level_index].bead1[0], levels[level_index].bead1[1], cur_border_size);
+        if (cur_border_size == 20) {
+            is_incrementing = false;
+            cur_border_size--;
+        } else if (cur_border_size == 3){
+            is_incrementing = true;
+            cur_border_size += 1;
+        } else if (is_incrementing) {
+            cur_border_size += 1;
+        } else if (!is_incrementing) {
+            cur_border_size -= 1;
+        }
+    } else if (pulse_bead2) {
+        PS.borderColor(levels[level_index].bead2[0], levels[level_index].bead2[1], COLOR_EXITS);
+        PS.border(levels[level_index].bead2[0], levels[level_index].bead2[1], cur_border_size);
+        if (cur_border_size == 20) {
+            is_incrementing = false;
+            cur_border_size--;
+        } else if (cur_border_size == 3){
+            is_incrementing = true;
+            cur_border_size += 1;
+        } else if (is_incrementing) {
+            cur_border_size += 1;
+        } else if (!is_incrementing) {
+            cur_border_size -= 1;
+        }
+    }
+}
+
+//TIMERS
+var tutorialTimer = null;
+
+
 
 /*
 PS.init( system, options )
@@ -292,10 +350,10 @@ PS.init = function( system, options ) {
 	var gotname = function (id, name){
 	    PS.statusText("hello, " + name + "!");
 	    touch_enabled = true;
+	    //start tutorial animation only after name has been entered
+        tutorialTimer = PS.timerStart(3, tutorialTick);
 	}
 	PS.dbInit("home", { login: gotname });
-	
-	
 };
 
 /*
@@ -311,6 +369,20 @@ This function doesn't have to do anything. Any value returned is ignored.
 PS.touch = function( x, y, data, options ) {
 	"use strict"; // Do not remove this directive!
     if (touch_enabled) {
+        if (play_tutorial) {
+            if (pulse_bead1) {
+                if (x == levels[level_index].bead1[0] && y == levels[level_index].bead1[1]) {
+                    pulse_bead1 = false;
+                    pulse_bead2 = true;
+                    resetTutorialAnimValues();
+                }
+            } else {
+                PS.timerStop(tutorialTimer);
+                play_tutorial = false;
+                pulse_bead2 = false;
+                resetTutorialAnimValues();
+            }
+        }
         if (bead_selected) {
             if (x_hole_bead == x && y_hole_bead == y) {
                 swapBeads(x, y);
