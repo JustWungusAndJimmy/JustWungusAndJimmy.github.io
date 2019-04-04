@@ -165,7 +165,53 @@ var pulse_bead2 = false;
 var cur_border_size = 3;
 var is_incrementing = true;
 
+var transitionTimer = null;
+var transitionCounter = 0;
 //FUNCTIONS
+
+//timer function wait for fade to finish
+var fadeWait = function () {
+    transitionCounter++;
+    if (transitionCounter === 30) {
+        var index = 0;
+        for (var y = 0; y < levels[level_index].height; y++) {
+            for (var x = 0; x < levels[level_index].width; x++) {
+                if (x === levels[level_index].x_path[index] && y === levels[level_index].y_path[index]) {
+                    index++;
+                    PS.color(x, y, COLOR_BG);
+                    PS.borderColor(x, y, COLOR_BG);
+                }
+            }
+        }
+    }
+    if (transitionCounter === 100) {
+        PS.fade(PS.ALL, PS.ALL, 0);
+        PS.borderFade(PS.ALL, PS.ALL, 0);
+        transitionCounter = 0;
+        PS.timerStop(transitionTimer);
+        gameWon();
+    }
+
+}
+//transition fade between levels
+var levelTransition = function () {
+    var index = 0;
+    for (var y = 0; y < levels[level_index].height; y++) {
+        for (var x = 0; x < levels[level_index].width; x++) {
+            if (x === levels[level_index].x_path[index] && y === levels[level_index].y_path[index]) {
+                index++;
+                PS.fade(x, y, 60);
+                PS.borderFade(x, y, 60);
+            }
+            else {
+                PS.fade(x, y, 30);
+                PS.color(x, y, COLOR_BG);
+            }
+        }
+    }
+    transitionTimer = PS.timerStart(1, fadeWait);
+    
+}
 //Loads the next level
 var loadBoard = function() {
     var x, y, val;
@@ -321,7 +367,9 @@ var swapBeads = function(x, y) {
 
     if (JSON.stringify(cur_x_bead_path) === JSON.stringify(x_bead_path) && JSON.stringify(cur_y_bead_path) === JSON.stringify(y_bead_path)) {
         //level is won!
-        gameWon();
+        //gameWon();
+        levelTransition();
+        
     }
 }
 
@@ -670,7 +718,7 @@ NOTE: This event is generally needed only by applications utilizing networked te
 // UNCOMMENT the following code BLOCK to expose the PS.shutdown() event handler:
 
 
-
+/*
 PS.shutdown = function( options ) {
 	"use strict"; // Do not remove this directive!
 	PS.dbSend("home", "jacattelona", { discard: true });
@@ -680,5 +728,5 @@ PS.shutdown = function( options ) {
 
 	// Add code here to tidy up when Perlenspiel is about to close.
 };
-
+*/
 
