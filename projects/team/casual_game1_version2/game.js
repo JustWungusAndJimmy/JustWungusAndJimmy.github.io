@@ -214,6 +214,8 @@ var levelTransition = function () {
             }
             else {
                 PS.fade(x, y, 30);
+                PS.borderFade(x, y, 30);
+                PS.borderColor(x, y, COLOR_BG);
                 PS.color(x, y, COLOR_BG);
             }
         }
