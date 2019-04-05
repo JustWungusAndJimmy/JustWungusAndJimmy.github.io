@@ -174,6 +174,8 @@ var is_incrementing = true;
 
 var transitionTimer = null;
 var transitionCounter = 0;
+
+var audioChoice = 0;
 //FUNCTIONS
 
 //timer function wait for fade to finish
@@ -221,7 +223,10 @@ var levelTransition = function () {
 }
 
 var swapSound = function (set) {
-    var choice = Math.floor(Math.random() * 4);
+    var choice = audioChoice;
+    while (choice === audioChoice)
+        choice = Math.floor(Math.random() * 4);
+    audioChoice = choice;
     if (set === 1) {
         if (choice === 0)
             PS.audioPlay("1a", { path: "sounds/", fileTypes: ["wav"], lock: true });
