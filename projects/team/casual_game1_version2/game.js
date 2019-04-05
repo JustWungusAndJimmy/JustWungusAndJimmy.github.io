@@ -432,7 +432,7 @@ var gameWon = function () {
         touch_enabled = false;
         return;
     } else {
-        PS.audioPlay(SFX_COMPLETE);
+        PS.audioPlay(SFX_SWAP);
         loadBoard();
     }
 }
