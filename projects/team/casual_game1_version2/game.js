@@ -43,6 +43,7 @@ var level1 = {
     y_path: [0, 1, 2],
     entrance: [1, 0],
     exit: [1, 2],
+    soundSet: 1,
     //data strictly for the tutorial animation
     bead1 : [2, 1],
     bead2 : [1, 1]
@@ -62,6 +63,7 @@ var level2 = {
     y_path: [0, 1, 2, 3, 4],
     entrance: [2, 0],
     exit: [2, 4],
+    soundSet: 1,
 }
 
 var level3 = {
@@ -78,6 +80,7 @@ var level3 = {
     y_path: [2, 2, 2, 3, 4],
     entrance: [0, 2],
     exit: [2, 4],
+    soundSet: 1,
 }
 
 var level4 = {
@@ -94,6 +97,7 @@ var level4 = {
     y_path: [0, 1, 1, 1, 2, 2, 2, 2],
     entrance: [1, 0],
     exit: [5, 1],
+    soundSet: 2,
 }
 
 var level5 = {
@@ -110,6 +114,7 @@ var level5 = {
     y_path: [1, 1, 2, 3, 4],
     entrance: [0, 1],
     exit: [1, 4],
+    soundSet: 2,
 }
 
 var level6 = {
@@ -124,7 +129,8 @@ var level6 = {
     x_path : [ 1, 1, 2, 2, 2],
     y_path : [ 0, 1, 1, 2, 3],
     entrance : [1, 0],
-    exit : [2, 3],
+    exit: [2, 3],
+    soundSet: 3,
     //data strictly for tutorial animation
     bead1 : [1, 1],
     bead2 : [0, 2]
@@ -143,7 +149,8 @@ var level7 = {
     x_path : [ 1, 1, 1, 1, 1 ],
     y_path : [ 0, 1, 2, 3, 4 ],
     entrance : [1, 0],
-    exit : [1, 4]
+    exit: [1, 4],
+    soundSet: 3,
 }
 
 var levels = [level1, level2, level3, level4, level5, level6, level7];
@@ -211,6 +218,42 @@ var levelTransition = function () {
     }
     transitionTimer = PS.timerStart(1, fadeWait);
     
+}
+
+var swapSound = function (set) {
+    var choice = Math.floor(Math.random() * 4);
+    if (set === 1) {
+        if (choice === 0)
+            PS.audioPlay("1a", { path: "sounds/", fileTypes: ["wav"], lock: true });
+        if (choice === 1)
+            PS.audioPlay("1b", { path: "sounds/", fileTypes: ["wav"], lock: true });
+        if (choice === 2)
+            PS.audioPlay("1c", { path: "sounds/", fileTypes: ["wav"], lock: true });
+        if (choice === 3)
+            PS.audioPlay("1d", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    }
+
+    if (set === 2) {
+        if (choice === 0)
+            PS.audioPlay("2a", { path: "sounds/", fileTypes: ["wav"], lock: true });
+        if (choice === 1)
+            PS.audioPlay("2b", { path: "sounds/", fileTypes: ["wav"], lock: true });
+        if (choice === 2)
+            PS.audioPlay("2c", { path: "sounds/", fileTypes: ["wav"], lock: true });
+        if (choice === 3)
+            PS.audioPlay("2d", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    }
+
+    if (set === 3) {
+        if (choice === 0)
+            PS.audioPlay("3a", { path: "sounds/", fileTypes: ["wav"], lock: true });
+        if (choice === 1)
+            PS.audioPlay("3b", { path: "sounds/", fileTypes: ["wav"], lock: true });
+        if (choice === 2)
+            PS.audioPlay("3c", { path: "sounds/", fileTypes: ["wav"], lock: true });
+        if (choice === 3)
+            PS.audioPlay("3d", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    }
 }
 //Loads the next level
 var loadBoard = function() {
@@ -353,7 +396,9 @@ var swapBeads = function(x, y) {
     PS.dbEvent("home", "x1", x_selected, "y1", y_selected, "x2", x, "y2", y);
     PS.borderColor(levels[level_index].entrance[0], levels[level_index].entrance[1], COLOR_EXITS);
     PS.borderColor(levels[level_index].exit[0], levels[level_index].exit[1], COLOR_EXITS);
-    PS.audioPlay(SFX_SWAP);
+    //PS.audioPlay(SFX_SWAP);
+    //PS.audioPlay("1a", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    swapSound(levels[level_index].soundSet);
     //Check to see if the path has been formed
     for ( by = 0; by < levels[level_index].height; by += 1 ) {
         for (bx = 0; bx < levels[level_index].width; bx += 1) {
@@ -378,7 +423,7 @@ var gameWon = function () {
     PS.dbEvent("home", "LevelCompleted", level_index);
     if (level_index == num_levels) {
         PS.statusText("You beat the game!");
-        PS.audioPlay(SFX_WIN);
+        //PS.audioPlay(SFX_WIN);
         touch_enabled = false;
         return;
     } else {
@@ -449,7 +494,22 @@ Any value returned is ignored.
 */
 
 PS.init = function( system, options ) {
-	"use strict"; // Do not remove this directive!
+    "use strict"; // Do not remove this directive!
+    //load sounds
+    PS.audioLoad("1a", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("1b", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("1c", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("1d", { path: "sounds/", fileTypes: ["wav"], lock: true });
+
+    PS.audioLoad("2a", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("2b", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("2c", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("2d", { path: "sounds/", fileTypes: ["wav"], lock: true });
+
+    PS.audioLoad("3a", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("3b", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("3c", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("3d", { path: "sounds/", fileTypes: ["wav"], lock: true });
     //Load current level
 	loadBoard();
 	touch_enabled= false;
