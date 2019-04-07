@@ -39,9 +39,6 @@ var level1 = {
         0, 2, 1, 0,
         0, 1, 0, 0
     ],
-    //the path that the colored beads must be lined up in to beat the level
-    x_path : [1, 1, 1],
-    y_path: [0, 1, 2],
     entrance: [1, 0],
     exit: [1, 2],
     soundSet: 1,
@@ -59,9 +56,6 @@ var level2 = {
         0, 4, 1, 4, 0,
         0, 0, 1, 0, 0
     ],
-    //the path that the colored beads must be lined up in to beat the level
-    x_path : [ 2, 2, 2, 2, 2 ],
-    y_path: [0, 1, 2, 3, 4],
     entrance: [2, 0],
     exit: [2, 4],
     soundSet: 1,
@@ -76,9 +70,6 @@ var level3 = {
         0, 0, 1, 4, 0,
         0, 0, 1, 0, 0
     ],
-    //the path that the colored beads must be lined up in to beat the level
-    x_path : [ 0, 1, 2, 2, 2 ],
-    y_path: [2, 2, 2, 3, 4],
     entrance: [0, 2],
     exit: [2, 4],
     soundSet: 1,
@@ -88,14 +79,11 @@ var level4 = {
     width : 6, height : 5, pixelSize : 1,
     data : [
         0, 1, 0, 0, 0, 0,
-        0, 1, 0, 0, 2, 1,
-        0, 4, 1, 4, 1, 0,
-        0, 1, 1, 4, 1, 0,
+        0, 1, 4, 4, 2, 1,
+        0, 4, 4, 4, 1, 0,
+        0, 1, 4, 4, 1, 0,
         0, 0, 0, 0, 0, 0
     ],
-    //the path that the colored beads must be lined up in to beat the level
-    x_path : [ 1, 1, 4, 5, 1, 2, 3, 4 ],
-    y_path: [0, 1, 1, 1, 2, 2, 2, 2],
     entrance: [1, 0],
     exit: [5, 1],
     soundSet: 2,
@@ -110,9 +98,6 @@ var level5 = {
         0, 4, 1, 1, 0,
         0, 1, 0, 0, 0
     ],
-    //the path that the colored beads must be lined up in to beat the level
-    x_path : [ 0, 1, 1, 1, 1 ],
-    y_path: [1, 1, 2, 3, 4],
     entrance: [0, 1],
     exit: [1, 4],
     soundSet: 2,
@@ -126,9 +111,6 @@ var level6 = {
         2, 0, 4, 1, 4, 0,
         0, 0, 1, 0, 0, 0
     ],
-    //the path that the colored beads must be mined up in to beat the level
-    x_path : [ 1, 1, 2, 2, 2],
-    y_path : [ 0, 1, 1, 2, 3],
     entrance : [1, 0],
     exit: [2, 3],
     soundSet: 3,
@@ -146,9 +128,6 @@ var level7 = {
         0, 4, 3, 0, 4, 0,
         0, 1, 0, 3, 0, 0
     ],
-    //the path that the colored beads must be mined up in to beat the level
-    x_path : [ 1, 1, 1, 1, 1 ],
-    y_path : [ 0, 1, 2, 3, 4 ],
     entrance : [1, 0],
     exit: [1, 4],
     soundSet: 3,
@@ -159,8 +138,8 @@ var num_levels = levels.length;
 
 //VARIABLES
 var level_index = 0;
-var x_bead_path = [];
-var y_bead_path = [];
+var cur_x_bead_path = [];
+var cur_y_bead_path = [];
 var x_hole_bead;
 var y_hole_bead;
 var x_selected;
@@ -188,7 +167,7 @@ var fadeWait = function () {
         var index = 0;
         for (var y = 0; y < levels[level_index].height; y++) {
             for (var x = 0; x < levels[level_index].width; x++) {
-                if (x === levels[level_index].x_path[index] && y === levels[level_index].y_path[index]) {
+                if (x === cur_x_bead_path[index] && y === cur_y_bead_path[index]) {
                     index++;
                     PS.color(x, y, COLOR_BG);
                     PS.borderColor(x, y, COLOR_BG);
@@ -210,7 +189,7 @@ var levelTransition = function () {
     var index = 0;
     for (var y = 0; y < levels[level_index].height; y++) {
         for (var x = 0; x < levels[level_index].width; x++) {
-            if (x === levels[level_index].x_path[index] && y === levels[level_index].y_path[index]) {
+            if (x === cur_x_bead_path[index] && y === cur_y_bead_path[index]) {
                 index++;
                 PS.fade(x, y, 60);
                 PS.borderFade(x, y, 60);
@@ -301,9 +280,6 @@ var loadBoard = function() {
             }
         }
     }
-
-    x_bead_path = levels[level_index].x_path;
-    y_bead_path = levels[level_index].y_path;
 
     PS.borderColor(levels[level_index].entrance[0], levels[level_index].entrance[1], COLOR_EXITS);
     PS.borderColor(levels[level_index].exit[0], levels[level_index].exit[1], COLOR_EXITS);
@@ -415,10 +391,8 @@ var swapBeads = function(x, y) {
 
 var pathFormed = function () {
     var bx, by, val, index, con_cnt;
-    var cur_x_bead_path = [];
-    var cur_y_bead_path = [];
-    var ent_exists = false;
-    var ex_exists = false;
+    cur_x_bead_path = [];
+    cur_y_bead_path = [];
 
     //Populate array of coordinates of all goal beads
     for ( by = 0; by < levels[level_index].height; by += 1 ) {
