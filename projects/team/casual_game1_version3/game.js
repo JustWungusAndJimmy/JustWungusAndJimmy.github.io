@@ -31,6 +31,7 @@ var COLOR_3 = 5;
 var SFX_SWAP = "fx_boop";
 var SFX_COMPLETE = "fx_jump6";
 var SFX_WIN = "fx_tada";
+
 var level1 = {
     width : 4, height : 3, pixelSize : 1,
     data : [
@@ -38,9 +39,6 @@ var level1 = {
         0, 2, 1, 0,
         0, 1, 0, 0
     ],
-    //the path that the colored beads must be lined up in to beat the level
-    x_path : [1, 1, 1],
-    y_path: [0, 1, 2],
     entrance: [1, 0],
     exit: [1, 2],
     soundSet: 1,
@@ -58,9 +56,6 @@ var level2 = {
         0, 4, 1, 4, 0,
         0, 0, 1, 0, 0
     ],
-    //the path that the colored beads must be lined up in to beat the level
-    x_path : [ 2, 2, 2, 2, 2 ],
-    y_path: [0, 1, 2, 3, 4],
     entrance: [2, 0],
     exit: [2, 4],
     soundSet: 1,
@@ -75,9 +70,6 @@ var level3 = {
         0, 0, 1, 4, 0,
         0, 0, 1, 0, 0
     ],
-    //the path that the colored beads must be lined up in to beat the level
-    x_path : [ 0, 1, 2, 2, 2 ],
-    y_path: [2, 2, 2, 3, 4],
     entrance: [0, 2],
     exit: [2, 4],
     soundSet: 1,
@@ -87,14 +79,11 @@ var level4 = {
     width : 6, height : 5, pixelSize : 1,
     data : [
         0, 1, 0, 0, 0, 0,
-        0, 1, 0, 0, 2, 1,
-        0, 4, 1, 4, 1, 0,
-        0, 1, 1, 4, 1, 0,
+        0, 1, 4, 4, 2, 1,
+        0, 4, 4, 4, 1, 0,
+        0, 1, 4, 4, 1, 0,
         0, 0, 0, 0, 0, 0
     ],
-    //the path that the colored beads must be lined up in to beat the level
-    x_path : [ 1, 1, 4, 5, 1, 2, 3, 4 ],
-    y_path: [0, 1, 1, 1, 2, 2, 2, 2],
     entrance: [1, 0],
     exit: [5, 1],
     soundSet: 2,
@@ -109,9 +98,6 @@ var level5 = {
         0, 4, 1, 1, 0,
         0, 1, 0, 0, 0
     ],
-    //the path that the colored beads must be lined up in to beat the level
-    x_path : [ 0, 1, 1, 1, 1 ],
-    y_path: [1, 1, 2, 3, 4],
     entrance: [0, 1],
     exit: [1, 4],
     soundSet: 2,
@@ -125,9 +111,6 @@ var level6 = {
         2, 0, 4, 1, 4, 0,
         0, 0, 1, 0, 0, 0
     ],
-    //the path that the colored beads must be mined up in to beat the level
-    x_path : [ 1, 1, 2, 2, 2],
-    y_path : [ 0, 1, 1, 2, 3],
     entrance : [1, 0],
     exit: [2, 3],
     soundSet: 3,
@@ -145,9 +128,6 @@ var level7 = {
         0, 4, 3, 0, 4, 0,
         0, 1, 0, 3, 0, 0
     ],
-    //the path that the colored beads must be mined up in to beat the level
-    x_path : [ 1, 1, 1, 1, 1 ],
-    y_path : [ 0, 1, 2, 3, 4 ],
     entrance : [1, 0],
     exit: [1, 4],
     soundSet: 3,
@@ -158,8 +138,8 @@ var num_levels = levels.length;
 
 //VARIABLES
 var level_index = 0;
-var x_bead_path = [];
-var y_bead_path = [];
+var cur_x_bead_path = [];
+var cur_y_bead_path = [];
 var x_hole_bead;
 var y_hole_bead;
 var x_selected;
@@ -178,20 +158,16 @@ var audioChoice = 0;
 var tutorialTimer = null;
 var transitionTimer = null;
 
-var pathPoint = 0;
-var waitTime = 0;
 //FUNCTIONS
 
 //timer function wait for fade to finish
 var fadeWait = function () {
     transitionCounter++;
-
-    /*
     if (transitionCounter === 30) {
         var index = 0;
         for (var y = 0; y < levels[level_index].height; y++) {
             for (var x = 0; x < levels[level_index].width; x++) {
-                if (x === levels[level_index].x_path[index] && y === levels[level_index].y_path[index]) {
+                if (x === cur_x_bead_path[index] && y === cur_y_bead_path[index]) {
                     index++;
                     PS.color(x, y, COLOR_BG);
                     PS.borderColor(x, y, COLOR_BG);
@@ -199,31 +175,7 @@ var fadeWait = function () {
             }
         }
     }
-    */
-    if (transitionCounter > 30 && pathPoint >= 0) {
-        if (transitionCounter % 20 === 0) {
-            PS.borderColor(levels[level_index].x_path[pathPoint], levels[level_index].y_path[pathPoint], COLOR_STATUS)
-            //PS.color(levels[level_index].x_path[pathPoint], levels[level_index].y_path[pathPoint], COLOR_STATUS);
-            pathPoint--;
-        }
-
-    }
-    if (transitionCounter === (waitTime - 40)) {
-        var index = 0;
-        for (var y = 0; y < levels[level_index].height; y++) {
-            for (var x = 0; x < levels[level_index].width; x++) {
-                if (x === levels[level_index].x_path[index] && y === levels[level_index].y_path[index]) {
-                    index++;
-                    PS.fade(x, y, 35);
-                    PS.borderFade(x, y, 35);
-                }
-            }
-        }
-        PS.color(PS.ALL, PS.ALL, COLOR_BG);
-        PS.borderColor(PS.ALL, PS.ALL, COLOR_BG);
-    }
-
-    if (transitionCounter === waitTime) {
+    if (transitionCounter === 100) {
         PS.fade(PS.ALL, PS.ALL, 0);
         PS.borderFade(PS.ALL, PS.ALL, 0);
         transitionCounter = 0;
@@ -237,10 +189,10 @@ var levelTransition = function () {
     var index = 0;
     for (var y = 0; y < levels[level_index].height; y++) {
         for (var x = 0; x < levels[level_index].width; x++) {
-            if (x === levels[level_index].x_path[index] && y === levels[level_index].y_path[index]) {
+            if (x === cur_x_bead_path[index] && y === cur_y_bead_path[index]) {
                 index++;
-                //PS.fade(x, y, 60);
-                //PS.borderFade(x, y, 60);
+                PS.fade(x, y, 60);
+                PS.borderFade(x, y, 60);
             }
             else {
                 PS.fade(x, y, 30);
@@ -250,7 +202,6 @@ var levelTransition = function () {
             }
         }
     }
-    waitTime = (pathPoint * 20) + 80;
     transitionTimer = PS.timerStart(1, fadeWait);
     
 }
@@ -330,13 +281,10 @@ var loadBoard = function() {
         }
     }
 
-    x_bead_path = levels[level_index].x_path;
-    y_bead_path = levels[level_index].y_path;
-
-    pathPoint = x_bead_path.length-1;
-
     PS.borderColor(levels[level_index].entrance[0], levels[level_index].entrance[1], COLOR_EXITS);
     PS.borderColor(levels[level_index].exit[0], levels[level_index].exit[1], COLOR_EXITS);
+    PS.border(levels[level_index].entrance[0], levels[level_index].entrance[1], 10);
+    PS.border(levels[level_index].exit[0], levels[level_index].exit[1], 10);
 
     if (level_index == 5) {
         tutorialTimer = null;
@@ -424,9 +372,6 @@ var resetSelected = function() {
 }
 
 var swapBeads = function(x, y) {
-    var bx, by, val;
-    var cur_x_bead_path = [];
-    var cur_y_bead_path = [];
     var clickedColor = PS.color(x,y);
     PS.borderColor(x_selected, y_selected, COLOR_BG);
     PS.color(x, y, PS.color(x_selected, y_selected));
@@ -437,7 +382,19 @@ var swapBeads = function(x, y) {
     PS.borderColor(levels[level_index].entrance[0], levels[level_index].entrance[1], COLOR_EXITS);
     PS.borderColor(levels[level_index].exit[0], levels[level_index].exit[1], COLOR_EXITS);
     swapSound(levels[level_index].soundSet);
-    //Check to see if the path has been formed
+
+    if (pathFormed()) {
+        //level is won!
+        levelTransition();
+    }
+}
+
+var pathFormed = function () {
+    var bx, by, val, index, con_cnt;
+    cur_x_bead_path = [];
+    cur_y_bead_path = [];
+
+    //Populate array of coordinates of all goal beads
     for ( by = 0; by < levels[level_index].height; by += 1 ) {
         for (bx = 0; bx < levels[level_index].width; bx += 1) {
             val = PS.color(bx, by); // get map data
@@ -448,11 +405,65 @@ var swapBeads = function(x, y) {
         }
     }
 
-    if (JSON.stringify(cur_x_bead_path) === JSON.stringify(x_bead_path) && JSON.stringify(cur_y_bead_path) === JSON.stringify(y_bead_path)) {
-        //level is won!
-        levelTransition();
-        
+    //Iterate through path of beads to see if they're connected
+    for (index = 0; index < cur_x_bead_path.length; index += 1) {
+        con_cnt = 0;
+        //Check if the entrance bead exists in the current path
+        if (cur_x_bead_path[index] == levels[level_index].entrance[0] && cur_y_bead_path[index] == levels[level_index].entrance[1]
+            || cur_x_bead_path[index] == levels[level_index].exit[0] && cur_y_bead_path[index] == levels[level_index].exit[1]) {
+            continue;
+        }
+        //out of bouds check
+        if (cur_y_bead_path[index] + 1 >= levels[level_index].height) {
+            //do nothing
+        } else {
+            //Check top middle
+            if (PS.color(cur_x_bead_path[index], cur_y_bead_path[index]+1) == COLOR_COLOR_GOAL) {
+                con_cnt++;
+            }
+        }
+
+        //out of bounds check
+        if (cur_x_bead_path[index]+1 >= levels[level_index].width){
+            //do nothing
+        } else {
+            //Check right
+            if (PS.color(cur_x_bead_path[index]+1, cur_y_bead_path[index]) == COLOR_COLOR_GOAL) {
+                con_cnt++;
+            }
+        }
+
+        //out of bounds check
+        if (cur_y_bead_path[index]-1 < 0){
+            //do nothing
+        } else {
+            //Check bottom middle
+            if (PS.color(cur_x_bead_path[index], cur_y_bead_path[index]-1) == COLOR_COLOR_GOAL) {
+                con_cnt++;
+            }
+        }
+
+        //out of bounds check
+        if (cur_x_bead_path[index]-1 <0){
+            //do nothing
+        } else {
+            //Check left
+            if (PS.color(cur_x_bead_path[index]-1, cur_y_bead_path[index]) == COLOR_COLOR_GOAL) {
+                con_cnt++;
+            }
+        }
+
+
+        //Check to see if all middle beads are connected
+        if (con_cnt >= 2) {
+            continue;
+        } else {
+            return false;
+        }
     }
+
+    //All green beads are connected
+    return true;
 }
 
 var gameWon = function () {
@@ -629,5 +640,6 @@ PS.shutdown = function( options ) {
 	"use strict"; // Do not remove this directive!
 	PS.dbSend("home", "jacattelona", { discard: true });
 };
-
 */
+
+
