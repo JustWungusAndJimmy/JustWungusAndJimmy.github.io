@@ -17,7 +17,7 @@ var COLOR_STATUS = PS.COLOR_WHITE;
 var COLOR_PUZZLE_WALL = 0xb9b9d1;
 var COLOR_COLOR_GOAL = 0xbaffc9;
 var COLOR_DIAGONAL = 0xffffba;
-var COLOR_JUMP = 0xbabaff;
+var COLOR_JUMP = 0xffdfba;
 var COLOR_PUZZLE_HOLE = 0xcdc6d6;
 var COLOR_COLOR_2 = 0xffb3ba;
 var COLOR_COLOR_3 = 0xffdfba;
@@ -123,6 +123,19 @@ var level6 = {
 }
 
 var level7 = {
+    width : 7, height : 4, pixelSize : 1,
+    data : [
+        0, 0, 0, 0, 1, 0, 0,
+        0, 3, 0, 3, 4, 4, 0,
+        2, 0, 3, 0, 1, 1, 0,
+        0, 0, 0, 0, 1, 0, 0
+    ],
+    entrance : [4, 0],
+    exit: [4, 3],
+    soundSet: 3
+}
+
+var level8 = {
     width : 6, height : 5, pixelSize : 1,
     data : [
         0, 1, 0, 0, 0, 0,
@@ -136,7 +149,37 @@ var level7 = {
     soundSet: 3,
 }
 
-var level8 = {
+var level9 = {
+    width : 5, height : 5, pixelSize : 1,
+    data : [
+        0, 0, 1, 0, 0,
+        0, 1, 3, 4, 0,
+        1, 3, 1, 2, 0,
+        0, 4, 1, 4, 0,
+        0, 0, 0, 0, 0
+    ],
+    entrance : [2, 0],
+    exit: [0, 2],
+    soundSet: 3,
+}
+
+var level10 = {
+    width: 7, height: 7, pixelSize: 1,
+    data: [
+        0, 0, 0, 1, 0, 0, 0,
+        0, 4, 1, 3, 4, 1, 0,
+        0, 4, 4, 3, 2, 4, 0,
+        0, 1, 4, 3, 3, 3, 1,
+        0, 4, 4, 1, 4, 1, 0,
+        0, 4, 4, 4, 4, 4, 0,
+        0, 0, 0, 0, 0, 0, 0
+    ],
+    entrance: [3, 0],
+    exit: [6, 3],
+    soundSet: 3
+}
+
+var level11 = {
     width: 6, height: 6, pixelSize: 1,
     data: [
         0, 1, 0, 0, 0, 0,
@@ -154,7 +197,7 @@ var level8 = {
     bead2: [1, 4]
 }
 
-var levels = [level1, level2, level3, level4, level5, level6, level7, level8];
+var levels = [level1, level2, level3, level4, level5, level6, level7, level8, level9, level10, level11];
 var num_levels = levels.length;
 
 //VARIABLES
@@ -328,7 +371,7 @@ var loadBoard = function() {
         play_tutorial = true;
         tutorialTimer = PS.timerStart(3, tutorialTick);
     }
-    if (level_index == 7) {
+    if (level_index == 10) {
         tutorialTimer = null;
         pulse_bead1 = true;
         pulse_bead2 = false;
@@ -366,8 +409,7 @@ var isSelectable = function(x, y) {
         } else if (x == x_hole_bead + 1 && y == y_hole_bead - 1) {
             return true;
         }
-    }
-    if (PS.color(x, y) === COLOR_JUMP) {
+    } else if (PS.color(x, y) === COLOR_JUMP) {
         if (x == x_hole_bead)
             if (y == y_hole_bead + 2 || y == y_hole_bead - 2)
                 return true;
@@ -376,44 +418,44 @@ var isSelectable = function(x, y) {
                 return true;
 
         return false;
-    }
-
-    //NONSPECIAL BEAD CHECKS
-    //Is the selected bead a wall?
-    if (levels[level_index].data[(y * levels[level_index].width) + x] === PUZZLE_WALL) {
-        return false;
-    }
-    //Is the selected bead the entrance bead?
-    if (x == levels[level_index].entrance[0] && y == levels[level_index].entrance[1]){
-        return false;
-    }
-    //Is the selected bead the exit bead?
-    if (x == levels[level_index].exit[0] && y == levels[level_index].exit[1]){
-        return false;
-    }
-    //Is the selectable, nonspecial bead on the perimeter?
-    if ((x_hole_bead - 1) <= x && x <= (x_hole_bead + 1)){
-        if ((y_hole_bead - 1) <= y && y <= (y_hole_bead + 1)) {
-            //If it's the hole bead, don't select it
-            if (x == x_hole_bead && y == y_hole_bead){
-                return false;
-            //If it's a diagonal, don't select it
-            } else if (x == x_hole_bead - 1 && y == y_hole_bead + 1) {
-                return false;
-            } else if (x == x_hole_bead + 1 && y == y_hole_bead + 1) {
-                return false;
-            } else if (x == x_hole_bead - 1 && y == y_hole_bead - 1) {
-                return false;
-            } else if (x == x_hole_bead + 1 && y == y_hole_bead - 1) {
-                return false;
+    } else {
+        //NONSPECIAL BEAD CHECKS
+        //Is the selected bead a wall?
+        if (levels[level_index].data[(y * levels[level_index].width) + x] === PUZZLE_WALL) {
+            return false;
+        }
+        //Is the selected bead the entrance bead?
+        if (x == levels[level_index].entrance[0] && y == levels[level_index].entrance[1]){
+            return false;
+        }
+        //Is the selected bead the exit bead?
+        if (x == levels[level_index].exit[0] && y == levels[level_index].exit[1]){
+            return false;
+        }
+        //Is the selectable, nonspecial bead on the perimeter?
+        if ((x_hole_bead - 1) <= x && x <= (x_hole_bead + 1)){
+            if ((y_hole_bead - 1) <= y && y <= (y_hole_bead + 1)) {
+                //If it's the hole bead, don't select it
+                if (x == x_hole_bead && y == y_hole_bead){
+                    return false;
+                    //If it's a diagonal, don't select it
+                } else if (x == x_hole_bead - 1 && y == y_hole_bead + 1) {
+                    return false;
+                } else if (x == x_hole_bead + 1 && y == y_hole_bead + 1) {
+                    return false;
+                } else if (x == x_hole_bead - 1 && y == y_hole_bead - 1) {
+                    return false;
+                } else if (x == x_hole_bead + 1 && y == y_hole_bead - 1) {
+                    return false;
+                } else {
+                    return true;
+                }
             } else {
-                return true;
+                return false;
             }
         } else {
             return false;
         }
-    } else {
-        return false;
     }
 }
 
@@ -445,6 +487,7 @@ var pathFormed = function () {
     var bx, by, val, index, con_cnt;
     cur_x_bead_path = [];
     cur_y_bead_path = [];
+    var is_end;
 
     //Populate array of coordinates of all goal beads
     for ( by = 0; by < levels[level_index].height; by += 1 ) {
@@ -460,10 +503,12 @@ var pathFormed = function () {
     //Iterate through path of beads to see if they're connected
     for (index = 0; index < cur_x_bead_path.length; index += 1) {
         con_cnt = 0;
+        is_end = false;
         //Check if the entrance bead exists in the current path
         if (cur_x_bead_path[index] == levels[level_index].entrance[0] && cur_y_bead_path[index] == levels[level_index].entrance[1]
             || cur_x_bead_path[index] == levels[level_index].exit[0] && cur_y_bead_path[index] == levels[level_index].exit[1]) {
-            continue;
+            is_end = true;
+            con_cnt++;
         }
         //out of bouds check
         if (cur_y_bead_path[index] + 1 >= levels[level_index].height) {
@@ -507,7 +552,9 @@ var pathFormed = function () {
 
 
         //Check to see if all middle beads are connected
-        if (con_cnt >= 2) {
+        if (!is_end && con_cnt >= 2) {
+            continue;
+        } else if (is_end && con_cnt >= 1){
             continue;
         } else {
             return false;
