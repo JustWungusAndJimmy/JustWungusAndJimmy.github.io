@@ -8,6 +8,8 @@ Perlenspiel is Copyright © 2009-19 Worcester Polytechnic Institute.
 This file is part of the standard Perlenspiel 3.3.x devkit distribution.
 */
 
+//Official Version
+
 //MAPS FOR EACH LEVEL
 //map colors
 var COLOR_BG = 0xcdc6d6;
@@ -158,11 +160,15 @@ var audioChoice = 0;
 var tutorialTimer = null;
 var transitionTimer = null;
 
+var pathPoint = 0;
+var waitTime = 0;
 //FUNCTIONS
 
 //timer function wait for fade to finish
 var fadeWait = function () {
     transitionCounter++;
+
+    /*
     if (transitionCounter === 30) {
         var index = 0;
         for (var y = 0; y < levels[level_index].height; y++) {
@@ -175,7 +181,30 @@ var fadeWait = function () {
             }
         }
     }
-    if (transitionCounter === 100) {
+    */
+    if (transitionCounter > 30 && pathPoint >= 0) {
+        if (transitionCounter % 20 === 0) {
+            PS.borderColor(cur_x_bead_path[pathPoint], cur_y_bead_path[pathPoint], COLOR_STATUS);
+            pathPoint--;
+        }
+    }
+
+    if (transitionCounter === (waitTime - 40)) {
+        var index = 0;
+        for (var y = 0; y < levels[level_index].height; y++) {
+            for (var x = 0; x < levels[level_index].width; x++) {
+                if (x === cur_x_bead_path[index] && y === cur_y_bead_path[index]) {
+                    index++;
+                    PS.fade(x, y, 35);
+                    PS.borderFade(x, y, 35);
+                }
+            }
+        }
+        PS.color(PS.ALL, PS.ALL, COLOR_BG);
+        PS.borderColor(PS.ALL, PS.ALL, COLOR_BG);
+    }
+
+    if (transitionCounter === waitTime) {
         PS.fade(PS.ALL, PS.ALL, 0);
         PS.borderFade(PS.ALL, PS.ALL, 0);
         transitionCounter = 0;
@@ -191,8 +220,8 @@ var levelTransition = function () {
         for (var x = 0; x < levels[level_index].width; x++) {
             if (x === cur_x_bead_path[index] && y === cur_y_bead_path[index]) {
                 index++;
-                PS.fade(x, y, 60);
-                PS.borderFade(x, y, 60);
+                //PS.fade(x, y, 60);
+                //PS.borderFade(x, y, 60);
             }
             else {
                 PS.fade(x, y, 30);
@@ -202,6 +231,8 @@ var levelTransition = function () {
             }
         }
     }
+    pathPoint = cur_x_bead_path.length - 1;
+    waitTime = (pathPoint * 20) + 80;
     transitionTimer = PS.timerStart(1, fadeWait);
     
 }

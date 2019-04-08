@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
 game.js for Perlenspiel 3.3.x
 Last revision: 2018-10-14 (BM)
@@ -1276,6 +1275,3 @@ PS.shutdown = function( options ) {
 	PS.dbSend("home", "jacattelona", { discard: true });
 };
 */
-
-
->>>>>>> c09c8cd558f76f1d3351031e53336e3f55a83a8b
