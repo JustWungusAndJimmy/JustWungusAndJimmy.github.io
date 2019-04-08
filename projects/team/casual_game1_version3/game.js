@@ -17,6 +17,7 @@ var COLOR_STATUS = PS.COLOR_WHITE;
 var COLOR_PUZZLE_WALL = 0xb9b9d1;
 var COLOR_COLOR_GOAL = 0xbaffc9;
 var COLOR_DIAGONAL = 0xffffba;
+var COLOR_JUMP = 0xbabaff;
 var COLOR_PUZZLE_HOLE = 0xcdc6d6;
 var COLOR_COLOR_2 = 0xffb3ba;
 var COLOR_COLOR_3 = 0xffdfba;
@@ -53,7 +54,7 @@ var level2 = {
     width : 5, height : 5, pixelSize : 1,
     data : [
         0, 0, 1, 0, 0,
-        0, 4, 1, 1, 0,
+        0, 0, 1, 1, 0,
         0, 4, 2, 4, 0,
         0, 4, 1, 4, 0,
         0, 0, 1, 0, 0
@@ -307,7 +308,7 @@ var loadBoard = function() {
                 PS.color(x, y, COLOR_COLOR_2);
             }
             else if (val === COLOR_3) {
-                PS.color(x, y, COLOR_COLOR_3);
+                PS.color(x, y, COLOR_JUMP);
             }
         }
     }
@@ -355,6 +356,16 @@ var isSelectable = function(x, y) {
         } else if (x == x_hole_bead + 1 && y == y_hole_bead - 1) {
             return true;
         }
+    }
+    if (PS.color(x, y) === COLOR_JUMP) {
+        if (x == x_hole_bead)
+            if (y == y_hole_bead + 2 || y == y_hole_bead - 2)
+                return true;
+        if (y == y_hole_bead)
+            if (x == x_hole_bead + 2 || x == x_hole_bead - 2)
+                return true;
+
+        return false;
     }
 
     //NONSPECIAL BEAD CHECKS
