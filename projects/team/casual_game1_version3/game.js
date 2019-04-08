@@ -136,7 +136,25 @@ var level7 = {
     soundSet: 3,
 }
 
-var levels = [level1, level2, level3, level4, level5, level6, level7];
+var level8 = {
+    width: 6, height: 6, pixelSize: 1,
+    data: [
+        0, 1, 0, 0, 0, 0,
+        0, 1, 1, 1, 1, 0,
+        0, 4, 1, 1, 4, 0,
+        0, 0, 0, 1, 4, 0,
+        0, 2, 0, 5, 4, 0,
+        0, 0, 0, 0, 1, 0
+    ],
+    entrance: [1, 0],
+    exit: [4, 5],
+    soundSet: 3,
+    //data for tutorial animation
+    bead1: [3, 4],
+    bead2: [1, 4]
+}
+
+var levels = [level1, level2, level3, level4, level5, level6, level7, level8];
 var num_levels = levels.length;
 
 //VARIABLES
@@ -169,20 +187,6 @@ var waitTime = 0;
 var fadeWait = function () {
     transitionCounter++;
 
-    /*
-    if (transitionCounter === 30) {
-        var index = 0;
-        for (var y = 0; y < levels[level_index].height; y++) {
-            for (var x = 0; x < levels[level_index].width; x++) {
-                if (x === cur_x_bead_path[index] && y === cur_y_bead_path[index]) {
-                    index++;
-                    PS.color(x, y, COLOR_BG);
-                    PS.borderColor(x, y, COLOR_BG);
-                }
-            }
-        }
-    }
-    */
     if (transitionCounter > 30 && pathPoint >= 0) {
         if (transitionCounter % 20 === 0) {
             PS.borderColor(cur_x_bead_path[pathPoint], cur_y_bead_path[pathPoint], COLOR_STATUS);
@@ -212,7 +216,6 @@ var fadeWait = function () {
         PS.timerStop(transitionTimer);
         gameWon();
     }
-
 }
 //transition fade between levels
 var levelTransition = function () {
@@ -319,6 +322,13 @@ var loadBoard = function() {
     PS.border(levels[level_index].exit[0], levels[level_index].exit[1], 10);
 
     if (level_index == 5) {
+        tutorialTimer = null;
+        pulse_bead1 = true;
+        pulse_bead2 = false;
+        play_tutorial = true;
+        tutorialTimer = PS.timerStart(3, tutorialTick);
+    }
+    if (level_index == 7) {
         tutorialTimer = null;
         pulse_bead1 = true;
         pulse_bead2 = false;
