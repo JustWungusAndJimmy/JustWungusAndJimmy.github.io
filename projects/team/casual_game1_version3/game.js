@@ -89,7 +89,7 @@ var level4 = {
     ],
     entrance: [1, 0],
     exit: [5, 1],
-    soundSet: 2,
+    soundSet: 1,
 }
 
 var level5 = {
@@ -116,7 +116,7 @@ var level6 = {
     ],
     entrance : [1, 0],
     exit: [2, 3],
-    soundSet: 3,
+    soundSet: 2,
     //data strictly for tutorial animation
     bead1 : [1, 1],
     bead2 : [0, 2]
@@ -132,7 +132,7 @@ var level7 = {
     ],
     entrance : [4, 0],
     exit: [4, 3],
-    soundSet: 3
+    soundSet: 2
 }
 
 var level8 = {
@@ -154,13 +154,13 @@ var level9 = {
     data : [
         0, 0, 1, 0, 0,
         0, 1, 3, 4, 0,
-        1, 3, 1, 2, 0,
+        0, 2, 1, 3, 1,
         0, 4, 1, 4, 0,
         0, 0, 0, 0, 0
     ],
     entrance : [2, 0],
-    exit: [0, 2],
-    soundSet: 4,
+    exit: [4, 2],
+    soundSet: 3,
 }
 
 var level10 = {
@@ -176,7 +176,7 @@ var level10 = {
     ],
     entrance: [3, 0],
     exit: [6, 3],
-    soundSet: 4
+    soundSet: 3
 }
 
 var level11 = {
@@ -197,7 +197,40 @@ var level11 = {
     bead2: [1, 4]
 }
 
-var levels = [level1, level2, level3, level4, level5, level6, level7, level8, level9, level10, level11];
+var level12 = {
+    width: 5, height: 5, pixelSize: 1,
+    data: [
+        0, 0, 0, 0, 0,
+        1, 5, 4, 1, 0,
+        0, 1, 2, 1, 0,
+        0, 1, 4, 1, 1,
+        0, 0, 0, 0, 0
+    ],
+    entrance: [0, 1],
+    exit: [4, 3],
+    soundSet: 4,
+}
+
+var level13 = {
+    width: 7, height: 7, pixelSize: 1,
+    data: [
+        0, 0, 0, 0, 0, 0, 0,
+        1, 4, 1, 1, 4, 4, 0,
+        0, 4, 4, 3, 1, 4, 0,
+        0, 5, 5, 3, 1, 4, 0,
+        0, 4, 1, 2, 1, 1, 0,
+        0, 1, 4, 4, 4, 1, 1,
+        0, 0, 0, 0, 0, 0, 0
+    ],
+    entrance: [0, 1],
+    exit: [6, 5],
+    soundSet: 4,
+    //data for tutorial animation
+    //bead1: [3, 4],
+    //bead2: [1, 4]
+}
+
+var levels = [level1, level2, level3, level4, level5, level6, level7, level8, level9, level10, level11, level12, level13];
 var num_levels = levels.length;
 
 //VARIABLES
