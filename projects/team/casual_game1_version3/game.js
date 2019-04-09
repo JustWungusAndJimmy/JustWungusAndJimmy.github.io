@@ -160,7 +160,7 @@ var level9 = {
     ],
     entrance : [2, 0],
     exit: [0, 2],
-    soundSet: 3,
+    soundSet: 4,
 }
 
 var level10 = {
@@ -176,7 +176,7 @@ var level10 = {
     ],
     entrance: [3, 0],
     exit: [6, 3],
-    soundSet: 3
+    soundSet: 4
 }
 
 var level11 = {
@@ -191,7 +191,7 @@ var level11 = {
     ],
     entrance: [1, 0],
     exit: [4, 5],
-    soundSet: 3,
+    soundSet: 4,
     //data for tutorial animation
     bead1: [3, 4],
     bead2: [1, 4]
@@ -320,6 +320,17 @@ var swapSound = function (set) {
             PS.audioPlay("3c", { path: "sounds/", fileTypes: ["wav"], lock: true });
         if (choice === 3)
             PS.audioPlay("3d", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    }
+
+    if (set === 4) {
+        if (choice === 0)
+            PS.audioPlay("4a", { path: "sounds/", fileTypes: ["wav"]});
+        if (choice === 1)
+            PS.audioPlay("4b", { path: "sounds/", fileTypes: ["wav"]});
+        if (choice === 2)
+            PS.audioPlay("4c", { path: "sounds/", fileTypes: ["wav"]});
+        if (choice === 3)
+            PS.audioPlay("4d", { path: "sounds/", fileTypes: ["wav"]});
     }
 }
 //Loads the next level
@@ -652,6 +663,14 @@ PS.init = function( system, options ) {
     PS.audioLoad("3b", { path: "sounds/", fileTypes: ["wav"], lock: true });
     PS.audioLoad("3c", { path: "sounds/", fileTypes: ["wav"], lock: true });
     PS.audioLoad("3d", { path: "sounds/", fileTypes: ["wav"], lock: true });
+
+    PS.audioLoad("4a", { path: "sounds/", fileTypes: ["wav"]});
+    PS.audioLoad("4b", { path: "sounds/", fileTypes: ["wav"]});
+    PS.audioLoad("4c", { path: "sounds/", fileTypes: ["wav"]});
+    PS.audioLoad("4d", { path: "sounds/", fileTypes: ["wav"] });
+
+    PS.audioLoad("background", { path: "sounds/", fileTypes: ["wav"] });
+    PS.audioPlay("background", { path: "sounds/", fileTypes: ["wav"], repeat: true });
     //Load current level
 	loadBoard();
 	touch_enabled= false;
