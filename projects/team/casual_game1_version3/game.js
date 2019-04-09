@@ -786,11 +786,11 @@ This function doesn't have to do anything. Any value returned is ignored.
 [options : Object] = A JavaScript object with optional data properties; see API documentation for details.
 NOTE: This event is generally needed only by applications utilizing networked telemetry.
 */
-/*
+
 PS.shutdown = function( options ) {
 	"use strict"; // Do not remove this directive!
 	PS.dbSend("home", "jacattelona", { discard: true });
 };
-*/
+
 
 
