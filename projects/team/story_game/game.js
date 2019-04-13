@@ -88,7 +88,15 @@ var food_cnt = 0;
 
 //FUNCTIONS
 var placeFood = function(){
+    PS.statusText("");
     if (food_cnt < food_goal) {
+        if (move_left){
+            PS.statusText("Gross. Left arrow.");
+            //PS.glyph(4, 16, "←");
+        } else {
+            PS.statusText("Gross. Right arrow.");
+            //PS.glyph(27, 16, "→");
+        }
         spr_food1 = PS.spriteSolid(16, 16);
         PS.spriteSolidColor(spr_food1, COLOR_ADULT_DARK_RED);
         PS.spritePlane(spr_food1, sprite_plane);
@@ -96,6 +104,7 @@ var placeFood = function(){
         spr_pos[1] = 8;
         PS.spriteMove(spr_food1, spr_pos[0], spr_pos[1]);
     } if (food_cnt == food_goal){
+        PS.statusText("Delicious. That's mine.");
         spr_food1 = PS.spriteSolid(16, 16);
         PS.spriteSolidColor(spr_food1, COLOR_ADULT_LIGHT_RED);
         PS.spritePlane(spr_food1, sprite_plane);
