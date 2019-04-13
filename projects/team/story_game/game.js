@@ -6,37 +6,163 @@ Perlenspiel is a scheme by Professor Moriarty (bmoriarty@wpi.edu).
 This version of Perlenspiel (3.3.x) is hosted at <https://ps3.perlenspiel.net>
 Perlenspiel is Copyright © 2009-19 Worcester Polytechnic Institute.
 This file is part of the standard Perlenspiel 3.3.x devkit distribution.
-
-Perlenspiel is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Perlenspiel is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Lesser General Public License for more details.
-
-You may have received a copy of the GNU Lesser General Public License
-along with the Perlenspiel devkit. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-This JavaScript file is a template for creating new Perlenspiel 3.3.x games.
-By default, all event-handling function templates are COMMENTED OUT (using block-comment syntax), and are therefore INACTIVE.
-Uncomment and add code to the event handlers required by your project.
-Any unused event-handling function templates can be safely deleted.
-Refer to the tutorials and documentation at <https://ps3.perlenspiel.net> for details.
-*/
+//COLORS
+var COLOR_CHILD_GRAY = 0x4a4e4d;
+var COLOR_CHILD_DARK_BLUE = 0x0e9aa7;
+var COLOR_CHILD_LIGHT_BLUE = 0x3da4ab;
+var COLOR_CHILD_YELLOW = 0xf6cd61;
+var COLOR_CHILD_ORANGE = 0xf6cd61;
+var COLOR_ADULT_DARK_BLUE = 0x061e3e;
+var COLOR_ADULT_DARK_PURPLE = 0x251e3e;
+var COLOR_ADULT_LIGHT_PURPLE = 0x451e3e;
+var COLOR_ADULT_DARK_RED = 0x651e3e;
+var COLOR_ADULT_LIGHT_RED = 0x851e3e;
+//alpha
+var OPAQUE = 0xFF;
+var TRANSPARENT = 0x00;
 
-/*
-The following comment lines are for JSHint <https://jshint.com>, a tool for monitoring code quality.
-You may find them useful if your development environment is configured to support JSHint.
-If you don't use JSHint (or are using it with a configuration file), you can safely delete these lines.
-*/
+//MICROGAME MAPS
+//CHILD MAPS
 
-/* jshint browser : true, devel : true, esversion : 5, freeze : true */
-/* globals PS : true */
+//ADULT MAPS
+//spoiled food in refrigerator
+var FRIDGE = 0;
+var FRIDGE_BG = 1;
+
+var a_mg1 = {
+    width : 32, height : 32, pixelSize : 1,
+    data : [
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    ]
+}
+//sprites
+var spr_food1;
+
+//VARIABLES
+var adult_mgs = [a_mg1];
+var child_mgs = [];
+var mg_index = 0;
+var bg_plane = 0;
+var sprite_plane = 1;
+
+//Adult Microgame 1 variables
+var spr_pos = [];
+var foodMoveTimer;
+var move_left = true;
+var is_moving = false;
+var food_goal = 5;
+var food_cnt = 0;
+
+//FUNCTIONS
+var placeFood = function(){
+    if (food_cnt < food_goal) {
+        spr_food1 = PS.spriteSolid(16, 16);
+        PS.spriteSolidColor(spr_food1, COLOR_ADULT_DARK_RED);
+        PS.spritePlane(spr_food1, sprite_plane);
+        spr_pos[0] = 8;
+        spr_pos[1] = 8;
+        PS.spriteMove(spr_food1, spr_pos[0], spr_pos[1]);
+    } if (food_cnt == food_goal){
+        spr_food1 = PS.spriteSolid(16, 16);
+        PS.spriteSolidColor(spr_food1, COLOR_ADULT_LIGHT_RED);
+        PS.spritePlane(spr_food1, sprite_plane);
+        spr_pos[0] = 8;
+        spr_pos[1] = 8;
+        PS.spriteMove(spr_food1, spr_pos[0], spr_pos[1]);
+    }
+}
+
+var loadAdultMicroGame1 = function(){
+    var x, y, val;
+
+    PS.gridPlane(bg_plane);
+    for ( y = 0; y < adult_mgs[mg_index].height; y += 1 ) {
+        for (x = 0; x < adult_mgs[mg_index].width; x += 1) {
+            val = adult_mgs[mg_index].data[(y * adult_mgs[mg_index].width) + x]; // get map data
+            if (val === FRIDGE) {
+                PS.color(x, y, COLOR_ADULT_DARK_PURPLE);
+            }
+            else if (val === FRIDGE_BG) {
+                PS.color(x, y, COLOR_ADULT_LIGHT_PURPLE);
+            }
+        }
+    }
+    placeFood();
+}
+var swipeTick = function (){
+    if (spr_pos[0] < -16) {
+        move_left = !move_left;
+        is_moving = false;
+        placeFood();
+        PS.timerStop(foodMoveTimer);
+        foodMoveTimer = null;
+    }
+    if (spr_pos[0] > 32) {
+        move_left = !move_left;
+        is_moving = false;
+        placeFood();
+        PS.timerStop(foodMoveTimer);
+    }
+    if (move_left) {
+        spr_pos[0] -= 1;
+        PS.spriteMove(spr_food1, spr_pos[0], spr_pos[1]);
+    } else {
+        spr_pos[0] += 1;
+        PS.spriteMove(spr_food1, spr_pos[0], spr_pos[1]);
+    }
+
+}
+
+var loadMicroGame = function() {
+    //get level width and height for variable level sizes
+    var gridWidth = adult_mgs[mg_index].width;
+    var gridHeight = adult_mgs[mg_index].height;
+    PS.gridSize(gridWidth, gridHeight);
+
+    //Initialize beginning values
+    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
+    PS.gridColor(COLOR_ADULT_DARK_BLUE);
+    PS.statusColor( PS.COLOR_WHITE );
+    PS.statusText("");
+    PS.border(PS.ALL, PS.ALL, 0);
+    PS.gridShadow(true, PS.COLOR_BLACK);
+
+    //Cycle through specific functions depending on set of microgames
+    loadAdultMicroGame1();
+}
 
 /*
 PS.init( system, options )
@@ -47,43 +173,10 @@ Any value returned is ignored.
 [system : Object] = A JavaScript object containing engine and host platform information properties; see API documentation for details.
 [options : Object] = A JavaScript object with optional data properties; see API documentation for details.
 */
-
-// UNCOMMENT the following code BLOCK to expose the PS.init() event handler:
-
-/*
-
 PS.init = function( system, options ) {
 	"use strict"; // Do not remove this directive!
-
-	// Uncomment the following code line
-	// to verify operation:
-
-	// PS.debug( "PS.init() called\n" );
-
-	// This function should normally begin
-	// with a call to PS.gridSize( x, y )
-	// where x and y are the desired initial
-	// dimensions of the grid.
-	// Call PS.gridSize() FIRST to avoid problems!
-	// The sample call below sets the grid to the
-	// default dimensions (8 x 8).
-	// Uncomment the following code line and change
-	// the x and y parameters as needed.
-
-	// PS.gridSize( 8, 8 );
-
-	// This is also a good place to display
-	// your game title or a welcome message
-	// in the status line above the grid.
-	// Uncomment the following code line and
-	// change the string parameter as needed.
-
-	// PS.statusText( "Game" );
-
-	// Add any other initialization code you need here.
+    loadMicroGame();
 };
-
-*/
 
 /*
 PS.touch ( x, y, data, options )
@@ -97,21 +190,20 @@ This function doesn't have to do anything. Any value returned is ignored.
 
 // UNCOMMENT the following code BLOCK to expose the PS.touch() event handler:
 
-/*
+
 
 PS.touch = function( x, y, data, options ) {
 	"use strict"; // Do not remove this directive!
 
-	// Uncomment the following code line
-	// to inspect x/y parameters:
+	if (food_cnt == food_goal) {
+	    if ((x >= spr_pos[0] && x <= spr_pos[0]+16) && (y >= spr_pos[1] && y <= spr_pos[1]+16)){
+	        PS.statusText("It's gone.");
+        }
+    }
 
-	// PS.debug( "PS.touch() @ " + x + ", " + y + "\n" );
-
-	// Add code here for mouse clicks/touches
-	// over a bead.
 };
 
-*/
+
 
 /*
 PS.release ( x, y, data, options )
@@ -226,19 +318,30 @@ This function doesn't have to do anything. Any value returned is ignored.
 
 // UNCOMMENT the following code BLOCK to expose the PS.keyDown() event handler:
 
-/*
+
 
 PS.keyDown = function( key, shift, ctrl, options ) {
 	"use strict"; // Do not remove this directive!
 
 	// Uncomment the following code line to inspect first three parameters:
 
-	// PS.debug( "PS.keyDown(): key=" + key + ", shift=" + shift + ", ctrl=" + ctrl + "\n" );
+	//PS.debug( "PS.keyDown(): key=" + key + ", shift=" + shift + ", ctrl=" + ctrl + "\n" );
 
 	// Add code here for when a key is pressed.
+    if (!is_moving && food_cnt < food_goal){
+        if ((key === 1005 || key === 97) && move_left) {
+            is_moving = true;
+            foodMoveTimer = PS.timerStart(1, swipeTick);
+            food_cnt++;
+        } else if ((key === 1007 || key === 100) && !move_left) {
+            is_moving = true;
+            foodMoveTimer = PS.timerStart(1, swipeTick);
+            food_cnt++;
+        }
+    }
 };
 
-*/
+
 
 /*
 PS.keyUp ( key, shift, ctrl, options )
