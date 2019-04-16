@@ -19,12 +19,68 @@ var COLOR_ADULT_DARK_PURPLE = 0x251e3e;
 var COLOR_ADULT_LIGHT_PURPLE = 0x451e3e;
 var COLOR_ADULT_DARK_RED = 0x651e3e;
 var COLOR_ADULT_LIGHT_RED = 0x851e3e;
+
+var COLOR_CHILD_VEGGIE1 = 0x20f320;
+var COLOR_CHILD_VEGGIE2 = 0x20d320;
+
 //alpha
 var OPAQUE = 0xFF;
 var TRANSPARENT = 0x00;
 
+
+var menuMap = {
+    width: 6, height: 6, pixelSize: 1,
+    data: [
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 2, 0],
+        [0, 1, 0, 0, 2, 0],
+        [0, 1, 0, 0, 2, 0],
+        [0, 1, 0, 0, 2, 0],
+        [0, 0, 0, 0, 0, 0]
+        ]
+}
+
 //MICROGAME MAPS
 //CHILD MAPS
+
+var c_mg1 = {
+    width: 32, height: 32, pixelSize: 1,
+    data: [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 3, 3, 2, 1, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 3, 3, 2, 1, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 3, 3, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 3, 2, 2, 1, 1, 1, 1, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 2, 2, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ]
+}
+
 
 //ADULT MAPS
 //spoiled food in refrigerator
@@ -73,8 +129,8 @@ var spr_food1;
 
 //VARIABLES
 var adult_mgs = [a_mg1];
-var child_mgs = [];
-var mg_index = 0;
+var child_mgs = ["", c_mg1];
+var mg_index = -1;
 var bg_plane = 0;
 var sprite_plane = 1;
 
@@ -86,6 +142,22 @@ var is_moving = false;
 var food_goal = 5;
 var food_cnt = 0;
 
+var totalGames = 0;
+
+var gameCompleteTimer = null;
+var counter = 0;
+
+var gameCompleteFunction = function () {
+    counter++;
+    if (counter == 120) {
+        PS.timerStop(gameCompleteTimer);
+
+        if (mg_index === 0)
+            loadMicroGame();
+        else
+            loadKidGame();
+    }
+}
 //FUNCTIONS
 var placeFood = function(){
     PS.statusText("");
@@ -116,6 +188,8 @@ var placeFood = function(){
 
 var loadAdultMicroGame1 = function(){
     var x, y, val;
+
+    PS.dbEvent("StoryGamePrototype", "AdultGameStart", 0);
 
     PS.gridPlane(bg_plane);
     for ( y = 0; y < adult_mgs[mg_index].height; y += 1 ) {
@@ -173,6 +247,69 @@ var loadMicroGame = function() {
     loadAdultMicroGame1();
 }
 
+var loadMenu = function () {
+    //PS.debug(child_mgs[mg_index].width);
+    //get level width and height for variable level sizes
+    var gridWidth = menuMap.width;
+    var gridHeight = menuMap.height;
+    PS.gridSize(gridWidth, gridHeight);
+
+    //PS.dbEvent("StoryGamePrototype", "KidGameStart", 0);
+
+    //Initialize beginning values
+    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
+    PS.gridColor(COLOR_CHILD_DARK_BLUE);
+    PS.statusColor(PS.COLOR_WHITE);
+    PS.statusText("Pick Child or Adult First");
+    PS.border(PS.ALL, PS.ALL, 0);
+    PS.gridShadow(true, PS.COLOR_BLACK);
+
+    for (var y = 0; y < gridHeight; y++) {
+        for (var x = 0; x < gridWidth; x++) {
+            if (menuMap.data[y][x] === 0)
+                PS.color(x, y, PS.COLOR_WHITE);
+            if (menuMap.data[y][x] === 1)
+                PS.color(x, y, COLOR_CHILD_ORANGE);
+            if (menuMap.data[y][x] === 2)
+                PS.color(x, y, COLOR_ADULT_DARK_RED);
+        }
+    }
+
+    //Cycle through specific functions depending on set of microgames
+    //loadAdultMicroGame1();
+}
+
+var loadKidGame = function () {
+    //PS.debug(child_mgs[mg_index].width);
+    //get level width and height for variable level sizes
+    var gridWidth = child_mgs[mg_index].width;
+    var gridHeight = child_mgs[mg_index].height;
+    PS.gridSize(gridWidth, gridHeight);
+
+    //Initialize beginning values
+    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
+    PS.gridColor(COLOR_ADULT_DARK_BLUE);
+    PS.statusColor(PS.COLOR_WHITE);
+    PS.statusText("");
+    PS.border(PS.ALL, PS.ALL, 0);
+    PS.gridShadow(true, PS.COLOR_BLACK);
+
+    for (var y = 0; y < gridHeight; y++) {
+        for (var x = 0; x < gridWidth; x++) {
+            if (c_mg1.data[y][x] === 0)
+                PS.color(x, y, COLOR_CHILD_LIGHT_BLUE);
+            if (c_mg1.data[y][x] === 1)
+                PS.color(x, y, COLOR_CHILD_ORANGE);
+            if (c_mg1.data[y][x] === 2)
+                PS.color(x, y, COLOR_CHILD_VEGGIE1);
+            if (c_mg1.data[y][x] === 3)
+                PS.color(x, y, COLOR_CHILD_VEGGIE2);
+        }
+    }
+
+    //Cycle through specific functions depending on set of microgames
+    //loadAdultMicroGame1();
+}
 /*
 PS.init( system, options )
 Called once after engine is initialized but before event-polling begins.
@@ -183,8 +320,9 @@ Any value returned is ignored.
 [options : Object] = A JavaScript object with optional data properties; see API documentation for details.
 */
 PS.init = function( system, options ) {
-	"use strict"; // Do not remove this directive!
-    loadMicroGame();
+    "use strict"; // Do not remove this directive!
+    PS.dbInit("StoryGamePrototype");
+    loadMenu();
 };
 
 /*
@@ -203,12 +341,96 @@ This function doesn't have to do anything. Any value returned is ignored.
 
 PS.touch = function( x, y, data, options ) {
 	"use strict"; // Do not remove this directive!
+    //menu
+    //main menu
+	if (mg_index === -1) {
+	    if (menuMap.data[y][x] === 1) {
+	        mg_index = 1;
+	        loadKidGame();
+	    }
 
-	if (food_cnt == food_goal) {
-	    if ((x >= spr_pos[0] && x <= spr_pos[0]+16) && (y >= spr_pos[1] && y <= spr_pos[1]+16)){
-	        PS.statusText("It's gone.");
-        }
-    }
+	    if (menuMap.data[y][x] === 2) {
+	        mg_index = 0;
+	        loadMicroGame();
+	    }
+	}
+
+	if (mg_index === 0) {
+	    if (food_cnt == food_goal) {
+	        if ((x >= spr_pos[0] && x <= spr_pos[0] + 16) && (y >= spr_pos[1] && y <= spr_pos[1] + 16)) {
+	            PS.statusText("Someone ate it already...");
+	            if (totalGames == 0) {
+	                mg_index = 1;
+	                totalGames++;
+	                gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
+	            }
+	            else {
+	                PS.fade(PS.ALL, PS.ALL, 60);
+	                PS.color(PS.ALL, PS.ALL, COLOR_CHILD_GRAY);
+	            }
+	        }
+	    }
+	}
+
+
+
+
+
+	else if (mg_index == 1) {
+	    if (c_mg1.data[y][x] === 1) {
+	        var rand = Math.floor(Math.random() * 3);
+            if (rand === 0)
+                PS.statusText("Don't play with your food!");
+            if (rand === 1)
+                PS.statusText("Quit stalling and eat!");
+            if (rand === 2)
+                PS.statusText("Eat, or no dessert!")
+
+            PS.dbEvent("StoryGamePrototype", "PlateClick", 0);
+	    }
+
+	    if (c_mg1.data[y][x] === 2 || c_mg1.data[y][x] === 3) {
+
+	        PS.statusText("");
+	        PS.color(x, y, COLOR_CHILD_ORANGE);
+	        c_mg1.data[y][x] = 1;
+
+	        PS.color(x - 1, y - 1, COLOR_CHILD_ORANGE);
+	        c_mg1.data[y - 1][x - 1] = 1;
+
+	        PS.color(x - 1, y, COLOR_CHILD_ORANGE);
+	        c_mg1.data[y][x - 1] = 1;
+
+	        PS.color(x, y - 1, COLOR_CHILD_ORANGE);
+	        c_mg1.data[y - 1][x] = 1;
+
+
+	        PS.dbEvent("StoryGamePrototype", "FoodClick", 0);
+
+	        PS.border(PS.ALL, PS.ALL, 0);
+	        var gridWidth = child_mgs[mg_index].width;
+	        var gridHeight = child_mgs[mg_index].height;
+	        for (var y = 0; y < gridHeight; y++) {
+	            for (var x = 0; x < gridWidth; x++) {
+	                if (c_mg1.data[y][x] === 2 || c_mg1.data[y][x] === 3)
+	                    return;
+	            }
+	        }
+	        PS.dbEvent("StoryGamePrototype", "KidGameComplete", 0);
+	        PS.statusText("You finished your dinner!");
+	        mg_index--;
+	        //loadMicroGame();
+	        if (totalGames == 0) {
+	            totalGames++;
+	            gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
+	        }
+	        else {
+	            PS.fade(PS.ALL, PS.ALL, 60);
+	            PS.color(PS.ALL, PS.ALL, COLOR_CHILD_GRAY);
+	        }
+	    }
+	        
+	}
 
 };
 
@@ -417,16 +639,20 @@ NOTE: This event is generally needed only by applications utilizing networked te
 
 // UNCOMMENT the following code BLOCK to expose the PS.shutdown() event handler:
 
-/*
+
 
 PS.shutdown = function( options ) {
 	"use strict"; // Do not remove this directive!
 
 	// Uncomment the following code line to verify operation:
 
-	// PS.debug( "“Dave. My mind is going. I can feel it.”\n" );
+    // PS.debug( "“Dave. My mind is going. I can feel it.”\n" );
 
-	// Add code here to tidy up when Perlenspiel is about to close.
+
+	PS.dbSend("StoryGamePrototype", "jacattelona");
+
+
+    // Add code here to tidy up when Perlenspiel is about to close.
 };
 
-*/
+
