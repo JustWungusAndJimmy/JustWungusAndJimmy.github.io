@@ -143,7 +143,7 @@ var makeSprite = function() {
         PS.spritePlane( spr_food1, sprite_plane );
         spr_pos[0] = 8;
         spr_pos[1] = 8;
-        PS.spriteMove(spr_food1, 0, 0);
+        PS.spriteMove(spr_food1, spr_pos[0], spr_pos[1]);
     };
 
     // Load the image
