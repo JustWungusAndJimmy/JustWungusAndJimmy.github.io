@@ -19,6 +19,7 @@ var COLOR_ADULT_DARK_PURPLE = 0x251e3e;
 var COLOR_ADULT_LIGHT_PURPLE = 0x451e3e;
 var COLOR_ADULT_DARK_RED = 0x651e3e;
 var COLOR_ADULT_LIGHT_RED = 0x851e3e;
+var COLOR_ADULT_HIGHLIGHT = 0xae2952
 
 var COLOR_CHILD_VEGGIE1 = 0x20f320;
 var COLOR_CHILD_VEGGIE2 = 0x20d320;
@@ -123,9 +124,32 @@ var a_mg1 = {
         0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
         0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
     ]
-}
+};
+
 //sprites
 var spr_food1;
+
+var makeSprite = function() {
+
+    var loader;
+
+    // Define a loader for the image file
+    // It uses the loaded image data to
+    // initialize an image sprite and move it
+    // to the correct grid plane and location
+
+    loader = function ( data ) {
+        spr_food1 = PS.spriteImage( data );
+        PS.spritePlane( spr_food1, spritePlane );
+        spr_pos[0] = 8;
+        spr_pos[1] = 8;
+        PS.spriteMove(spr_food1, 0, 0);
+    };
+
+    // Load the image
+
+    PS.imageLoad( "images/amg_fish.png", loader );
+}
 
 //VARIABLES
 var adult_mgs = [a_mg1];
@@ -169,12 +193,10 @@ var placeFood = function(){
             PS.statusText("Gross. Right arrow.");
             //PS.glyph(27, 16, "→");
         }
-        spr_food1 = PS.spriteSolid(16, 16);
-        PS.spriteSolidColor(spr_food1, COLOR_ADULT_DARK_RED);
-        PS.spritePlane(spr_food1, sprite_plane);
-        spr_pos[0] = 8;
-        spr_pos[1] = 8;
-        PS.spriteMove(spr_food1, spr_pos[0], spr_pos[1]);
+        //spr_food1 = PS.spriteSolid(16, 16);
+        //PS.spriteSolidColor(spr_food1, COLOR_ADULT_DARK_RED);
+        makeSprite();
+
     } if (food_cnt == food_goal){
         PS.statusText("Delicious. That's mine.");
         spr_food1 = PS.spriteSolid(16, 16);
@@ -640,7 +662,7 @@ NOTE: This event is generally needed only by applications utilizing networked te
 // UNCOMMENT the following code BLOCK to expose the PS.shutdown() event handler:
 
 
-
+/*
 PS.shutdown = function( options ) {
 	"use strict"; // Do not remove this directive!
 
@@ -654,5 +676,6 @@ PS.shutdown = function( options ) {
 
     // Add code here to tidy up when Perlenspiel is about to close.
 };
+*/
 
 
