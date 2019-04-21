@@ -91,64 +91,120 @@ var FRIDGE_BG = 1;
 var a_mg1 = {
     width : 32, height : 32, pixelSize : 1,
     data : [
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
     ]
 };
 
 //sprites
-var spr_food1;
+var cur_sprite;
+var left_arrow;
+var right_arrow;
 
-var makeSprite = function() {
-
+var spawnLeftArrow = function() {
     var loader;
 
-    // Define a loader for the image file
-    // It uses the loaded image data to
-    // initialize an image sprite and move it
-    // to the correct grid plane and location
-
     loader = function ( data ) {
-        spr_food1 = PS.spriteImage( data );
-        PS.spritePlane( spr_food1, sprite_plane );
+        left_arrow = PS.spriteImage( data );
+        PS.spritePlane( left_arrow, arrow_plane);
+        left_arr_pos[0] = 2;
+        left_arr_pos[1] = spr_pos[1] + 5;
+        PS.spriteMove(left_arrow, left_arr_pos[0], left_arr_pos[1]);
+    }
+    PS.imageLoad("images/amg_arrow_left.png", loader);
+}
+
+var spawnRightArrow = function() {
+    var loader;
+
+    loader = function (data) {
+        right_arrow = PS.spriteImage( data );
+        PS.spritePlane( right_arrow, arrow_plane);
+        right_arr_pos[0] = 24;
+        right_arr_pos[1] = spr_pos[1] + 5;
+        PS.spriteMove(right_arrow, right_arr_pos[0], right_arr_pos[1]);
+    }
+    PS.imageLoad("images/amg_arrow_right.png", loader);
+}
+
+var spawnFood = function() {
+    var loader1, loader2, loader3, loader4;
+
+    //define image loading functions
+    loader1 = function ( data ) {
+        cur_sprite = PS.spriteImage( data );
+        PS.spritePlane( cur_sprite, sprite_plane );
         spr_pos[0] = 8;
-        spr_pos[1] = 8;
-        PS.spriteMove(spr_food1, spr_pos[0], spr_pos[1]);
+        spr_pos[1] = 17;
+        PS.spriteMove(cur_sprite, spr_pos[0], spr_pos[1]);
+    };
+    loader2 = function ( data ) {
+        cur_sprite = PS.spriteImage( data );
+        PS.spritePlane( cur_sprite, sprite_plane );
+        spr_pos[0] = 10;
+        spr_pos[1] = 10;
+        PS.spriteMove(cur_sprite, spr_pos[0], spr_pos[1]);
+    };
+    loader3 = function ( data ) {
+        cur_sprite = PS.spriteImage( data );
+        PS.spritePlane( cur_sprite, sprite_plane );
+        spr_pos[0] = 11;
+        spr_pos[1] = 10;
+        PS.spriteMove(cur_sprite, spr_pos[0], spr_pos[1]);
+    };
+    loader4 = function ( data ) {
+        cur_sprite = PS.spriteImage( data );
+        PS.spritePlane( cur_sprite, sprite_plane );
+        spr_pos[0] = 11;
+        spr_pos[1] = 14;
+        PS.spriteMove(cur_sprite, spr_pos[0], spr_pos[1]);
     };
 
     // Load the image
-
-    PS.imageLoad( "images/amg_fish.png", loader );
+    //Decide where to position sprite
+    if (food_cnt == 0) {
+        PS.imageLoad( "images/amg_fish.png", loader1 );
+        //cur_sprite = spr_food1;
+    } else if (food_cnt == 1) {
+        PS.imageLoad( "images/amg_milk.png", loader2 );
+        //cur_sprite = spr_food2;
+    } else if (food_cnt == 2) {
+        PS.imageLoad( "images/amg_apple.png", loader3 );
+        //cur_sprite = spr_food3;
+    } else if (food_cnt == 3) {
+        PS.imageLoad( "images/amg_jar.png", loader4 );
+        //cur_sprite = spr_food4;
+    }
 }
 
 //VARIABLES
@@ -157,13 +213,16 @@ var child_mgs = ["", c_mg1];
 var mg_index = -1;
 var bg_plane = 0;
 var sprite_plane = 1;
+var arrow_plane = 2;
 
 //Adult Microgame 1 variables
 var spr_pos = [];
+var left_arr_pos = [];
+var right_arr_pos = [];
 var foodMoveTimer;
 var move_left = true;
 var is_moving = false;
-var food_goal = 5;
+var food_goal = 3;
 var food_cnt = 0;
 
 var totalGames = 0;
@@ -186,25 +245,15 @@ var gameCompleteFunction = function () {
 var placeFood = function(){
     PS.statusText("");
     if (food_cnt < food_goal) {
+        spawnFood();
         if (move_left){
-            PS.statusText("Gross. Left arrow.");
-            //PS.glyph(4, 16, "←");
+            spawnLeftArrow();
         } else {
-            PS.statusText("Gross. Right arrow.");
-            //PS.glyph(27, 16, "→");
+            spawnRightArrow();
         }
-        //spr_food1 = PS.spriteSolid(16, 16);
-        //PS.spriteSolidColor(spr_food1, COLOR_ADULT_DARK_RED);
-        makeSprite();
-
     } if (food_cnt == food_goal){
         PS.statusText("Delicious. That's mine.");
-        spr_food1 = PS.spriteSolid(16, 16);
-        PS.spriteSolidColor(spr_food1, COLOR_ADULT_LIGHT_RED);
-        PS.spritePlane(spr_food1, sprite_plane);
-        spr_pos[0] = 8;
-        spr_pos[1] = 8;
-        PS.spriteMove(spr_food1, spr_pos[0], spr_pos[1]);
+        spawnFood();
     }
 }
 
@@ -228,14 +277,14 @@ var loadAdultMicroGame1 = function(){
     placeFood();
 }
 var swipeTick = function (){
-    if (spr_pos[0] < -16) {
+    if (spr_pos[0] < -32) {
         move_left = !move_left;
         is_moving = false;
         placeFood();
         PS.timerStop(foodMoveTimer);
         foodMoveTimer = null;
     }
-    if (spr_pos[0] > 32) {
+    if (spr_pos[0] > 45) {
         move_left = !move_left;
         is_moving = false;
         placeFood();
@@ -243,10 +292,10 @@ var swipeTick = function (){
     }
     if (move_left) {
         spr_pos[0] -= 1;
-        PS.spriteMove(spr_food1, spr_pos[0], spr_pos[1]);
+        PS.spriteMove(cur_sprite, spr_pos[0], spr_pos[1]);
     } else {
         spr_pos[0] += 1;
-        PS.spriteMove(spr_food1, spr_pos[0], spr_pos[1]);
+        PS.spriteMove(cur_sprite, spr_pos[0], spr_pos[1]);
     }
 
 }
@@ -378,6 +427,22 @@ PS.touch = function( x, y, data, options ) {
 	}
 
 	if (mg_index === 0) {
+        if (!is_moving && food_cnt < food_goal){
+            if (((x >= left_arr_pos[0] && x <= left_arr_pos[0] + 6) && (y >= left_arr_pos[1] && y <= left_arr_pos[1] + 6)) && move_left) {
+                is_moving = true;
+                foodMoveTimer = PS.timerStart(1, swipeTick);
+                PS.spriteDelete(left_arrow);
+                food_cnt++;
+            } else if (((x >= right_arr_pos[0] && x <= right_arr_pos[0] + 6) && (y >= right_arr_pos[1] && y <= right_arr_pos[1] + 6)) && !move_left) {
+                is_moving = true;
+                foodMoveTimer = PS.timerStart(1, swipeTick);
+                PS.spriteDelete(right_arrow);
+                food_cnt++;
+            }
+        }
+
+
+
 	    if (food_cnt == food_goal) {
 	        if ((x >= spr_pos[0] && x <= spr_pos[0] + 16) && (y >= spr_pos[1] && y <= spr_pos[1] + 16)) {
 	            PS.statusText("Someone ate it already...");
@@ -572,7 +637,7 @@ This function doesn't have to do anything. Any value returned is ignored.
 // UNCOMMENT the following code BLOCK to expose the PS.keyDown() event handler:
 
 
-
+/*
 PS.keyDown = function( key, shift, ctrl, options ) {
 	"use strict"; // Do not remove this directive!
 
@@ -581,18 +646,8 @@ PS.keyDown = function( key, shift, ctrl, options ) {
 	//PS.debug( "PS.keyDown(): key=" + key + ", shift=" + shift + ", ctrl=" + ctrl + "\n" );
 
 	// Add code here for when a key is pressed.
-    if (!is_moving && food_cnt < food_goal){
-        if ((key === 1005 || key === 97) && move_left) {
-            is_moving = true;
-            foodMoveTimer = PS.timerStart(1, swipeTick);
-            food_cnt++;
-        } else if ((key === 1007 || key === 100) && !move_left) {
-            is_moving = true;
-            foodMoveTimer = PS.timerStart(1, swipeTick);
-            food_cnt++;
-        }
-    }
 };
+*/
 
 
 
