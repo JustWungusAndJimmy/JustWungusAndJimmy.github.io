@@ -19,16 +19,13 @@ var COLOR_ADULT_DARK_PURPLE = 0x251e3e;
 var COLOR_ADULT_LIGHT_PURPLE = 0x451e3e;
 var COLOR_ADULT_DARK_RED = 0x651e3e;
 var COLOR_ADULT_LIGHT_RED = 0x851e3e;
-var COLOR_ADULT_HIGHLIGHT = 0xae2952
+var COLOR_ADULT_HIGHLIGHT = 0xae2952;
 
 var COLOR_CHILD_VEGGIE1 = 0x20f320;
 var COLOR_CHILD_VEGGIE2 = 0x20d320;
+var COLOR_VOMIT = 0x667c54;
 
-//alpha
-var OPAQUE = 0xFF;
-var TRANSPARENT = 0x00;
-
-
+///MENU MAP
 var menuMap = {
     width: 6, height: 6, pixelSize: 1,
     data: [
@@ -39,11 +36,84 @@ var menuMap = {
         [0, 1, 0, 0, 2, 0],
         [0, 0, 0, 0, 0, 0]
         ]
-}
+};
 
-//MICROGAME MAPS
-//CHILD MAPS
+//GLOBAL VARIABLES
+var mg_index = -1;
+var bg_plane = 0;
+var sprite_plane = 1;
+var arrow_plane = 2;
 
+var totalGames = 0;
+
+var gameCompleteTimer = null;
+var counter = 0;
+
+//GLOBAL FUNCTIONS
+var loadMenu = function () {
+    //PS.debug(child_mgs[mg_index].width);
+    //get level width and height for variable level sizes
+    var gridWidth = menuMap.width;
+    var gridHeight = menuMap.height;
+    PS.gridSize(gridWidth, gridHeight);
+
+    //PS.dbEvent("StoryGamePrototype", "KidGameStart", 0);
+
+    //Initialize beginning values
+    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
+    PS.gridColor(COLOR_CHILD_DARK_BLUE);
+    PS.statusColor(PS.COLOR_WHITE);
+    PS.statusText("Pick Child or Adult First");
+    PS.border(PS.ALL, PS.ALL, 0);
+    PS.gridShadow(true, PS.COLOR_BLACK);
+
+    for (var y = 0; y < gridHeight; y++) {
+        for (var x = 0; x < gridWidth; x++) {
+            if (menuMap.data[y][x] === 0)
+                PS.color(x, y, PS.COLOR_WHITE);
+            if (menuMap.data[y][x] === 1)
+                PS.color(x, y, COLOR_CHILD_ORANGE);
+            if (menuMap.data[y][x] === 2)
+                PS.color(x, y, COLOR_ADULT_DARK_RED);
+        }
+    }
+};
+
+var gameCompleteFunction = function () {
+    counter++;
+    if (counter == 120) {
+        PS.timerStop(gameCompleteTimer);
+
+        if (mg_index === 0)
+            loadMicroGame();
+        else
+            loadKidGame();
+    }
+};
+
+var loadMicroGame = function() {
+    //get level width and height for variable level sizes
+    var gridWidth = adult_mgs[mg_index].width;
+    var gridHeight = adult_mgs[mg_index].height;
+    PS.gridSize(gridWidth, gridHeight);
+
+    //Initialize beginning values
+    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
+    PS.gridColor(COLOR_ADULT_DARK_BLUE);
+    PS.statusColor( PS.COLOR_WHITE );
+    PS.statusText("");
+    PS.border(PS.ALL, PS.ALL, 0);
+    PS.gridShadow(true, PS.COLOR_BLACK);
+
+    //Cycle through specific functions depending on set of microgames
+    //loadAdultMicroGame1();
+    loadAdultMicroGame2();
+};
+
+
+
+///MICROGAME CODE
+//Child food game
 var c_mg1 = {
     width: 32, height: 32, pixelSize: 1,
     data: [
@@ -82,9 +152,40 @@ var c_mg1 = {
     ]
 }
 
+var loadKidGame = function () {
+    //PS.debug(child_mgs[mg_index].width);
+    //get level width and height for variable level sizes
+    var gridWidth = child_mgs[mg_index].width;
+    var gridHeight = child_mgs[mg_index].height;
+    PS.gridSize(gridWidth, gridHeight);
 
-//ADULT MAPS
-//spoiled food in refrigerator
+    //Initialize beginning values
+    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
+    PS.gridColor(COLOR_ADULT_DARK_BLUE);
+    PS.statusColor(PS.COLOR_WHITE);
+    PS.statusText("");
+    PS.border(PS.ALL, PS.ALL, 0);
+    PS.gridShadow(true, PS.COLOR_BLACK);
+
+    for (var y = 0; y < gridHeight; y++) {
+        for (var x = 0; x < gridWidth; x++) {
+            if (c_mg1.data[y][x] === 0)
+                PS.color(x, y, COLOR_CHILD_LIGHT_BLUE);
+            if (c_mg1.data[y][x] === 1)
+                PS.color(x, y, COLOR_CHILD_ORANGE);
+            if (c_mg1.data[y][x] === 2)
+                PS.color(x, y, COLOR_CHILD_VEGGIE1);
+            if (c_mg1.data[y][x] === 3)
+                PS.color(x, y, COLOR_CHILD_VEGGIE2);
+        }
+    }
+
+    //Cycle through specific functions depending on set of microgames
+    //loadAdultMicroGame1();
+}
+
+
+///Adult food game
 var FRIDGE = 0;
 var FRIDGE_BG = 1;
 
@@ -131,6 +232,17 @@ var cur_sprite;
 var left_arrow;
 var right_arrow;
 
+//Variables
+var spr_pos = [];
+var left_arr_pos = [];
+var right_arr_pos = [];
+var foodMoveTimer;
+var move_left = true;
+var is_moving = false;
+var food_goal = 3;
+var food_cnt = 0;
+
+//Functions
 var spawnLeftArrow = function() {
     var loader;
 
@@ -140,9 +252,9 @@ var spawnLeftArrow = function() {
         left_arr_pos[0] = 2;
         left_arr_pos[1] = spr_pos[1] + 5;
         PS.spriteMove(left_arrow, left_arr_pos[0], left_arr_pos[1]);
-    }
+    };
     PS.imageLoad("images/amg_arrow_left.png", loader);
-}
+};
 
 var spawnRightArrow = function() {
     var loader;
@@ -153,9 +265,9 @@ var spawnRightArrow = function() {
         right_arr_pos[0] = 24;
         right_arr_pos[1] = spr_pos[1] + 5;
         PS.spriteMove(right_arrow, right_arr_pos[0], right_arr_pos[1]);
-    }
+    };
     PS.imageLoad("images/amg_arrow_right.png", loader);
-}
+};
 
 var spawnFood = function() {
     var loader1, loader2, loader3, loader4;
@@ -205,43 +317,8 @@ var spawnFood = function() {
         PS.imageLoad( "images/amg_jar.png", loader4 );
         //cur_sprite = spr_food4;
     }
-}
+};
 
-//VARIABLES
-var adult_mgs = [a_mg1];
-var child_mgs = ["", c_mg1];
-var mg_index = -1;
-var bg_plane = 0;
-var sprite_plane = 1;
-var arrow_plane = 2;
-
-//Adult Microgame 1 variables
-var spr_pos = [];
-var left_arr_pos = [];
-var right_arr_pos = [];
-var foodMoveTimer;
-var move_left = true;
-var is_moving = false;
-var food_goal = 3;
-var food_cnt = 0;
-
-var totalGames = 0;
-
-var gameCompleteTimer = null;
-var counter = 0;
-
-var gameCompleteFunction = function () {
-    counter++;
-    if (counter == 120) {
-        PS.timerStop(gameCompleteTimer);
-
-        if (mg_index === 0)
-            loadMicroGame();
-        else
-            loadKidGame();
-    }
-}
-//FUNCTIONS
 var placeFood = function(){
     PS.statusText("");
     if (food_cnt < food_goal) {
@@ -255,7 +332,7 @@ var placeFood = function(){
         PS.statusText("Delicious. That's mine.");
         spawnFood();
     }
-}
+};
 
 var loadAdultMicroGame1 = function(){
     var x, y, val;
@@ -275,7 +352,8 @@ var loadAdultMicroGame1 = function(){
         }
     }
     placeFood();
-}
+};
+
 var swipeTick = function (){
     if (spr_pos[0] < -32) {
         move_left = !move_left;
@@ -298,89 +376,180 @@ var swipeTick = function (){
         PS.spriteMove(cur_sprite, spr_pos[0], spr_pos[1]);
     }
 
-}
+};
 
-var loadMicroGame = function() {
-    //get level width and height for variable level sizes
-    var gridWidth = adult_mgs[mg_index].width;
-    var gridHeight = adult_mgs[mg_index].height;
-    PS.gridSize(gridWidth, gridHeight);
+//Adult amusement park game
+var COASTER_BG = 1;
+var COASTER_RAIL = 0;
+var COASTER_BOARD = 2;
+var CAR_OUTLINE = 4;
+var CAR_FILL = 5;
+var PER_OUTLINE = 3;
 
-    //Initialize beginning values
-    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
-    PS.gridColor(COLOR_ADULT_DARK_BLUE);
-    PS.statusColor( PS.COLOR_WHITE );
-    PS.statusText("");
-    PS.border(PS.ALL, PS.ALL, 0);
-    PS.gridShadow(true, PS.COLOR_BLACK);
+var a_mg2 = {
+    width : 32, height : 32, pixelSize : 1,
+    data : [
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 0, 0, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 0, 0, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 1, 1, 1, 3, 0, 0, 3, 1, 1, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 5, 5, 4, 1, 3, 0, 0, 0, 0, 3, 1, 4, 5, 5, 4, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 5, 5, 4, 1, 3, 0, 0, 0, 0, 3, 1, 4, 5, 5, 5, 4, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 5, 5, 4, 1, 3, 0, 0, 0, 0, 3, 4, 5, 5, 5, 5, 4, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 4, 1, 1, 1, 1, 1, 1, 1,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 0, 0, 0, 0, 0, 0, 0, 0,
+        2, 2, 2, 2, 0, 2, 2, 2, 2, 0, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 0, 2, 2, 2, 2, 0, 2, 2,
+        0, 2, 2, 2, 2, 0, 2, 2, 2, 2, 0, 2, 2, 2, 2, 0, 2, 2, 2, 2, 0, 2, 2, 2, 2, 0, 2, 2, 2, 2, 0, 2,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    ]
+};
 
-    //Cycle through specific functions depending on set of microgames
-    loadAdultMicroGame1();
-}
+//sprites
+var leg_sprite;
+var cur_facebutton;
+var vomit;
 
-var loadMenu = function () {
-    //PS.debug(child_mgs[mg_index].width);
-    //get level width and height for variable level sizes
-    var gridWidth = menuMap.width;
-    var gridHeight = menuMap.height;
-    PS.gridSize(gridWidth, gridHeight);
+//variables
+var legTimer = null;
+var vomitTimer = null;
+var leg_pos = [];
+var face_pos = [];
+var vomit_pos = [];
+var click_cnt = 0;
 
-    //PS.dbEvent("StoryGamePrototype", "KidGameStart", 0);
+//Functions
+var loadAdultMicroGame2 = function(){
+    var x, y, val;
 
-    //Initialize beginning values
-    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
-    PS.gridColor(COLOR_CHILD_DARK_BLUE);
-    PS.statusColor(PS.COLOR_WHITE);
-    PS.statusText("Pick Child or Adult First");
-    PS.border(PS.ALL, PS.ALL, 0);
-    PS.gridShadow(true, PS.COLOR_BLACK);
+    PS.dbEvent("StoryGamePrototype", "AdultGameStart", 0);
 
-    for (var y = 0; y < gridHeight; y++) {
-        for (var x = 0; x < gridWidth; x++) {
-            if (menuMap.data[y][x] === 0)
-                PS.color(x, y, PS.COLOR_WHITE);
-            if (menuMap.data[y][x] === 1)
-                PS.color(x, y, COLOR_CHILD_ORANGE);
-            if (menuMap.data[y][x] === 2)
+    PS.gridPlane(bg_plane);
+    for ( y = 0; y < a_mg2.height; y += 1 ) {
+        for (x = 0; x < a_mg2.width; x += 1) {
+            val = a_mg2.data[(y * a_mg2.width) + x]; // get map data
+            if (val === COASTER_BG) {
+                PS.color(x, y, COLOR_ADULT_LIGHT_RED);
+            }
+            else if (val === COASTER_RAIL) {
+                PS.color(x, y, COLOR_ADULT_LIGHT_PURPLE);
+            } else if (val === COASTER_BOARD) {
                 PS.color(x, y, COLOR_ADULT_DARK_RED);
+            } else if (val === CAR_OUTLINE) {
+                PS.color(x, y, COLOR_ADULT_HIGHLIGHT);
+            } else if (val === CAR_FILL) {
+                PS.color(x, y, COLOR_ADULT_DARK_BLUE);
+            } else if (val === PER_OUTLINE) {
+                PS.color(x, y, COLOR_ADULT_DARK_PURPLE);
+            }
         }
     }
+    spawnLegs();
+    spawnFace1();
+};
 
-    //Cycle through specific functions depending on set of microgames
-    //loadAdultMicroGame1();
-}
-
-var loadKidGame = function () {
-    //PS.debug(child_mgs[mg_index].width);
-    //get level width and height for variable level sizes
-    var gridWidth = child_mgs[mg_index].width;
-    var gridHeight = child_mgs[mg_index].height;
-    PS.gridSize(gridWidth, gridHeight);
-
-    //Initialize beginning values
-    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
-    PS.gridColor(COLOR_ADULT_DARK_BLUE);
-    PS.statusColor(PS.COLOR_WHITE);
-    PS.statusText("");
-    PS.border(PS.ALL, PS.ALL, 0);
-    PS.gridShadow(true, PS.COLOR_BLACK);
-
-    for (var y = 0; y < gridHeight; y++) {
-        for (var x = 0; x < gridWidth; x++) {
-            if (c_mg1.data[y][x] === 0)
-                PS.color(x, y, COLOR_CHILD_LIGHT_BLUE);
-            if (c_mg1.data[y][x] === 1)
-                PS.color(x, y, COLOR_CHILD_ORANGE);
-            if (c_mg1.data[y][x] === 2)
-                PS.color(x, y, COLOR_CHILD_VEGGIE1);
-            if (c_mg1.data[y][x] === 3)
-                PS.color(x, y, COLOR_CHILD_VEGGIE2);
-        }
+var legTick = function () {
+    leg_pos[0] -= 1;
+    PS.spriteMove(leg_sprite, leg_pos[0], leg_pos[1]);
+    if (leg_pos[0] < -8){
+        PS.timerStop(legTimer);
+        PS.spriteDelete(leg_sprite);
+        spawnLegs();
     }
-
-    //Cycle through specific functions depending on set of microgames
-    //loadAdultMicroGame1();
 }
+
+var spawnLegs = function() {
+    var loader;
+
+    loader = function (data) {
+        leg_sprite = PS.spriteImage( data );
+        PS.spritePlane( leg_sprite, sprite_plane);
+        leg_pos[0] = 33;
+        leg_pos[1] = 20;
+        PS.spriteMove(leg_sprite, leg_pos[0], leg_pos[1]);
+        legTimer = PS.timerStart(1, legTick);
+    };
+    PS.imageLoad("images/amg_coaster_legs.png", loader);
+};
+
+var spawnFace1 = function() {
+    var loader;
+
+    loader = function (data) {
+        cur_facebutton = PS.spriteImage( data );
+        PS.spritePlane( cur_facebutton, arrow_plane);
+        face_pos[0] = 11;
+        face_pos[1] = 21;
+        PS.spriteMove(cur_facebutton, face_pos[0], face_pos[1]);
+    };
+    PS.imageLoad("images/amg_face1.png", loader);
+};
+
+var spawnFace2 = function() {
+    var loader;
+
+    loader = function (data) {
+        cur_facebutton = PS.spriteImage( data );
+        PS.spritePlane( cur_facebutton, arrow_plane);
+        face_pos[0] = 11;
+        face_pos[1] = 21;
+        PS.spriteMove(cur_facebutton, face_pos[0], face_pos[1]);
+    };
+    PS.imageLoad("images/amg_face2.png", loader);
+};
+
+var spawnFace3 = function() {
+    var loader;
+
+    loader = function (data) {
+        cur_facebutton = PS.spriteImage( data );
+        PS.spritePlane( cur_facebutton, arrow_plane);
+        face_pos[0] = 11;
+        face_pos[1] = 21;
+        PS.spriteMove(cur_facebutton, face_pos[0], face_pos[1]);
+    };
+    PS.imageLoad("images/amg_face3.png", loader);
+};
+
+var spawnVomit = function () {
+    vomit = PS.spriteSolid(6, 2);
+    PS.spriteSolidColor(vomit, COLOR_VOMIT);
+    PS.spritePlane(vomit, sprite_plane);
+    vomit_pos[0] = 19;
+    vomit_pos[1] = 7;
+    PS.spriteMove(vomit, vomit_pos[0], vomit_pos[1]);
+    vomitTimer = PS.timerStart(1, vomitTick);
+
+}
+
+var vomitTick = function() {
+    vomit_pos[0] += 1;
+    PS.spriteMove(vomit, vomit_pos[0], vomit_pos[1]);
+    if (vomit_pos[0] > 32){
+        PS.spriteDelete(vomit);
+        PS.timerStop(vomitTimer);
+    }
+}
+
 /*
 PS.init( system, options )
 Called once after engine is initialized but before event-polling begins.
@@ -412,21 +581,22 @@ This function doesn't have to do anything. Any value returned is ignored.
 
 PS.touch = function( x, y, data, options ) {
 	"use strict"; // Do not remove this directive!
-    //menu
-    //main menu
-	if (mg_index === -1) {
-	    if (menuMap.data[y][x] === 1) {
-	        mg_index = 1;
-	        loadKidGame();
-	    }
 
-	    if (menuMap.data[y][x] === 2) {
-	        mg_index = 0;
-	        loadMicroGame();
-	    }
-	}
+    if (mg_index === -1){
+        if (menuMap.data[y][x] === 1) {
+            mg_index = 1;
+            loadKidGame();
+        }
+
+        if (menuMap.data[y][x] === 2) {
+            mg_index = 0;
+            loadMicroGame();
+        }
+    }
+
 
 	if (mg_index === 0) {
+        /*
         if (!is_moving && food_cnt < food_goal){
             if (((x >= left_arr_pos[0] && x <= left_arr_pos[0] + 6) && (y >= left_arr_pos[1] && y <= left_arr_pos[1] + 6)) && move_left) {
                 is_moving = true;
@@ -457,6 +627,21 @@ PS.touch = function( x, y, data, options ) {
 	            }
 	        }
 	    }
+	    */
+
+        if ((x >= face_pos[0] && x <= face_pos[0] + 10) && (y >= face_pos[1] && y <= face_pos[1] + 10)){
+            if (click_cnt == 5) {
+                PS.spriteDelete(cur_facebutton);
+                spawnFace2();
+            } else if (click_cnt == 10) {
+                PS.spriteDelete(cur_facebutton);
+                spawnFace3();
+                spawnVomit();
+                //this minigame is won - jordan do your thing
+            }
+            click_cnt++;
+        }
+
 	}
 
 
@@ -520,6 +705,9 @@ PS.touch = function( x, y, data, options ) {
 	}
 
 };
+
+var adult_mgs = [a_mg1, a_mg2];
+var child_mgs = ["", c_mg1];
 
 
 
