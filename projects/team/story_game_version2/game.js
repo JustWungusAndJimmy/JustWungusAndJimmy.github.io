@@ -198,6 +198,8 @@ var bg_plane = 0;
 var sprite_plane = 1;
 var arrow_plane = 2;
 
+var touch_enabled = true;
+
 var totalGames = 0;
 var gameSet = 0;
 
@@ -237,6 +239,7 @@ var loadMenu = function () {
 
 var gameCompleteFunction = function () {
     counter++;
+    touch_enabled = false;
     if (counter == 120) {
         PS.timerStop(gameCompleteTimer);
 
@@ -249,24 +252,10 @@ var gameCompleteFunction = function () {
             return;
         }
 
-
-        /*
-        //Food games
-        if (gameSet === 1) {
-            if (mg_index === 0)
-                loadMicroGame();
-            else
-                loadChildMicroGame1();
-        }
-
-        //amusement park games
-        else if (gameSet === 2) {
-
-        }
-        */
         counter = 0;
         mg_index = -1;
         loadMenu();
+        touch_enabled = true;
 
     }
 };
@@ -337,71 +326,53 @@ var c_mg1 = {
 
     touchFunc : function(x, y, data, options){
         //child food game
-    //else if (mg_index == 1) {
-        if (c_mg1.data[y][x] === 1) {
-            var rand = Math.floor(Math.random() * 3);
-            if (rand === 0)
-                PS.statusText("Don't play with your food!");
-            if (rand === 1)
-                PS.statusText("Quit stalling and eat!");
-            if (rand === 2)
-                PS.statusText("Eat, or no dessert!")
+        //else if (mg_index == 1) {
+        if (touch_enabled) {
+            if (c_mg1.data[y][x] === 1) {
+                var rand = Math.floor(Math.random() * 3);
+                if (rand === 0)
+                    PS.statusText("Don't play with your food!");
+                if (rand === 1)
+                    PS.statusText("Quit stalling and eat!");
+                if (rand === 2)
+                    PS.statusText("Eat, or no dessert!")
 
-            PS.dbEvent("StoryGamePrototype", "PlateClick", 0);
-        }
+                PS.dbEvent("StoryGamePrototype", "PlateClick", 0);
+            }
 
-        if (c_mg1.data[y][x] === 2 || c_mg1.data[y][x] === 3) {
-            PS.statusText("");
-            for (var j = y - 1; j < y + 2; j++) {
-                for (var i = x - 1; i < x + 2; i++) {
-                    if (c_mg1.data[j][i] === 2 || c_mg1.data[j][i] === 3) {
-                        PS.color(i, j, COLOR_CHILD_YELLOW);
-                        c_mg1.data[j][i] = 1;
+            if (c_mg1.data[y][x] === 2 || c_mg1.data[y][x] === 3) {
+                PS.statusText("");
+                for (var j = y - 1; j < y + 2; j++) {
+                    for (var i = x - 1; i < x + 2; i++) {
+                        if (c_mg1.data[j][i] === 2 || c_mg1.data[j][i] === 3) {
+                            PS.color(i, j, COLOR_CHILD_YELLOW);
+                            c_mg1.data[j][i] = 1;
+                        }
                     }
                 }
-            }
-            
-            /*
-            PS.color(x, y, COLOR_CHILD_YELLOW);
-            c_mg1.data[y][x] = 1;
 
-            if (c_mg1.data[y-1][x-1] === 2 || c_mg1.data[y-1][x-1] === 3) {
-                PS.color(x - 1, y - 1, COLOR_CHILD_YELLOW);
-                c_mg1.data[y - 1][x - 1] = 1;
-            }
+                PS.dbEvent("StoryGamePrototype", "FoodClick", 0);
 
-            if (c_mg1.data[y][x - 1] === 2 || c_mg1.data[y][x - 1] === 3) {
-                PS.color(x - 1, y, COLOR_CHILD_YELLOW);
-                c_mg1.data[y][x - 1] = 1;
-            }
-
-            if (c_mg1.data[y - 1][x] === 2 || c_mg1.data[y - 1][x] === 3) {
-                PS.color(x, y - 1, COLOR_CHILD_YELLOW);
-                c_mg1.data[y - 1][x] = 1;
-            }
-            */
-
-
-            PS.dbEvent("StoryGamePrototype", "FoodClick", 0);
-
-            PS.border(PS.ALL, PS.ALL, 0);
-            var gridWidth = child_mgs[mg_index].width;
-            var gridHeight = child_mgs[mg_index].height;
-            for (var y = 0; y < gridHeight; y++) {
-                for (var x = 0; x < gridWidth; x++) {
-                    if (c_mg1.data[y][x] === 2 || c_mg1.data[y][x] === 3)
-                        return;
+                PS.border(PS.ALL, PS.ALL, 0);
+                var gridWidth = child_mgs[mg_index].width;
+                var gridHeight = child_mgs[mg_index].height;
+                for (var y = 0; y < gridHeight; y++) {
+                    for (var x = 0; x < gridWidth; x++) {
+                        if (c_mg1.data[y][x] === 2 || c_mg1.data[y][x] === 3)
+                            return;
+                    }
                 }
+                PS.dbEvent("StoryGamePrototype", "KidGameComplete", 0);
+                PS.statusText("You finished your dinner!");
+                mg_index--;
+                //loadMicroGame();
+                totalGames++;
+                gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
             }
-            PS.dbEvent("StoryGamePrototype", "KidGameComplete", 0);
-            PS.statusText("You finished your dinner!");
-            mg_index--;
-            //loadMicroGame();
-            totalGames++;
-            gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
+
         }
-	        
-    //}
+
+	       
     }
 }
 
@@ -648,31 +619,36 @@ var swipeTick = function (){
 
 
 var ag1_TouchFunc = function (x, y, data, options) {
-    if (!is_moving && food_cnt < food_goal) {
-        if (((x >= left_arr_pos[0] && x <= left_arr_pos[0] + 6) && (y >= left_arr_pos[1] && y <= left_arr_pos[1] + 6)) && move_left) {
-            is_moving = true;
-            foodMoveTimer = PS.timerStart(1, swipeTick);
-            PS.spriteDelete(left_arrow);
-            food_cnt++;
-        } else if (((x >= right_arr_pos[0] && x <= right_arr_pos[0] + 6) && (y >= right_arr_pos[1] && y <= right_arr_pos[1] + 6)) && !move_left) {
-            is_moving = true;
-            foodMoveTimer = PS.timerStart(1, swipeTick);
-            PS.spriteDelete(right_arrow);
-            food_cnt++;
+
+    if (touch_enabled) {
+        if (!is_moving && food_cnt < food_goal) {
+            if (((x >= left_arr_pos[0] && x <= left_arr_pos[0] + 6) && (y >= left_arr_pos[1] && y <= left_arr_pos[1] + 6)) && move_left) {
+                is_moving = true;
+                foodMoveTimer = PS.timerStart(1, swipeTick);
+                PS.spriteDelete(left_arrow);
+                food_cnt++;
+            } else if (((x >= right_arr_pos[0] && x <= right_arr_pos[0] + 6) && (y >= right_arr_pos[1] && y <= right_arr_pos[1] + 6)) && !move_left) {
+                is_moving = true;
+                foodMoveTimer = PS.timerStart(1, swipeTick);
+                PS.spriteDelete(right_arrow);
+                food_cnt++;
+            }
+        }
+
+
+
+        if (food_cnt == food_goal) {
+            if ((x >= spr_pos[0] && x <= spr_pos[0] + 16) && (y >= spr_pos[1] && y <= spr_pos[1] + 16)) {
+                PS.statusText("Someone ate it already...");
+
+                totalGames++;
+                gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
+
+            }
         }
     }
 
 
-
-    if (food_cnt == food_goal) {
-        if ((x >= spr_pos[0] && x <= spr_pos[0] + 16) && (y >= spr_pos[1] && y <= spr_pos[1] + 16)) {
-            PS.statusText("Someone ate it already...");
-
-            totalGames++;
-            gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
-
-        }
-    }
 }
 
 
@@ -857,23 +833,25 @@ var vomitTick = function() {
 }
 
 var ag2_TouchFunc = function (x, y, data, options) {
-    if ((x >= face_pos[0] && x <= face_pos[0] + 10) && (y >= face_pos[1] && y <= face_pos[1] + 10)) {
-        if (click_cnt == 5) {
-            PS.spriteDelete(cur_facebutton);
-            spawnFace2();
-        } else if (click_cnt == 10) {
-            PS.spriteDelete(cur_facebutton);
-            spawnFace3();
-            spawnVomit();
-            //this minigame is won - jordan do your thing
-            //PS.debug("Blech");
-            PS.timerStop(legTimer);
-            totalGames++;
-            gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
+    if (touch_enabled) {
+        if ((x >= face_pos[0] && x <= face_pos[0] + 10) && (y >= face_pos[1] && y <= face_pos[1] + 10)) {
+            if (click_cnt == 5) {
+                PS.spriteDelete(cur_facebutton);
+                spawnFace2();
+            } else if (click_cnt == 10) {
+                PS.spriteDelete(cur_facebutton);
+                spawnFace3();
+                spawnVomit();
+                //this minigame is won - jordan do your thing
+                //PS.debug("Blech");
+                PS.timerStop(legTimer);
+                totalGames++;
+                gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
 
 
+            }
+            click_cnt++;
         }
-        click_cnt++;
     }
 }
 
@@ -1010,6 +988,8 @@ var tickFunc = function () {
         PS.statusText("Pardon me");
     if (childx === 17 && childy === 6)
         PS.statusText("Lemme just squeeze through here...");
+    if (childx === 14 && childy === 4)
+        PS.statusText("Lemme just squeeze through here...");
 
     step++;
     if (step >= path.length) {
@@ -1026,14 +1006,17 @@ var cg2_TouchFunc = function (x, y, data, options) {
         gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
     }
     */
-    line = PS.pathFind(id_path, childx, childy, x, y);
-    if (line.length > 0) {
-        //childx = x;
-        //childy = y;
-        //PS.debug(x + " " + y + "\n");
-        path = line;
-        step = 0;
+    if (touch_enabled) {
+        line = PS.pathFind(id_path, childx, childy, x, y);
+        if (line.length > 0) {
+            //childx = x;
+            //childy = y;
+            //PS.debug(x + " " + y + "\n");
+            path = line;
+            step = 0;
+        }
     }
+
     /*
     for (var z = 0; z < line.length; z++) {
         var p = line[z];
