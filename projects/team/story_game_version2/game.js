@@ -132,8 +132,10 @@ var loadMicroGame = function() {
     PS.gridShadow(true, PS.COLOR_BLACK);
 
     //Cycle through specific functions depending on set of microgames
-    loadAdultMicroGame1();
-    //loadAdultMicroGame2();
+    if (mg_index === 0)
+        loadAdultMicroGame1();
+    else
+        loadAdultMicroGame2();
 };
 
 
@@ -828,24 +830,36 @@ This function doesn't have to do anything. Any value returned is ignored.
 
 var menuTouchFunc = function (x, y, data, options) {
     "use strict"; // Do not remove this directive!
+
+
+    //Food Games
     if (y === 1) {
         if (menuMap.data[y][x] === 1) {
             mg_index = 1;
+            menuMap.data[1][1] = 0;
+            menuMap.data[1][2] = 0;
             loadChildMicroGame1();
         }
         if (menuMap.data[y][x] === 2) {
             mg_index = 0;
+            menuMap.data[1][3] = 0;
+            menuMap.data[1][4] = 0;
             loadMicroGame();
         }
     }
 
+    //Amusement Park Games
     if (y === 4) {
         if (menuMap.data[y][x] === 1) {
             mg_index = 0;
+            menuMap.data[4][1] = 0;
+            menuMap.data[4][2] = 0;
             loadChildMicroGame2();
         }
         if (menuMap.data[y][x] === 2) {
             mg_index = 1;
+            menuMap.data[4][3] = 0;
+            menuMap.data[4][4] = 0;
             loadMicroGame();
         }
     }
