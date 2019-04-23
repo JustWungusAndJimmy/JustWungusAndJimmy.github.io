@@ -330,18 +330,33 @@ var c_mg1 = {
         if (touch_enabled) {
             if (c_mg1.data[y][x] === 1) {
                 var rand = Math.floor(Math.random() * 3);
-                if (rand === 0)
+                if (rand === 0) {
                     PS.statusText("Don't play with your food!");
-                if (rand === 1)
+                    PS.audioPlay("fork1", { path: "sounds/", fileTypes: ["wav"]});
+                }
+                   
+                if (rand === 1) {
                     PS.statusText("Quit stalling and eat!");
-                if (rand === 2)
+                    PS.audioPlay("fork2", { path: "sounds/", fileTypes: ["wav"]});
+                }
+                    
+                if (rand === 2) {
                     PS.statusText("Eat, or no dessert!")
+                    PS.audioPlay("fork3", { path: "sounds/", fileTypes: ["wav"] });
+                }
 
                 PS.dbEvent("StoryGamePrototype", "PlateClick", 0);
             }
 
             if (c_mg1.data[y][x] === 2 || c_mg1.data[y][x] === 3) {
                 PS.statusText("");
+                var rand = Math.floor(Math.random() * 3);
+                if (rand === 0)
+                    PS.audioPlay("crunch1", { path: "sounds/", fileTypes: ["wav"] });
+                if (rand === 1)
+                    PS.audioPlay("crunch2", { path: "sounds/", fileTypes: ["wav"] });
+                if (rand === 2)
+                    PS.audioPlay("crunch3", { path: "sounds/", fileTypes: ["wav"] });
                 for (var j = y - 1; j < y + 2; j++) {
                     for (var i = x - 1; i < x + 2; i++) {
                         if (c_mg1.data[j][i] === 2 || c_mg1.data[j][i] === 3) {
@@ -473,6 +488,7 @@ var move_left = true;
 var is_moving = false;
 var food_goal = 3;
 var food_cnt = 0;
+var ag1Audio = "";
 
 //Functions
 var spawnLeftArrow = function() {
@@ -575,6 +591,8 @@ var placeFood = function(){
 var loadAdultMicroGame1 = function(){
     var x, y, val;
 
+    //PS.audioPlay("fridge", { path: "sounds/", fileTypes: ["wav"], repeat: true });
+    //PS.debug(ag1Audio + "\n");
     PS.touch = ag1_TouchFunc;
     PS.dbEvent("StoryGamePrototype", "AdultGameStart", 0);
 
@@ -640,7 +658,7 @@ var ag1_TouchFunc = function (x, y, data, options) {
         if (food_cnt == food_goal) {
             if ((x >= spr_pos[0] && x <= spr_pos[0] + 16) && (y >= spr_pos[1] && y <= spr_pos[1] + 16)) {
                 PS.statusText("Someone ate it already...");
-
+                //PS.audioStop(ag1Audio);
                 totalGames++;
                 gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
 
@@ -715,7 +733,7 @@ var leg_pos = [];
 var face_pos = [];
 var vomit_pos = [];
 var click_cnt = 0;
-
+var ag2Audio;
 //Functions
 var loadAdultMicroGame2 = function(){
     var x, y, val;
@@ -951,6 +969,7 @@ var step = 0;
 var cmg2Timer;
 var endx = 15;
 var endy = 3;
+var cg2Audio;
 
 var tickFunc = function () {
     if (!path)
@@ -1080,7 +1099,29 @@ Any value returned is ignored.
 */
 PS.init = function( system, options ) {
     "use strict"; // Do not remove this directive!
+    var a1Load = function ( testing ) {
+        ag1Audio = testing.channel;
+        //PS.debug(testing.name + "\n");
+    }
+    var a2Load = function (data) {
+        ag2Audio = data.channel;
+    }
+    var c2Load = function (data) {
+        cg2Audio = data.channel;
+    }
     PS.dbInit("StoryGamePrototype");
+    PS.audioLoad("crunch1", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("crunch2", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("crunch3", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("fork1", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("fork2", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("fork3", { path: "sounds/", fileTypes: ["wav"], lock: true });
+
+    PS.audioLoad("fridge", { path: "sounds/", fileTypes: ["wav"], lock: true, onload : a1Load });
+
+    PS.audioLoad("crowd", { path: "sounds/", fileTypes: ["wav"], lock: true, onLoad : c2Load});
+
+    PS.audioLoad("rollerCoaster", { path: "sounds/", fileTypes: ["wav"], lock: true, onLoad : a2Load });
     loadMenu();
 };
 
