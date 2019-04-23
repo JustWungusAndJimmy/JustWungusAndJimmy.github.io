@@ -38,6 +38,160 @@ var menuMap = {
         ]
 };
 
+///ENDING
+//map
+var ENDING_BG = 0;
+
+var end_map = {
+    width: 32, height: 32, pixelSize: 1,
+    data: [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ]
+};
+
+//sprites
+var kid_adult;
+var true_kid;
+var adult_kid;
+var true_adult;
+var switch_button;
+
+//variables
+var switch_pos = [];
+var won = false;
+
+var loadEnding = function() {
+    //get level width and height for variable level sizes
+    var gridWidth = end_map.width;
+    var gridHeight = end_map.height;
+    PS.gridSize(gridWidth, gridHeight);
+
+    PS.touch = endTouchFunc;
+
+    //Initialize beginning values
+    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
+    PS.gridColor(COLOR_CHILD_DARK_BLUE);
+    PS.statusColor(PS.COLOR_WHITE);
+    PS.statusText("");
+    PS.border(PS.ALL, PS.ALL, 0);
+    PS.gridShadow(true, PS.COLOR_BLACK);
+
+    for (var y = 0; y < gridHeight; y++) {
+        for (var x = 0; x < gridWidth; x++) {
+            if (end_map.data[y][x] === ENDING_BG)
+                PS.color(x, y, COLOR_CHILD_YELLOW);
+        }
+    }
+
+    spawnAdultKid();
+    spawnKidAdult();
+    spawnSwitch();
+}
+
+var endTouchFunc = function(x, y, data, options){
+    if ((x >= switch_pos[0] && x <= switch_pos[0] + 9) && (y >= switch_pos[1] && y <= switch_pos[1] + 6) && !won) {
+        PS.spriteDelete(switch_button);
+        spawnTrueKid();
+        spawnTrueAdult();
+        PS.fade(PS.ALL, PS.ALL, 360);
+        PS.color(PS.ALL, PS.ALL, PS.COLOR_BLACK);
+        PS.statusText("We're not so different.");
+        won = true;
+    }
+}
+
+var spawnKidAdult = function() {
+    var loader;
+
+    loader = function ( data ) {
+        kid_adult = PS.spriteImage( data );
+        PS.spritePlane( kid_adult, sprite_plane);
+        PS.spriteMove(kid_adult, -1, 0);
+    };
+    PS.imageLoad("images/kid_adult.png", loader);
+}
+
+var spawnTrueKid = function() {
+    var loader;
+
+    PS.spriteDelete(kid_adult);
+
+    loader = function ( data ) {
+        true_kid = PS.spriteImage( data );
+        PS.spritePlane( true_kid, sprite_plane);
+        PS.spriteMove(true_kid, -1, 0);
+    };
+    PS.imageLoad("images/true_kid.png", loader);
+}
+
+var spawnAdultKid = function () {
+    var loader;
+
+    loader = function ( data ) {
+        adult_kid = PS.spriteImage( data );
+        PS.spritePlane( adult_kid, sprite_plane);
+        PS.spriteMove(adult_kid, 21, 0);
+    };
+    PS.imageLoad("images/adult_kid.png", loader);
+}
+
+var spawnTrueAdult = function(){
+    var loader;
+
+    PS.spriteDelete(adult_kid);
+
+    loader = function ( data ) {
+        true_adult = PS.spriteImage( data );
+        PS.spritePlane( true_adult, sprite_plane);
+        PS.spriteMove(true_adult, 21, 0);
+    };
+    PS.imageLoad("images/true_adult.png", loader);
+}
+
+var spawnSwitch = function () {
+    var loader;
+
+    loader = function ( data ) {
+        switch_button = PS.spriteImage( data );
+        PS.spritePlane( switch_button, sprite_plane);
+        switch_pos[0] = 11;
+        switch_pos[1] = 15;
+        PS.spriteMove(switch_button, switch_pos[0], switch_pos[1]);
+    };
+    PS.imageLoad("images/switch.png", loader);
+}
+
 //GLOBAL VARIABLES
 var mg_index = -1;
 var bg_plane = 0;
@@ -90,8 +244,8 @@ var gameCompleteFunction = function () {
         //every game has been completed, put code for activating ending here
         if (totalGames === 2) {
             //ENDING CODE GOES HERE
-            PS.debug("All Games Completed, here's the ending\n");
-
+            //PS.debug("All Games Completed, here's the ending\n");
+            loadEnding();
             return;
         }
 
