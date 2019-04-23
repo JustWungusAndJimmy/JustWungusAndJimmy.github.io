@@ -482,7 +482,7 @@ var spawnLeftArrow = function() {
         left_arrow = PS.spriteImage( data );
         PS.spritePlane( left_arrow, arrow_plane);
         left_arr_pos[0] = 2;
-        left_arr_pos[1] = spr_pos[1] + 5;
+        left_arr_pos[1] = 17;
         PS.spriteMove(left_arrow, left_arr_pos[0], left_arr_pos[1]);
     };
     PS.imageLoad("images/amg_arrow_left.png", loader);
@@ -495,7 +495,7 @@ var spawnRightArrow = function() {
         right_arrow = PS.spriteImage( data );
         PS.spritePlane( right_arrow, arrow_plane);
         right_arr_pos[0] = 24;
-        right_arr_pos[1] = spr_pos[1] + 5;
+        right_arr_pos[1] = 17;
         PS.spriteMove(right_arrow, right_arr_pos[0], right_arr_pos[1]);
     };
     PS.imageLoad("images/amg_arrow_right.png", loader);
