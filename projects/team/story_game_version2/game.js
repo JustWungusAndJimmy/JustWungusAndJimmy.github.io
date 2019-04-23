@@ -13,7 +13,7 @@ var COLOR_CHILD_GRAY = 0x4a4e4d;
 var COLOR_CHILD_DARK_BLUE = 0x0e9aa7;
 var COLOR_CHILD_LIGHT_BLUE = 0x3da4ab;
 var COLOR_CHILD_YELLOW = 0xf6cd61;
-var COLOR_CHILD_ORANGE = 0xf6cd61;
+var COLOR_CHILD_ORANGE = 0xd69d61;
 var COLOR_ADULT_DARK_BLUE = 0x061e3e;
 var COLOR_ADULT_DARK_PURPLE = 0x251e3e;
 var COLOR_ADULT_LIGHT_PURPLE = 0x451e3e;
@@ -30,10 +30,10 @@ var menuMap = {
     width: 6, height: 6, pixelSize: 1,
     data: [
         [0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 2, 0],
-        [0, 1, 0, 0, 2, 0],
-        [0, 1, 0, 0, 2, 0],
-        [0, 1, 0, 0, 2, 0],
+        [0, 1, 1, 2, 2, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 1, 1, 2, 2, 0],
         [0, 0, 0, 0, 0, 0]
         ]
 };
@@ -45,6 +45,7 @@ var sprite_plane = 1;
 var arrow_plane = 2;
 
 var totalGames = 0;
+var gameSet = 0;
 
 var gameCompleteTimer = null;
 var counter = 0;
@@ -57,13 +58,14 @@ var loadMenu = function () {
     var gridHeight = menuMap.height;
     PS.gridSize(gridWidth, gridHeight);
 
+    PS.touch = menuTouchFunc;
     //PS.dbEvent("StoryGamePrototype", "KidGameStart", 0);
 
     //Initialize beginning values
     //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
     PS.gridColor(COLOR_CHILD_DARK_BLUE);
     PS.statusColor(PS.COLOR_WHITE);
-    PS.statusText("Pick Child or Adult First");
+    PS.statusText("Pick Game Set");
     PS.border(PS.ALL, PS.ALL, 0);
     PS.gridShadow(true, PS.COLOR_BLACK);
 
@@ -72,7 +74,7 @@ var loadMenu = function () {
             if (menuMap.data[y][x] === 0)
                 PS.color(x, y, PS.COLOR_WHITE);
             if (menuMap.data[y][x] === 1)
-                PS.color(x, y, COLOR_CHILD_ORANGE);
+                PS.color(x, y, COLOR_CHILD_YELLOW);
             if (menuMap.data[y][x] === 2)
                 PS.color(x, y, COLOR_ADULT_DARK_RED);
         }
@@ -84,10 +86,34 @@ var gameCompleteFunction = function () {
     if (counter == 120) {
         PS.timerStop(gameCompleteTimer);
 
-        if (mg_index === 0)
-            loadMicroGame();
-        else
-            loadKidGame();
+
+        //every game has been completed, put code for activating ending here
+        if (totalGames === 2) {
+            //ENDING CODE GOES HERE
+            PS.debug("All Games Completed, here's the ending\n");
+
+            return;
+        }
+
+
+        /*
+        //Food games
+        if (gameSet === 1) {
+            if (mg_index === 0)
+                loadMicroGame();
+            else
+                loadChildMicroGame1();
+        }
+
+        //amusement park games
+        else if (gameSet === 2) {
+
+        }
+        */
+        counter = 0;
+        mg_index = -1;
+        loadMenu();
+
     }
 };
 
@@ -106,13 +132,15 @@ var loadMicroGame = function() {
     PS.gridShadow(true, PS.COLOR_BLACK);
 
     //Cycle through specific functions depending on set of microgames
-    //loadAdultMicroGame1();
-    loadAdultMicroGame2();
+    loadAdultMicroGame1();
+    //loadAdultMicroGame2();
 };
 
 
 
 ///MICROGAME CODE
+
+
 //Child food game
 var c_mg1 = {
     width: 32, height: 32, pixelSize: 1,
@@ -122,43 +150,103 @@ var c_mg1 = {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 3, 3, 2, 1, 1, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 3, 3, 2, 1, 1, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 3, 3, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 3, 2, 2, 1, 1, 1, 1, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 1, 2, 2, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 3, 3, 2, 1, 1, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 3, 3, 2, 1, 1, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 3, 3, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 3, 2, 2, 1, 1, 1, 1, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 4, 2, 2, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 4, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 4, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 4, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 1, 1, 1, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 4, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 4, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 4, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1, 4, 4, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 4, 4, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 1, 4, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 4, 1, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 4, 4, 4, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ]
+    ],
+
+    touchFunc : function(x, y, data, options){
+        //child food game
+    //else if (mg_index == 1) {
+        if (c_mg1.data[y][x] === 1) {
+            var rand = Math.floor(Math.random() * 3);
+            if (rand === 0)
+                PS.statusText("Don't play with your food!");
+            if (rand === 1)
+                PS.statusText("Quit stalling and eat!");
+            if (rand === 2)
+                PS.statusText("Eat, or no dessert!")
+
+            PS.dbEvent("StoryGamePrototype", "PlateClick", 0);
+        }
+
+        if (c_mg1.data[y][x] === 2 || c_mg1.data[y][x] === 3) {
+
+            PS.statusText("");
+            PS.color(x, y, COLOR_CHILD_YELLOW);
+            c_mg1.data[y][x] = 1;
+
+            if (c_mg1.data[y-1][x-1] === 2 || c_mg1.data[y-1][x-1] === 3) {
+                PS.color(x - 1, y - 1, COLOR_CHILD_YELLOW);
+                c_mg1.data[y - 1][x - 1] = 1;
+            }
+
+            if (c_mg1.data[y][x - 1] === 2 || c_mg1.data[y][x - 1] === 3) {
+                PS.color(x - 1, y, COLOR_CHILD_YELLOW);
+                c_mg1.data[y][x - 1] = 1;
+            }
+
+            if (c_mg1.data[y - 1][x] === 2 || c_mg1.data[y - 1][x] === 3) {
+                PS.color(x, y - 1, COLOR_CHILD_YELLOW);
+                c_mg1.data[y - 1][x] = 1;
+            }
+
+
+
+            PS.dbEvent("StoryGamePrototype", "FoodClick", 0);
+
+            PS.border(PS.ALL, PS.ALL, 0);
+            var gridWidth = child_mgs[mg_index].width;
+            var gridHeight = child_mgs[mg_index].height;
+            for (var y = 0; y < gridHeight; y++) {
+                for (var x = 0; x < gridWidth; x++) {
+                    if (c_mg1.data[y][x] === 2 || c_mg1.data[y][x] === 3)
+                        return;
+                }
+            }
+            PS.dbEvent("StoryGamePrototype", "KidGameComplete", 0);
+            PS.statusText("You finished your dinner!");
+            mg_index--;
+            //loadMicroGame();
+            totalGames++;
+            gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
+        }
+	        
+    //}
+    }
 }
 
-var loadKidGame = function () {
+var loadChildMicroGame1 = function () {
     //PS.debug(child_mgs[mg_index].width);
     //get level width and height for variable level sizes
     var gridWidth = child_mgs[mg_index].width;
     var gridHeight = child_mgs[mg_index].height;
     PS.gridSize(gridWidth, gridHeight);
-
+    PS.touch = c_mg1.touchFunc;
     //Initialize beginning values
     //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
     PS.gridColor(COLOR_ADULT_DARK_BLUE);
@@ -172,6 +260,8 @@ var loadKidGame = function () {
             if (c_mg1.data[y][x] === 0)
                 PS.color(x, y, COLOR_CHILD_LIGHT_BLUE);
             if (c_mg1.data[y][x] === 1)
+                PS.color(x, y, COLOR_CHILD_YELLOW);
+            if (c_mg1.data[y][x] === 4)
                 PS.color(x, y, COLOR_CHILD_ORANGE);
             if (c_mg1.data[y][x] === 2)
                 PS.color(x, y, COLOR_CHILD_VEGGIE1);
@@ -183,6 +273,15 @@ var loadKidGame = function () {
     //Cycle through specific functions depending on set of microgames
     //loadAdultMicroGame1();
 }
+
+
+
+
+
+
+
+
+
 
 
 ///Adult food game
@@ -337,6 +436,7 @@ var placeFood = function(){
 var loadAdultMicroGame1 = function(){
     var x, y, val;
 
+    PS.touch = ag1_TouchFunc;
     PS.dbEvent("StoryGamePrototype", "AdultGameStart", 0);
 
     PS.gridPlane(bg_plane);
@@ -377,6 +477,41 @@ var swipeTick = function (){
     }
 
 };
+
+
+var ag1_TouchFunc = function (x, y, data, options) {
+    if (!is_moving && food_cnt < food_goal) {
+        if (((x >= left_arr_pos[0] && x <= left_arr_pos[0] + 6) && (y >= left_arr_pos[1] && y <= left_arr_pos[1] + 6)) && move_left) {
+            is_moving = true;
+            foodMoveTimer = PS.timerStart(1, swipeTick);
+            PS.spriteDelete(left_arrow);
+            food_cnt++;
+        } else if (((x >= right_arr_pos[0] && x <= right_arr_pos[0] + 6) && (y >= right_arr_pos[1] && y <= right_arr_pos[1] + 6)) && !move_left) {
+            is_moving = true;
+            foodMoveTimer = PS.timerStart(1, swipeTick);
+            PS.spriteDelete(right_arrow);
+            food_cnt++;
+        }
+    }
+
+
+
+    if (food_cnt == food_goal) {
+        if ((x >= spr_pos[0] && x <= spr_pos[0] + 16) && (y >= spr_pos[1] && y <= spr_pos[1] + 16)) {
+            PS.statusText("Someone ate it already...");
+
+            totalGames++;
+            gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
+
+        }
+    }
+}
+
+
+
+
+
+
 
 //Adult amusement park game
 var COASTER_BG = 1;
@@ -442,7 +577,7 @@ var loadAdultMicroGame2 = function(){
     var x, y, val;
 
     PS.dbEvent("StoryGamePrototype", "AdultGameStart", 0);
-
+    PS.touch = ag2_TouchFunc;
     PS.gridPlane(bg_plane);
     for ( y = 0; y < a_mg2.height; y += 1 ) {
         for (x = 0; x < a_mg2.width; x += 1) {
@@ -550,6 +685,105 @@ var vomitTick = function() {
     }
 }
 
+var ag2_TouchFunc = function (x, y, data, options) {
+    if ((x >= face_pos[0] && x <= face_pos[0] + 10) && (y >= face_pos[1] && y <= face_pos[1] + 10)) {
+        if (click_cnt == 5) {
+            PS.spriteDelete(cur_facebutton);
+            spawnFace2();
+        } else if (click_cnt == 10) {
+            PS.spriteDelete(cur_facebutton);
+            spawnFace3();
+            spawnVomit();
+            //this minigame is won - jordan do your thing
+            //PS.debug("Blech");
+
+            totalGames++;
+            gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
+
+
+        }
+        click_cnt++;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//CHILD AMUSEMENT PARK GAME
+
+var c_mg2 = {
+    width: 32, height: 32, pixelSize: 1,
+    data: [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ]
+};
+
+
+var cg2_TouchFunc = function(x, y, data, options){
+    if (c_mg2.data[y][x] === 1) {
+        PS.debug("win");
+        totalGames++;
+        gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
+    }
+        
+
+};
+
+
+var loadChildMicroGame2 = function () {
+    for (var y = 0; y < c_mg2.height; y++) {
+        for (var x = 0; x < c_mg2.width; x++) {
+            if (c_mg2.data[y][x] === 0)
+                PS.color(x, y, COLOR_CHILD_GRAY);
+            if (c_mg2.data[y][x] === 1)
+                PS.color(x, y, COLOR_CHILD_LIGHT_BLUE);
+        }
+    }
+    PS.touch = cg2_TouchFunc;
+};
+
+
+
 /*
 PS.init( system, options )
 Called once after engine is initialized but before event-polling begins.
@@ -577,25 +811,35 @@ This function doesn't have to do anything. Any value returned is ignored.
 
 // UNCOMMENT the following code BLOCK to expose the PS.touch() event handler:
 
-
-
-PS.touch = function( x, y, data, options ) {
-	"use strict"; // Do not remove this directive!
-
-    if (mg_index === -1){
+var menuTouchFunc = function (x, y, data, options) {
+    "use strict"; // Do not remove this directive!
+    if (y === 1) {
         if (menuMap.data[y][x] === 1) {
             mg_index = 1;
-            loadKidGame();
+            loadChildMicroGame1();
         }
-
         if (menuMap.data[y][x] === 2) {
             mg_index = 0;
             loadMicroGame();
         }
     }
 
+    if (y === 4) {
+        if (menuMap.data[y][x] === 1) {
+            //mg_index = 1;
+            loadChildMicroGame2();
+        }
+        if (menuMap.data[y][x] === 2) {
+            mg_index = 1;
+            loadMicroGame();
+        }
+    }
 
-	if (mg_index === 0) {
+
+    
+
+
+    if (mg_index === 0) {
         /*
         if (!is_moving && food_cnt < food_goal){
             if (((x >= left_arr_pos[0] && x <= left_arr_pos[0] + 6) && (y >= left_arr_pos[1] && y <= left_arr_pos[1] + 6)) && move_left) {
@@ -629,6 +873,7 @@ PS.touch = function( x, y, data, options ) {
 	    }
 	    */
 
+        /*
         if ((x >= face_pos[0] && x <= face_pos[0] + 10) && (y >= face_pos[1] && y <= face_pos[1] + 10)){
             if (click_cnt == 5) {
                 PS.spriteDelete(cur_facebutton);
@@ -638,73 +883,14 @@ PS.touch = function( x, y, data, options ) {
                 spawnFace3();
                 spawnVomit();
                 //this minigame is won - jordan do your thing
+                PS.debug("Blech");
             }
             click_cnt++;
         }
+        */
+    }
+}
 
-	}
-
-
-
-
-
-	else if (mg_index == 1) {
-	    if (c_mg1.data[y][x] === 1) {
-	        var rand = Math.floor(Math.random() * 3);
-            if (rand === 0)
-                PS.statusText("Don't play with your food!");
-            if (rand === 1)
-                PS.statusText("Quit stalling and eat!");
-            if (rand === 2)
-                PS.statusText("Eat, or no dessert!")
-
-            PS.dbEvent("StoryGamePrototype", "PlateClick", 0);
-	    }
-
-	    if (c_mg1.data[y][x] === 2 || c_mg1.data[y][x] === 3) {
-
-	        PS.statusText("");
-	        PS.color(x, y, COLOR_CHILD_ORANGE);
-	        c_mg1.data[y][x] = 1;
-
-	        PS.color(x - 1, y - 1, COLOR_CHILD_ORANGE);
-	        c_mg1.data[y - 1][x - 1] = 1;
-
-	        PS.color(x - 1, y, COLOR_CHILD_ORANGE);
-	        c_mg1.data[y][x - 1] = 1;
-
-	        PS.color(x, y - 1, COLOR_CHILD_ORANGE);
-	        c_mg1.data[y - 1][x] = 1;
-
-
-	        PS.dbEvent("StoryGamePrototype", "FoodClick", 0);
-
-	        PS.border(PS.ALL, PS.ALL, 0);
-	        var gridWidth = child_mgs[mg_index].width;
-	        var gridHeight = child_mgs[mg_index].height;
-	        for (var y = 0; y < gridHeight; y++) {
-	            for (var x = 0; x < gridWidth; x++) {
-	                if (c_mg1.data[y][x] === 2 || c_mg1.data[y][x] === 3)
-	                    return;
-	            }
-	        }
-	        PS.dbEvent("StoryGamePrototype", "KidGameComplete", 0);
-	        PS.statusText("You finished your dinner!");
-	        mg_index--;
-	        //loadMicroGame();
-	        if (totalGames == 0) {
-	            totalGames++;
-	            gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
-	        }
-	        else {
-	            PS.fade(PS.ALL, PS.ALL, 60);
-	            PS.color(PS.ALL, PS.ALL, COLOR_CHILD_GRAY);
-	        }
-	    }
-	        
-	}
-
-};
 
 var adult_mgs = [a_mg1, a_mg2];
 var child_mgs = ["", c_mg1];
@@ -749,19 +935,27 @@ This function doesn't have to do anything. Any value returned is ignored.
 
 // UNCOMMENT the following code BLOCK to expose the PS.enter() event handler:
 
-/*
+
 
 PS.enter = function( x, y, data, options ) {
 	"use strict"; // Do not remove this directive!
 
 	// Uncomment the following code line to inspect x/y parameters:
 
-	// PS.debug( "PS.enter() @ " + x + ", " + y + "\n" );
+    // PS.debug( "PS.enter() @ " + x + ", " + y + "\n" );
+	if (mg_index === -1) {
+	    if (y === 1 && menuMap.data[y][x] !== 0)
+	        PS.statusText("Food Problems");
+	    if (y === 4 && menuMap.data[y][x] !== 0)
+	        PS.statusText("Not-So-Amusing Amusment Parks");
+	    if (menuMap.data[y][x] === 0)
+	        PS.statusText("Choose a Game Set");
+	}
 
 	// Add code here for when the mouse cursor/touch enters a bead.
 };
 
-*/
+
 
 /*
 PS.exit ( x, y, data, options )

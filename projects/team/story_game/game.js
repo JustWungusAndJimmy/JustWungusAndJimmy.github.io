@@ -185,7 +185,9 @@ var placeFood = function(){
         PS.spriteMove(spr_food1, spr_pos[0], spr_pos[1]);
     }
 }
-
+var go = function () {
+    PS.debug("Testing");
+}
 var loadAdultMicroGame1 = function(){
     var x, y, val;
 
