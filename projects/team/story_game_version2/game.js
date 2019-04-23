@@ -771,6 +771,21 @@ var cg2_TouchFunc = function(x, y, data, options){
 
 
 var loadChildMicroGame2 = function () {
+    var gridWidth = 32;
+    var gridHeight = 32;
+    PS.gridSize(gridWidth, gridHeight);
+
+    //Initialize beginning values
+    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
+    PS.gridColor(COLOR_ADULT_DARK_BLUE);
+    PS.statusColor(PS.COLOR_WHITE);
+    PS.statusText("");
+    PS.border(PS.ALL, PS.ALL, 0);
+    PS.gridShadow(true, PS.COLOR_BLACK);
+
+
+
+    //console.log("go");
     for (var y = 0; y < c_mg2.height; y++) {
         for (var x = 0; x < c_mg2.width; x++) {
             if (c_mg2.data[y][x] === 0)
@@ -826,7 +841,7 @@ var menuTouchFunc = function (x, y, data, options) {
 
     if (y === 4) {
         if (menuMap.data[y][x] === 1) {
-            //mg_index = 1;
+            mg_index = 0;
             loadChildMicroGame2();
         }
         if (menuMap.data[y][x] === 2) {
