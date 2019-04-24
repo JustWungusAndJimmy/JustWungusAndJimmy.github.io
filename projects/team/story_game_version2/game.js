@@ -1042,8 +1042,6 @@ var cg2_TouchFunc = function (x, y, data, options) {
         PS.color(p[0], p[1], COLOR_ADULT_DARK_RED);
     }
     */
-    
-
 };
 
 

@@ -92,13 +92,10 @@ var switch_pos = [];
 var won = false;
 
 var loadEnding = function() {
-    //get level width and height for variable level sizes
-    var gridWidth = end_map.width;
     var gridHeight = end_map.height;
+    var gridWidth = end_map.width;
     PS.gridSize(gridWidth, gridHeight);
-
     PS.touch = endTouchFunc;
-
     //Initialize beginning values
     //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
     PS.gridColor(COLOR_CHILD_DARK_BLUE);
@@ -259,28 +256,6 @@ var gameCompleteFunction = function () {
 
     }
 };
-
-var loadMicroGame = function() {
-    //get level width and height for variable level sizes
-    var gridWidth = adult_mgs[mg_index].width;
-    var gridHeight = adult_mgs[mg_index].height;
-    PS.gridSize(gridWidth, gridHeight);
-
-    //Initialize beginning values
-    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
-    PS.gridColor(COLOR_ADULT_DARK_BLUE);
-    PS.statusColor( PS.COLOR_WHITE );
-    PS.statusText("");
-    PS.border(PS.ALL, PS.ALL, 0);
-    PS.gridShadow(true, PS.COLOR_BLACK);
-
-    //Cycle through specific functions depending on set of microgames
-    if (mg_index === 0)
-        loadAdultMicroGame1();
-    else
-        loadAdultMicroGame2();
-};
-
 
 
 ///MICROGAME CODE
@@ -589,6 +564,19 @@ var placeFood = function(){
 };
 
 var loadAdultMicroGame1 = function(){
+    //get level width and height for variable level sizes
+    var gridWidth = a_mg1.width;
+    var gridHeight = a_mg1.height;
+    PS.gridSize(gridWidth, gridHeight);
+
+    //Initialize beginning values
+    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
+    PS.gridColor(COLOR_ADULT_DARK_BLUE);
+    PS.statusColor( PS.COLOR_WHITE );
+    PS.statusText("");
+    PS.border(PS.ALL, PS.ALL, 0);
+    PS.gridShadow(true, PS.COLOR_BLACK);
+
     var x, y, val;
 
     //PS.audioPlay("fridge", { path: "sounds/", fileTypes: ["wav"], repeat: true });
@@ -597,9 +585,9 @@ var loadAdultMicroGame1 = function(){
     PS.dbEvent("StoryGamePrototype", "AdultGameStart", 0);
 
     PS.gridPlane(bg_plane);
-    for ( y = 0; y < adult_mgs[mg_index].height; y += 1 ) {
-        for (x = 0; x < adult_mgs[mg_index].width; x += 1) {
-            val = adult_mgs[mg_index].data[(y * adult_mgs[mg_index].width) + x]; // get map data
+    for ( y = 0; y < a_mg1.height; y += 1 ) {
+        for (x = 0; x < a_mg1.width; x += 1) {
+            val = a_mg1.data[(y * a_mg1.width) + x]; // get map data
             if (val === FRIDGE) {
                 PS.color(x, y, COLOR_ADULT_DARK_PURPLE);
             }
@@ -632,12 +620,10 @@ var swipeTick = function (){
         spr_pos[0] += 1;
         PS.spriteMove(cur_sprite, spr_pos[0], spr_pos[1]);
     }
-
 };
 
 
 var ag1_TouchFunc = function (x, y, data, options) {
-
     if (touch_enabled) {
         if (!is_moving && food_cnt < food_goal) {
             if (((x >= left_arr_pos[0] && x <= left_arr_pos[0] + 6) && (y >= left_arr_pos[1] && y <= left_arr_pos[1] + 6)) && move_left) {
@@ -652,9 +638,6 @@ var ag1_TouchFunc = function (x, y, data, options) {
                 food_cnt++;
             }
         }
-
-
-
         if (food_cnt == food_goal) {
             if ((x >= spr_pos[0] && x <= spr_pos[0] + 16) && (y >= spr_pos[1] && y <= spr_pos[1] + 16)) {
                 PS.statusText("Someone ate it already...");
@@ -665,8 +648,6 @@ var ag1_TouchFunc = function (x, y, data, options) {
             }
         }
     }
-
-
 }
 
 
@@ -736,6 +717,19 @@ var click_cnt = 0;
 var ag2Audio;
 //Functions
 var loadAdultMicroGame2 = function(){
+    //get level width and height for variable level sizes
+    var gridWidth = a_mg2.width;
+    var gridHeight = a_mg2.height;
+    PS.gridSize(gridWidth, gridHeight);
+
+    //Initialize beginning values
+    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
+    PS.gridColor(COLOR_ADULT_DARK_BLUE);
+    PS.statusColor( PS.COLOR_WHITE );
+    PS.statusText("");
+    PS.border(PS.ALL, PS.ALL, 0);
+    PS.gridShadow(true, PS.COLOR_BLACK);
+
     var x, y, val;
 
     PS.dbEvent("StoryGamePrototype", "AdultGameStart", 0);
@@ -874,12 +868,197 @@ var ag2_TouchFunc = function (x, y, data, options) {
 }
 
 
+///ADULT SLEEPING GAME
+var SLEEP_BG = 0;
+var BED_FRAME = 1;
+var BLANKET_OUTLINE = 2;
+var MATTRESS = 3;
+var BLANKET = 4;
+
+var a_mg3 = {
+    width : 32, height : 32, pixelSize : 1,
+    data : [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 2, 2, 2, 3, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 2, 2, 2, 3, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 2, 3, 3, 3, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 2, 1, 1, 1, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 2, 3, 3, 3, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 2, 3, 3, 3, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 2, 3, 3, 3, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 2, 1, 1, 1, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ]
+};
+
+//sprites
+var phone;
+var arr_down;
+
+//variables
+var phone_up = false;
+var phone_tick = 0;
+var tot_time;
+var phone_pos = [];
+var phone_arr_pos = [];
+var phoneTimer = null;
+var respawnTimer = null;
+var ignores = 0;
+var annoyed_lines = ["Who is texting me!", "God, go away!", "I just want to sleep!"];
+var line_count = 0;
+
+//functions
+var loadAdultMicroGame3 = function(){
+    //get level width and height for variable level sizes
+    var gridWidth = a_mg3.width;
+    var gridHeight = a_mg3.height;
+    PS.gridSize(gridWidth, gridHeight);
+
+    //Initialize beginning values
+    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
+    PS.gridColor(COLOR_ADULT_DARK_BLUE);
+    PS.statusColor( PS.COLOR_WHITE );
+    PS.statusText("");
+    PS.border(PS.ALL, PS.ALL, 0);
+    PS.gridShadow(true, PS.COLOR_BLACK);
+
+    var x, y, val;
+
+    PS.dbEvent("StoryGamePrototype", "AdultGameStart", 0);
+    PS.touch = ag3_TouchFunc;
+    PS.gridPlane(bg_plane);
+    for ( y = 0; y < a_mg3.height; y += 1 ) {
+        for (x = 0; x < a_mg3.width; x += 1) {
+            val = a_mg3.data[(y * a_mg3.width) + x]; // get map data
+            if (val === SLEEP_BG) {
+                PS.color(x, y, COLOR_ADULT_DARK_BLUE);
+            }
+            else if (val === BED_FRAME) {
+                PS.color(x, y, COLOR_ADULT_DARK_PURPLE);
+            } else if (val === BLANKET_OUTLINE) {
+                PS.color(x, y, COLOR_ADULT_LIGHT_PURPLE);
+            } else if (val === MATTRESS) {
+                PS.color(x, y, COLOR_ADULT_DARK_RED);
+            } else if (val === BLANKET) {
+                PS.color(x, y, COLOR_ADULT_LIGHT_RED);
+            }
+        }
+    }
+    PS.statusText("Time for bed.");
+    spawnPhone();
+};
+
+var ag3_TouchFunc = function(x, y, data, options) {
+    if (phone_up) {
+        if ((x >= phone_arr_pos[0] && x <= phone_arr_pos[0] + 6) && (y >= phone_arr_pos[1] && y <= phone_arr_pos[1] + 6)) {
+            PS.spriteDelete(arr_down);
+            phoneTimer = PS.timerStart(1, phoneTick);
+        }
+    }
+
+}
+
+var spawnPhone = function() {
+    var loader;
+
+    loader = function (data) {
+        phone = PS.spriteImage( data );
+        PS.spritePlane( phone, sprite_plane);
+        phone_pos[0] = 10;
+        phone_pos[1] = 33;
+        PS.spriteMove(phone, phone_pos[0], phone_pos[1]);
+        phoneTimer = PS.timerStart(1, phoneTick);
+    };
+    PS.imageLoad("images/amg_phone.png", loader);
+};
 
 
+var calculateTime = function() {
+    var min = 2;
+    var max = 4;
+    tot_time = Math.floor(Math.random() * (max-min+1)) + min;
+}
 
+var phoneTick = function() {
+    if (!phone_up){
+        phone_pos[1] -= 1;
+        if (phone_pos[1] == 7) {
+            printNextGripe();
+            phone_up = true;
+            spawnPhoneArrow();
+            PS.timerStop(phoneTimer);
+        } else {
+            PS.spriteMove(phone, phone_pos[0], phone_pos[1]);
+        }
+    } else {
+        phone_pos[1] += 1;
+        if (phone_pos[1] == 33) {
+            ignores += 1;
+            if (ignores == 3) {
+                PS.statusText("Will I ever get rest?");
+                totalGames++;
+                gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
+            } else {
+                PS.statusText("Time for bed... Again.");
+                phone_up = false;
+                PS.timerStop(phoneTimer);
+                calculateTime();
+                respawnTimer = PS.timerStart(60, notifyTick);
+            }
+        } else {
+            PS.spriteMove(phone, phone_pos[0], phone_pos[1]);
+        }
+    }
+}
 
+var notifyTick = function () {
+    phone_tick++;
+    if (phone_tick == (tot_time)){
+        PS.timerStop(respawnTimer);
+        phone_tick = 0;
+        phoneTimer = PS.timerStart(1, phoneTick);
+    }
+}
 
+var spawnPhoneArrow = function() {
+    var loader;
 
+    loader = function (data) {
+        arr_down = PS.spriteImage( data );
+        PS.spritePlane( arr_down, arrow_plane);
+        phone_arr_pos[0] = 13;
+        phone_arr_pos[1] = 25;
+        PS.spriteMove(arr_down, phone_arr_pos[0], phone_arr_pos[1]);
+    };
+    PS.imageLoad("images/amg_arrow_down.png", loader);
+}
+
+var printNextGripe = function() {
+    PS.statusText(annoyed_lines[line_count]);
+    line_count++;
+}
 
 
 
@@ -1048,8 +1227,8 @@ var cg2_TouchFunc = function (x, y, data, options) {
 
 
 var loadChildMicroGame2 = function () {
-    var gridWidth = 32;
-    var gridHeight = 32;
+    var gridWidth = c_mg2.width;
+    var gridHeight = c_mg2.height;
     PS.gridSize(gridWidth, gridHeight);
 
     id_path = PS.pathMap(c_mg2);
@@ -1153,7 +1332,7 @@ var menuTouchFunc = function (x, y, data, options) {
             mg_index = 0;
             menuMap.data[1][3] = 0;
             menuMap.data[1][4] = 0;
-            loadMicroGame();
+            loadAdultMicroGame1();
         }
     }
 
@@ -1169,63 +1348,8 @@ var menuTouchFunc = function (x, y, data, options) {
             mg_index = 1;
             menuMap.data[4][3] = 0;
             menuMap.data[4][4] = 0;
-            loadMicroGame();
+            loadAdultMicroGame2();
         }
-    }
-
-
-    
-
-
-    if (mg_index === 0) {
-        /*
-        if (!is_moving && food_cnt < food_goal){
-            if (((x >= left_arr_pos[0] && x <= left_arr_pos[0] + 6) && (y >= left_arr_pos[1] && y <= left_arr_pos[1] + 6)) && move_left) {
-                is_moving = true;
-                foodMoveTimer = PS.timerStart(1, swipeTick);
-                PS.spriteDelete(left_arrow);
-                food_cnt++;
-            } else if (((x >= right_arr_pos[0] && x <= right_arr_pos[0] + 6) && (y >= right_arr_pos[1] && y <= right_arr_pos[1] + 6)) && !move_left) {
-                is_moving = true;
-                foodMoveTimer = PS.timerStart(1, swipeTick);
-                PS.spriteDelete(right_arrow);
-                food_cnt++;
-            }
-        }
-
-
-
-	    if (food_cnt == food_goal) {
-	        if ((x >= spr_pos[0] && x <= spr_pos[0] + 16) && (y >= spr_pos[1] && y <= spr_pos[1] + 16)) {
-	            PS.statusText("Someone ate it already...");
-	            if (totalGames == 0) {
-	                mg_index = 1;
-	                totalGames++;
-	                gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
-	            }
-	            else {
-	                PS.fade(PS.ALL, PS.ALL, 60);
-	                PS.color(PS.ALL, PS.ALL, COLOR_CHILD_GRAY);
-	            }
-	        }
-	    }
-	    */
-
-        /*
-        if ((x >= face_pos[0] && x <= face_pos[0] + 10) && (y >= face_pos[1] && y <= face_pos[1] + 10)){
-            if (click_cnt == 5) {
-                PS.spriteDelete(cur_facebutton);
-                spawnFace2();
-            } else if (click_cnt == 10) {
-                PS.spriteDelete(cur_facebutton);
-                spawnFace3();
-                spawnVomit();
-                //this minigame is won - jordan do your thing
-                PS.debug("Blech");
-            }
-            click_cnt++;
-        }
-        */
     }
 }
 
