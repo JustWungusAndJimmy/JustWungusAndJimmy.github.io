@@ -485,7 +485,13 @@ var gameCompleteFunction = function () {
     if (counter == 120) {
         PS.timerStop(gameCompleteTimer);
 
-
+        PS.border(PS.ALL, PS.ALL, {
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0
+        });
+        PS.radius(PS.ALL, PS.ALL, 0);
         //every game has been completed, put code for activating ending here
         if (totalGames === 5) {
             //ENDING CODE GOES HERE
@@ -878,7 +884,7 @@ var loadAdultMicroGame1 = function(){
 
     var x, y, val;
 
-    //PS.audioPlay("fridge", { path: "sounds/", fileTypes: ["wav"], repeat: true });
+    PS.audioPlayChannel(ag1Audio, {loop: true });
     //PS.debug(ag1Audio + "\n");
     PS.touch = ag1_TouchFunc;
     PS.enter = ag1_EnterFunc;
@@ -946,7 +952,7 @@ var ag1_TouchFunc = function (x, y, data, options) {
         if (food_cnt == food_goal) {
             if ((x >= spr_pos[0] && x <= spr_pos[0] + 16) && (y >= spr_pos[1] && y <= spr_pos[1] + 16)) {
                 PS.statusText("Someone ate it already...");
-                //PS.audioStop(ag1Audio);
+                PS.audioStop(ag1Audio);
                 totalGames++;
                 gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
 
@@ -1050,6 +1056,9 @@ var loadAdultMicroGame2 = function(){
     var gridWidth = a_mg2.width;
     var gridHeight = a_mg2.height;
     PS.gridSize(gridWidth, gridHeight);
+
+
+    PS.audioPlayChannel(ag2Audio, { loop: true });
 
     //Initialize beginning values
     //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
@@ -1219,6 +1228,7 @@ var ag2_TouchFunc = function (x, y, data, options) {
                 spawnVomit();
                 //this minigame is won - jordan do your thing
                 //PS.debug("Blech");
+                PS.audioStop(ag2Audio);
                 PS.timerStop(legTimer);
                 totalGames++;
                 gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
@@ -1480,7 +1490,7 @@ var c_mg2 = {
         4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 0, 1, 0, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4,
         4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
         4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 0, 1, 0, 1, 1, 1, 1, 0, 2, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4,
-        4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2,
+        4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 1, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2,
         4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 0, 1, 0, 1, 0, 4, 4, 2, 4, 4, 4, 2, 4, 4, 4, 4, 4,
         4, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 0, 1, 0, 1, 0, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 4,
         4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 1, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
@@ -1510,36 +1520,36 @@ var c_mg2 = {
     data2: [
         [2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 3, 1, 1, 1, 1, 3, 1, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4],
         [4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 4, 1, 3, 3, 3, 3, 3, 3, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 1, 1, 0, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4],
-        [4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 0, 1, 1, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 9, 1, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 0, 1, 9, 1, 1, 1, 1, 0, 2, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2],
-        [4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 9, 1, 9, 1, 0, 4, 4, 2, 4, 4, 4, 2, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 0, 1, 9, 1, 9, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 1, 9, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 0, 1, 1, 1, 1, 1, 1, 0, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 2, 4],
-        [4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2],
-        [4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 9, 9, 1, 1, 0, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 9, 1, 0, 4, 4, 2, 4, 4, 4, 4, 4, 2, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 1, 9, 1, 1, 1, 1, 0, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4],
-        [2, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 0, 1, 1, 9, 1, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 1, 1, 0, 4, 4, 4, 4, 2, 4, 4, 4, 4, 2, 4, 4],
-        [2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 1, 1, 0, 4, 2, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 0, 1, 1, 1, 1, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 0, 1, 1, 1, 1, 1, 1, 0, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 1, 1, 0, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 0, 1, 1, 1, 1, 1, 1, 0, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 0, 1, 1, 1, 1, 1, 1, 0, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-        [2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 10, 1, 1, 0, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4]
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 6, 5, 1, 1, 5, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4],
+        [4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 7, 1, 1, 1, 1, 7, 1, 1, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 7, 9, 1, 5, 6, 5, 6, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 7, 1, 9, 1, 1, 1, 1, 7, 2, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 6, 6, 6, 5, 9, 1, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2],
+        [4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 7, 1, 1, 9, 1, 9, 1, 7, 4, 4, 2, 4, 4, 4, 2, 4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 7, 1, 9, 1, 9, 1, 1, 7, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 7, 1, 9, 5, 6, 6, 6, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 7, 1, 1, 1, 1, 1, 1, 7, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 2, 4],
+        [4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 7, 1, 1, 1, 1, 1, 1, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 6, 6, 6, 5, 1, 1, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2],
+        [4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 7, 1, 1, 9, 9, 1, 1, 7, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 7, 1, 1, 1, 1, 9, 1, 7, 4, 4, 2, 4, 4, 4, 4, 4, 2, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 7, 1, 1, 5, 6, 6, 6, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 7, 1, 9, 1, 1, 1, 1, 7, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4],
+        [2, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 7, 1, 1, 9, 1, 1, 1, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 6, 6, 6, 5, 1, 1, 7, 4, 4, 4, 4, 2, 4, 4, 4, 4, 2, 4, 4],
+        [2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 7, 1, 1, 1, 1, 1, 1, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 7, 1, 1, 1, 1, 1, 1, 7, 4, 2, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 7, 1, 1, 1, 1, 1, 1, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 7, 1, 1, 1, 1, 1, 1, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 7, 1, 1, 1, 1, 1, 1, 7, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 7, 1, 1, 1, 1, 1, 1, 7, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 7, 1, 1, 1, 1, 1, 1, 7, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 7, 1, 1, 1, 1, 1, 1, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 7, 1, 1, 1, 1, 1, 1, 7, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 7, 1, 1, 1, 1, 1, 1, 7, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+        [2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 7, 1, 1, 1, 1, 1, 1, 7, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 4],
+        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 7, 1, 1, 1, 10, 1, 1, 7, 4, 4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 5, 1, 1, 1, 1, 1, 1, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4]
     ]
 
 };
@@ -1567,6 +1577,7 @@ var tickFunc = function () {
         path = null;
         PS.timerStop(cmg2Timer);
         PS.statusText("Sorry, but you're too short!");
+        PS.audioStop(cg2Audio);
         totalGames++;
         gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
         return;
@@ -1589,8 +1600,8 @@ var tickFunc = function () {
         PS.statusText("Scuse me");
     if (childx === 16 && childy === 7)
         PS.statusText("Pardon me");
-    if (childx === 17 && childy === 6)
-        PS.statusText("Lemme just squeeze through here...");
+    if (childx === 17 && childy === 8)
+        PS.statusText("Just gonna sneak past ya");
     if (childx === 14 && childy === 4)
         PS.statusText("Lemme just squeeze through here...");
 
@@ -1642,6 +1653,7 @@ var loadChildMicroGame2 = function () {
     var gridHeight = c_mg2.height;
     PS.gridSize(gridWidth, gridHeight);
 
+    PS.audioPlayChannel(cg2Audio, { loop: true });
     id_path = PS.pathMap(c_mg2);
     //Initialize beginning values
     //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
@@ -1653,7 +1665,17 @@ var loadChildMicroGame2 = function () {
 
 
 
-    //console.log("go");
+    //data2 map
+    //0: wall
+    //1: floor
+    //2: grass1
+    //3: stand
+    //4: grass2
+    //10: child
+    //9: other people
+    //5: circle rope stands
+    //6: horizontal rope stands
+    //7: vertical rope stands
     for (var y = 0; y < c_mg2.height; y++) {
         for (var x = 0; x < c_mg2.width; x++) {
             if (c_mg2.data2[y][x] === 4)
@@ -1670,6 +1692,33 @@ var loadChildMicroGame2 = function () {
                 PS.color(x, y, COLOR_CHILD_YELLOW);
             if (c_mg2.data2[y][x] === 9)
                 PS.color(x, y, COLOR_CHILD_ORANGE);
+
+            if (c_mg2.data2[y][x] === 5) {
+                PS.color(x, y, 0x000000);
+                PS.radius(x, y, 50);
+                PS.bgColor(x, y, COLOR_CHILD_GRAY);
+                PS.bgAlpha(x, y, 255);
+            }
+            if (c_mg2.data2[y][x] === 6) {
+                PS.color(x, y, 0x000000);
+                PS.border(x, y, {
+                    top: 16,
+                    left: 0,
+                    bottom: 16,
+                    right: 0
+                });
+                PS.borderColor(x, y, COLOR_CHILD_GRAY);
+            }
+            if (c_mg2.data2[y][x] === 7) {
+                PS.color(x, y, 0x000000);
+                PS.border(x, y, {
+                    top: 0,
+                    left: 16,
+                    bottom: 0,
+                    right: 16
+                });
+                PS.borderColor(x, y, COLOR_CHILD_GRAY);
+            }
         }
     }
     PS.touch = cg2_TouchFunc;
@@ -1690,16 +1739,19 @@ Any value returned is ignored.
 */
 PS.init = function( system, options ) {
     "use strict"; // Do not remove this directive!
-    var a1Load = function ( testing ) {
-        ag1Audio = testing.channel;
-        //PS.debug(testing.name + "\n");
+    var a1Load = function ( data ) {
+        ag1Audio = data.channel;
+        PS.debug(ag1Audio + "\n");
     }
     var a2Load = function (data) {
         ag2Audio = data.channel;
+        PS.debug(ag2Audio + "\n");
     }
     var c2Load = function (data) {
         cg2Audio = data.channel;
+        PS.debug(cg2Audio + "\n");
     }
+
     PS.dbInit("StoryGamePrototype");
     PS.audioLoad("crunch1", { path: "sounds/", fileTypes: ["wav"], lock: true });
     PS.audioLoad("crunch2", { path: "sounds/", fileTypes: ["wav"], lock: true });
@@ -1708,214 +1760,14 @@ PS.init = function( system, options ) {
     PS.audioLoad("fork2", { path: "sounds/", fileTypes: ["wav"], lock: true });
     PS.audioLoad("fork3", { path: "sounds/", fileTypes: ["wav"], lock: true });
 
-    PS.audioLoad("fridge", { path: "sounds/", fileTypes: ["wav"], lock: true, onload : a1Load });
+    PS.audioLoad("fridge", { path: "sounds/", fileTypes: ["wav"], onLoad : a1Load });
 
-    PS.audioLoad("crowd", { path: "sounds/", fileTypes: ["wav"], lock: true, onLoad : c2Load});
+    PS.audioLoad("crowd", { path: "sounds/", fileTypes: ["wav"], onLoad : c2Load});
 
-    PS.audioLoad("rollerCoaster", { path: "sounds/", fileTypes: ["wav"], lock: true, onLoad : a2Load });
+    PS.audioLoad("rollerCoaster", { path: "sounds/", fileTypes: ["wav"], onLoad : a2Load });
     loadMenu();
 };
 
-/*
-PS.touch ( x, y, data, options )
-Called when the left mouse button is clicked over bead(x, y), or when bead(x, y) is touched.
-This function doesn't have to do anything. Any value returned is ignored.
-[x : Number] = zero-based x-position (column) of the bead on the grid.
-[y : Number] = zero-based y-position (row) of the bead on the grid.
-[data : *] = The JavaScript value previously associated with bead(x, y) using PS.data(); default = 0.
-[options : Object] = A JavaScript object with optional data properties; see API documentation for details.
-*/
-
-// UNCOMMENT the following code BLOCK to expose the PS.touch() event handler:
-
-
-
-
-
-/*
-PS.release ( x, y, data, options )
-Called when the left mouse button is released, or when a touch is lifted, over bead(x, y).
-This function doesn't have to do anything. Any value returned is ignored.
-[x : Number] = zero-based x-position (column) of the bead on the grid.
-[y : Number] = zero-based y-position (row) of the bead on the grid.
-[data : *] = The JavaScript value previously associated with bead(x, y) using PS.data(); default = 0.
-[options : Object] = A JavaScript object with optional data properties; see API documentation for details.
-*/
-
-// UNCOMMENT the following code BLOCK to expose the PS.release() event handler:
-
-/*
-
-PS.release = function( x, y, data, options ) {
-	"use strict"; // Do not remove this directive!
-
-	// Uncomment the following code line to inspect x/y parameters:
-
-	// PS.debug( "PS.release() @ " + x + ", " + y + "\n" );
-
-	// Add code here for when the mouse button/touch is released over a bead.
-};
-
-*/
-
-/*
-PS.enter ( x, y, button, data, options )
-Called when the mouse cursor/touch enters bead(x, y).
-This function doesn't have to do anything. Any value returned is ignored.
-[x : Number] = zero-based x-position (column) of the bead on the grid.
-[y : Number] = zero-based y-position (row) of the bead on the grid.
-[data : *] = The JavaScript value previously associated with bead(x, y) using PS.data(); default = 0.
-[options : Object] = A JavaScript object with optional data properties; see API documentation for details.
-*/
-
-// UNCOMMENT the following code BLOCK to expose the PS.enter() event handler:
-
-
-/*
-PS.enter = function( x, y, data, options ) {
-	"use strict"; // Do not remove this directive!
-
-	// Uncomment the following code line to inspect x/y parameters:
-
-    // PS.debug( "PS.enter() @ " + x + ", " + y + "\n" );
-	if (mg_index === -1) {
-
-	}
-};
-*/
-
-
-
-/*
-PS.exit ( x, y, data, options )
-Called when the mouse cursor/touch exits bead(x, y).
-This function doesn't have to do anything. Any value returned is ignored.
-[x : Number] = zero-based x-position (column) of the bead on the grid.
-[y : Number] = zero-based y-position (row) of the bead on the grid.
-[data : *] = The JavaScript value previously associated with bead(x, y) using PS.data(); default = 0.
-[options : Object] = A JavaScript object with optional data properties; see API documentation for details.
-*/
-
-// UNCOMMENT the following code BLOCK to expose the PS.exit() event handler:
-
-/*
-
-PS.exit = function( x, y, data, options ) {
-	"use strict"; // Do not remove this directive!
-
-	// Uncomment the following code line to inspect x/y parameters:
-
-	// PS.debug( "PS.exit() @ " + x + ", " + y + "\n" );
-
-	// Add code here for when the mouse cursor/touch exits a bead.
-};
-
-*/
-
-/*
-PS.exitGrid ( options )
-Called when the mouse cursor/touch exits the grid perimeter.
-This function doesn't have to do anything. Any value returned is ignored.
-[options : Object] = A JavaScript object with optional data properties; see API documentation for details.
-*/
-
-// UNCOMMENT the following code BLOCK to expose the PS.exitGrid() event handler:
-
-/*
-
-PS.exitGrid = function( options ) {
-	"use strict"; // Do not remove this directive!
-
-	// Uncomment the following code line to verify operation:
-
-	// PS.debug( "PS.exitGrid() called\n" );
-
-	// Add code here for when the mouse cursor/touch moves off the grid.
-};
-
-*/
-
-/*
-PS.keyDown ( key, shift, ctrl, options )
-Called when a key on the keyboard is pressed.
-This function doesn't have to do anything. Any value returned is ignored.
-[key : Number] = ASCII code of the released key, or one of the PS.KEY_* constants documented in the API.
-[shift : Boolean] = true if shift key is held down, else false.
-[ctrl : Boolean] = true if control key is held down, else false.
-[options : Object] = A JavaScript object with optional data properties; see API documentation for details.
-*/
-
-// UNCOMMENT the following code BLOCK to expose the PS.keyDown() event handler:
-
-
-/*
-PS.keyDown = function( key, shift, ctrl, options ) {
-	"use strict"; // Do not remove this directive!
-
-	// Uncomment the following code line to inspect first three parameters:
-
-	//PS.debug( "PS.keyDown(): key=" + key + ", shift=" + shift + ", ctrl=" + ctrl + "\n" );
-
-	// Add code here for when a key is pressed.
-};
-*/
-
-
-
-/*
-PS.keyUp ( key, shift, ctrl, options )
-Called when a key on the keyboard is released.
-This function doesn't have to do anything. Any value returned is ignored.
-[key : Number] = ASCII code of the released key, or one of the PS.KEY_* constants documented in the API.
-[shift : Boolean] = true if shift key is held down, else false.
-[ctrl : Boolean] = true if control key is held down, else false.
-[options : Object] = A JavaScript object with optional data properties; see API documentation for details.
-*/
-
-// UNCOMMENT the following code BLOCK to expose the PS.keyUp() event handler:
-
-/*
-
-PS.keyUp = function( key, shift, ctrl, options ) {
-	"use strict"; // Do not remove this directive!
-
-	// Uncomment the following code line to inspect first three parameters:
-
-	// PS.debug( "PS.keyUp(): key=" + key + ", shift=" + shift + ", ctrl=" + ctrl + "\n" );
-
-	// Add code here for when a key is released.
-};
-
-*/
-
-/*
-PS.input ( sensors, options )
-Called when a supported input device event (other than those above) is detected.
-This function doesn't have to do anything. Any value returned is ignored.
-[sensors : Object] = A JavaScript object with properties indicating sensor status; see API documentation for details.
-[options : Object] = A JavaScript object with optional data properties; see API documentation for details.
-NOTE: Currently, only mouse wheel events are reported, and only when the mouse cursor is positioned directly over the grid.
-*/
-
-// UNCOMMENT the following code BLOCK to expose the PS.input() event handler:
-
-/*
-
-PS.input = function( sensors, options ) {
-	"use strict"; // Do not remove this directive!
-
-	// Uncomment the following code lines to inspect first parameter:
-
-//	 var device = sensors.wheel; // check for scroll wheel
-//
-//	 if ( device ) {
-//	   PS.debug( "PS.input(): " + device + "\n" );
-//	 }
-
-	// Add code here for when an input event is detected.
-};
-
-*/
 
 /*
 PS.shutdown ( options )
