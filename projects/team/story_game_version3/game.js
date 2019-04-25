@@ -112,6 +112,7 @@ var true_kid;
 var adult_kid;
 var true_adult;
 var switch_button;
+var switch_button_hover;
 
 //variables
 var switch_pos = [];
@@ -122,6 +123,7 @@ var loadEnding = function() {
     var gridWidth = end_map.width;
     PS.gridSize(gridWidth, gridHeight);
     PS.touch = endTouchFunc;
+    PS.enter = endEnterFunc;
     //Initialize beginning values
     //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
     PS.gridColor(COLOR_CHILD_DARK_BLUE);
@@ -139,6 +141,7 @@ var loadEnding = function() {
 
     spawnAdultKid();
     spawnKidAdult();
+    spawnSwitchHover();
     spawnSwitch();
 }
 
@@ -146,12 +149,24 @@ var endTouchFunc = function(x, y, data, options){
     "use strict"; // Do not remove this directive!
     if ((x >= switch_pos[0] && x <= switch_pos[0] + 9) && (y >= switch_pos[1] && y <= switch_pos[1] + 6) && !won) {
         PS.spriteDelete(switch_button);
+        PS.spriteDelete(switch_button_hover);
         spawnTrueKid();
         spawnTrueAdult();
         PS.fade(PS.ALL, PS.ALL, 360);
         PS.color(PS.ALL, PS.ALL, PS.COLOR_BLACK);
         PS.statusText("We're not so different.");
         won = true;
+    }
+}
+
+var endEnterFunc = function (x, y, data, options) {
+    "use strict";
+    if (!won) {
+        if ((x >= switch_pos[0] && x <= switch_pos[0] + 9) && (y >= switch_pos[1] && y <= switch_pos[1] + 6) && !won) {
+            PS.spriteShow(switch_button, false);
+        } else {
+            PS.spriteShow(switch_button, true);
+        }
     }
 }
 
@@ -208,12 +223,25 @@ var spawnSwitch = function () {
 
     loader = function ( data ) {
         switch_button = PS.spriteImage( data );
-        PS.spritePlane( switch_button, sprite_plane);
+        PS.spritePlane( switch_button, arrow_plane);
         switch_pos[0] = 11;
         switch_pos[1] = 15;
         PS.spriteMove(switch_button, switch_pos[0], switch_pos[1]);
     };
     PS.imageLoad("images/switch.png", loader);
+}
+
+var spawnSwitchHover = function () {
+    var loader;
+
+    loader = function ( data ) {
+        switch_button_hover = PS.spriteImage( data );
+        PS.spritePlane( switch_button_hover, sprite_plane);
+        switch_pos[0] = 11;
+        switch_pos[1] = 15;
+        PS.spriteMove(switch_button_hover, switch_pos[0], switch_pos[1]);
+    };
+    PS.imageLoad("images/switch_hover.png", loader);
 }
 
 //GLOBAL VARIABLES
@@ -239,6 +267,7 @@ var loadMenu = function () {
     PS.gridSize(gridWidth, gridHeight);
 
     PS.touch = menuTouchFunc;
+    PS.enter = menuEnterFunc;
     //PS.dbEvent("StoryGamePrototype", "KidGameStart", 0);
 
     //Initialize beginning values
@@ -257,6 +286,40 @@ var loadMenu = function () {
     }
     spawnAllIcons();
 };
+
+var menuEnterFunc = function(x, y, data, options) {
+    "use strict";
+    if (ch_food_check){
+        if ((y < child_food_pos[1] + 8 && y > child_food_pos[1]) && (x < child_food_pos[0] + 8 && x > child_food_pos[0])) {
+            PS.statusText("Food Problems");
+        }
+    }
+    if (child_amuse_check){
+        if ((y < ch_amusement_pos[1] + 8 && y > ch_amusement_pos[1]) && (x < ch_amusement_pos[0] + 8 && x > ch_amusement_pos[0])) {
+            PS.statusText("Not-So-Amusing Amusement Parks");
+        }
+    }
+    if (ch_sleep_check) {
+        if ((y < child_sleep_pos[1] + 8 && y > child_sleep_pos[1]) && (x < child_sleep_pos[0] + 8 && x > child_sleep_pos[0])) {
+            PS.statusText("Sleeping is Hard");
+        }
+    }
+    if (ad_food_check){
+        if ((y < adult_food_pos[1] + 8 && y > adult_food_pos[1]) && (x < adult_food_pos[0] + 8 && x > adult_food_pos[0])) {
+            PS.statusText("Food Problems");
+        }
+    }
+    if (ad_amuse_check) {
+        if ((y < adult_amusement_pos[1] + 8 && y > adult_amusement_pos[1]) && (x < adult_amusement_pos[0] + 8 && x > adult_amusement_pos[0])) {
+            PS.statusText("Not-So-Amusing Amusement Parks");
+        }
+    }
+    if (ad_sleep_check) {
+        if ((y < adult_sleep_pos[1] + 8 && y > adult_sleep_pos[1]) && (x < adult_sleep_pos[0] + 8 && x > adult_sleep_pos[0])) {
+            PS.statusText("Sleeping is Hard");
+        }
+    }
+}
 
 //variables
 var child_food;
@@ -324,7 +387,7 @@ var spawnAllIcons = function() {
     if (ch_sleep_check) {
         loader5 = function(data) {
             child_sleep = PS.spriteImage( data );
-            PS.spritePlane( child_amusement, sprite_plane);
+            PS.spritePlane( child_sleep, sprite_plane);
             child_sleep_pos[0] = 4;
             child_sleep_pos[1] = 22;
             PS.spriteMove(child_sleep, child_sleep_pos[0], child_sleep_pos[1]);
@@ -361,6 +424,58 @@ var deleteAllIcons = function(){
     }
     if (ad_sleep_check) {
         PS.spriteDelete(adult_sleep);
+    }
+}
+
+var menuTouchFunc = function (x, y, data, options) {
+    "use strict"; // Do not remove this directive!
+
+    if (ch_food_check){
+        if ((y < child_food_pos[1] + 8 && y > child_food_pos[1]) && (x < child_food_pos[0] + 8 && x > child_food_pos[0])) {
+            deleteAllIcons();
+            ch_food_check = false;
+            mg_index = 0;
+            loadChildMicroGame1();
+        }
+    }
+    if (child_amuse_check){
+        if ((y < ch_amusement_pos[1] + 8 && y > ch_amusement_pos[1]) && (x < ch_amusement_pos[0] + 8 && x > ch_amusement_pos[0])) {
+            deleteAllIcons();
+            child_amuse_check = false;
+            mg_index = 1;
+            loadChildMicroGame2()
+        }
+    }
+    if (ch_sleep_check) {
+        if ((y < child_sleep_pos[1] + 8 && y > child_sleep_pos[1]) && (x < child_sleep_pos[0] + 8 && x > child_sleep_pos[0])) {
+            ch_sleep_check = false;
+            //mg_index++;
+            //load the game, boyo
+        }
+    }
+    if (ad_food_check){
+        if ((y < adult_food_pos[1] + 8 && y > adult_food_pos[1]) && (x < adult_food_pos[0] + 8 && x > adult_food_pos[0])) {
+            deleteAllIcons();
+            ad_food_check = false;
+            mg_index = 3;
+            loadAdultMicroGame1();
+        }
+    }
+    if (ad_amuse_check) {
+        if ((y < adult_amusement_pos[1] + 8 && y > adult_amusement_pos[1]) && (x < adult_amusement_pos[0] + 8 && x > adult_amusement_pos[0])) {
+            deleteAllIcons();
+            ad_amuse_check = false;
+            mg_index = 4;
+            loadAdultMicroGame2();
+        }
+    }
+    if (ad_sleep_check) {
+        if ((y < adult_sleep_pos[1] + 8 && y > adult_sleep_pos[1]) && (x < adult_sleep_pos[0] + 8 && x > adult_sleep_pos[0])) {
+            deleteAllIcons();
+            ad_sleep_check = false;
+            mg_index = 5;
+            loadAdultMicroGame3();
+        }
     }
 }
 
@@ -497,6 +612,10 @@ var c_mg1 = {
     }
 }
 
+var c_mg1EnterFunc = function(x, y, data, options) {
+    "use strict";
+}
+
 var loadChildMicroGame1 = function () {
     //PS.debug(child_mgs[mg_index].width);
     //get level width and height for variable level sizes
@@ -504,6 +623,7 @@ var loadChildMicroGame1 = function () {
     var gridHeight = c_mg1.height;
     PS.gridSize(gridWidth, gridHeight);
     PS.touch = c_mg1.touchFunc;
+    PS.enter = c_mg1EnterFunc;
     //Initialize beginning values
     //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
     PS.gridColor(COLOR_ADULT_DARK_BLUE);
@@ -582,8 +702,11 @@ var a_mg1 = {
 
 //sprites
 var cur_sprite;
+var jar_hover;
 var left_arrow;
+var left_arrow_hover;
 var right_arrow;
+var right_arrow_hover;
 
 //Variables
 var spr_pos = [];
@@ -594,6 +717,7 @@ var move_left = true;
 var is_moving = false;
 var food_goal = 3;
 var food_cnt = 0;
+var spawned = false;
 var ag1Audio = "";
 
 //Functions
@@ -602,7 +726,7 @@ var spawnLeftArrow = function() {
 
     loader = function ( data ) {
         left_arrow = PS.spriteImage( data );
-        PS.spritePlane( left_arrow, arrow_plane);
+        PS.spritePlane( left_arrow, arrow_plane+1);
         left_arr_pos[0] = 2;
         left_arr_pos[1] = 17;
         PS.spriteMove(left_arrow, left_arr_pos[0], left_arr_pos[1]);
@@ -610,17 +734,42 @@ var spawnLeftArrow = function() {
     PS.imageLoad("images/amg_arrow_left.png", loader);
 };
 
+var spawnLeftArrowHover = function() {
+    var loader;
+
+    loader = function ( data ) {
+        left_arrow_hover = PS.spriteImage( data );
+        PS.spritePlane( left_arrow_hover, arrow_plane);
+        left_arr_pos[0] = 2;
+        left_arr_pos[1] = 17;
+        PS.spriteMove(left_arrow_hover, left_arr_pos[0], left_arr_pos[1]);
+    };
+    PS.imageLoad("images/amg_arrow_left_hover.png", loader);
+};
+
 var spawnRightArrow = function() {
     var loader;
 
     loader = function (data) {
         right_arrow = PS.spriteImage( data );
-        PS.spritePlane( right_arrow, arrow_plane);
+        PS.spritePlane( right_arrow, arrow_plane+1);
         right_arr_pos[0] = 24;
         right_arr_pos[1] = 17;
         PS.spriteMove(right_arrow, right_arr_pos[0], right_arr_pos[1]);
     };
     PS.imageLoad("images/amg_arrow_right.png", loader);
+};
+var spawnRightArrowHover = function() {
+    var loader;
+
+    loader = function (data) {
+        right_arrow_hover = PS.spriteImage( data );
+        PS.spritePlane( right_arrow_hover, arrow_plane);
+        right_arr_pos[0] = 24;
+        right_arr_pos[1] = 17;
+        PS.spriteMove(right_arrow_hover, right_arr_pos[0], right_arr_pos[1]);
+    };
+    PS.imageLoad("images/amg_arrow_right_hover.png", loader);
 };
 
 var spawnFood = function() {
@@ -650,7 +799,7 @@ var spawnFood = function() {
     };
     loader4 = function ( data ) {
         cur_sprite = PS.spriteImage( data );
-        PS.spritePlane( cur_sprite, sprite_plane );
+        PS.spritePlane( cur_sprite, sprite_plane + 1 );
         spr_pos[0] = 11;
         spr_pos[1] = 14;
         PS.spriteMove(cur_sprite, spr_pos[0], spr_pos[1]);
@@ -673,6 +822,19 @@ var spawnFood = function() {
     }
 };
 
+var spawnJarHover = function() {
+    var loader;
+
+    loader = function ( data ) {
+        jar_hover = PS.spriteImage( data );
+        PS.spritePlane( jar_hover, sprite_plane );
+        spr_pos[0] = 11;
+        spr_pos[1] = 14;
+        PS.spriteMove(jar_hover, spr_pos[0], spr_pos[1]);
+    };
+    PS.imageLoad("images/amg_jar_hover.png", loader);
+}
+
 var placeFood = function(){
     PS.statusText("");
     if (food_cnt < food_goal) {
@@ -684,13 +846,19 @@ var placeFood = function(){
         if (food_cnt === 2)
             PS.statusText("Why wasn't this thrown out?");
         if (move_left){
+            spawnLeftArrowHover();
             spawnLeftArrow();
+            spawned = true;
         } else {
+            spawnRightArrowHover();
             spawnRightArrow();
+            spawned = true;
         }
     } if (food_cnt == food_goal){
         PS.statusText("Delicious. That's mine.");
+        spawnJarHover();
         spawnFood();
+        spawned = true;
     }
 };
 
@@ -713,6 +881,7 @@ var loadAdultMicroGame1 = function(){
     //PS.audioPlay("fridge", { path: "sounds/", fileTypes: ["wav"], repeat: true });
     //PS.debug(ag1Audio + "\n");
     PS.touch = ag1_TouchFunc;
+    PS.enter = ag1_EnterFunc;
     PS.dbEvent("StoryGamePrototype", "AdultGameStart", 0);
 
     PS.gridPlane(bg_plane);
@@ -762,11 +931,15 @@ var ag1_TouchFunc = function (x, y, data, options) {
                 is_moving = true;
                 foodMoveTimer = PS.timerStart(1, swipeTick);
                 PS.spriteDelete(left_arrow);
+                PS.spriteDelete(left_arrow_hover);
+                spawned = false;
                 food_cnt++;
             } else if (((x >= right_arr_pos[0] && x <= right_arr_pos[0] + 6) && (y >= right_arr_pos[1] && y <= right_arr_pos[1] + 6)) && !move_left) {
                 is_moving = true;
                 foodMoveTimer = PS.timerStart(1, swipeTick);
                 PS.spriteDelete(right_arrow);
+                PS.spriteDelete(right_arrow_hover);
+                spawned = false;
                 food_cnt++;
             }
         }
@@ -782,6 +955,29 @@ var ag1_TouchFunc = function (x, y, data, options) {
     }
 }
 
+var ag1_EnterFunc = function (x, y, data, options) {
+    "use strict"; // Do not remove this directive!
+    if (touch_enabled && spawned) {
+        if (!is_moving && food_cnt < food_goal) {
+            if (((x >= left_arr_pos[0] && x <= left_arr_pos[0] + 6) && (y >= left_arr_pos[1] && y <= left_arr_pos[1] + 6)) && move_left ) {
+                PS.spriteShow(left_arrow, false);
+            } else if (((x >= right_arr_pos[0] && x <= right_arr_pos[0] + 6) && (y >= right_arr_pos[1] && y <= right_arr_pos[1] + 6)) && !move_left ) {
+                PS.spriteShow(right_arrow, false);
+            } else if (move_left && left_arrow != null) {
+                PS.spriteShow(left_arrow, true);
+            } else if (right_arrow != null) {
+                PS.spriteShow(right_arrow, true);
+            }
+        }
+        if (food_cnt == food_goal) {
+            if ((x >= spr_pos[0] && x <= spr_pos[0] + 16) && (y >= spr_pos[1] && y <= spr_pos[1] + 16)) {
+                PS.spriteShow(cur_sprite, false);
+            } else {
+                PS.spriteShow(cur_sprite, true);
+            }
+        }
+    }
+}
 
 
 
@@ -837,6 +1033,7 @@ var a_mg2 = {
 //sprites
 var leg_sprite;
 var cur_facebutton;
+var cur_facebutton_hover;
 var vomit;
 
 //variables
@@ -866,6 +1063,7 @@ var loadAdultMicroGame2 = function(){
 
     PS.dbEvent("StoryGamePrototype", "AdultGameStart", 0);
     PS.touch = ag2_TouchFunc;
+    PS.enter = ag2_EnterFunc;
     PS.gridPlane(bg_plane);
     for ( y = 0; y < a_mg2.height; y += 1 ) {
         for (x = 0; x < a_mg2.width; x += 1) {
@@ -887,6 +1085,7 @@ var loadAdultMicroGame2 = function(){
         }
     }
     spawnLegs();
+    spawnFace1Hover();
     spawnFace1();
 };
 
@@ -919,7 +1118,7 @@ var spawnFace1 = function() {
 
     loader = function (data) {
         cur_facebutton = PS.spriteImage( data );
-        PS.spritePlane( cur_facebutton, arrow_plane);
+        PS.spritePlane( cur_facebutton, arrow_plane+1);
         face_pos[0] = 11;
         face_pos[1] = 21;
         PS.spriteMove(cur_facebutton, face_pos[0], face_pos[1]);
@@ -928,12 +1127,26 @@ var spawnFace1 = function() {
     PS.statusText("I don't feel so good...");
 };
 
+var spawnFace1Hover = function() {
+    var loader;
+
+    loader = function (data) {
+        cur_facebutton_hover = PS.spriteImage( data );
+        PS.spritePlane( cur_facebutton_hover, arrow_plane);
+        face_pos[0] = 11;
+        face_pos[1] = 21;
+        PS.spriteMove(cur_facebutton_hover, face_pos[0], face_pos[1]);
+    };
+    PS.imageLoad("images/amg_face1_hover.png", loader);
+    PS.statusText("I don't feel so good...");
+};
+
 var spawnFace2 = function() {
     var loader;
 
     loader = function (data) {
         cur_facebutton = PS.spriteImage( data );
-        PS.spritePlane( cur_facebutton, arrow_plane);
+        PS.spritePlane( cur_facebutton, arrow_plane+1);
         face_pos[0] = 11;
         face_pos[1] = 21;
         PS.spriteMove(cur_facebutton, face_pos[0], face_pos[1]);
@@ -942,12 +1155,26 @@ var spawnFace2 = function() {
     PS.statusText("I'm gonna be sick...");
 };
 
+var spawnFace2Hover = function() {
+    var loader;
+
+    loader = function (data) {
+        cur_facebutton_hover = PS.spriteImage( data );
+        PS.spritePlane( cur_facebutton_hover, arrow_plane);
+        face_pos[0] = 11;
+        face_pos[1] = 21;
+        PS.spriteMove(cur_facebutton_hover, face_pos[0], face_pos[1]);
+    };
+    PS.imageLoad("images/amg_face2_hover.png", loader);
+    PS.statusText("I'm gonna be sick...");
+};
+
 var spawnFace3 = function() {
     var loader;
 
     loader = function (data) {
         cur_facebutton = PS.spriteImage( data );
-        PS.spritePlane( cur_facebutton, arrow_plane);
+        PS.spritePlane( cur_facebutton, arrow_plane+1);
         face_pos[0] = 11;
         face_pos[1] = 21;
         PS.spriteMove(cur_facebutton, face_pos[0], face_pos[1]);
@@ -982,9 +1209,12 @@ var ag2_TouchFunc = function (x, y, data, options) {
         if ((x >= face_pos[0] && x <= face_pos[0] + 10) && (y >= face_pos[1] && y <= face_pos[1] + 10)) {
             if (click_cnt == 5) {
                 PS.spriteDelete(cur_facebutton);
+                PS.spriteDelete(cur_facebutton_hover);
+                spawnFace2Hover();
                 spawnFace2();
             } else if (click_cnt == 10) {
                 PS.spriteDelete(cur_facebutton);
+                PS.spriteDelete(cur_facebutton_hover);
                 spawnFace3();
                 spawnVomit();
                 //this minigame is won - jordan do your thing
@@ -992,10 +1222,19 @@ var ag2_TouchFunc = function (x, y, data, options) {
                 PS.timerStop(legTimer);
                 totalGames++;
                 gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
-
-
             }
             click_cnt++;
+        }
+    }
+}
+
+var ag2_EnterFunc = function(x, y, data, options) {
+    "use strict"; // Do not remove this directive!
+    if (touch_enabled) {
+        if ((x >= face_pos[0] && x <= face_pos[0] + 10) && (y >= face_pos[1] && y <= face_pos[1] + 10)) {
+            PS.spriteShow(cur_facebutton, false);
+        } else {
+            PS.spriteShow(cur_facebutton, true);
         }
     }
 }
@@ -1049,6 +1288,7 @@ var a_mg3 = {
 //sprites
 var phone;
 var arr_down;
+var arr_down_hover;
 
 //variables
 var phone_up = false;
@@ -1061,6 +1301,7 @@ var respawnTimer = null;
 var ignores = 0;
 var annoyed_lines = ["Who is texting me!", "God, go away!", "I just want to sleep!"];
 var line_count = 0;
+var can_hover = false;
 
 //functions
 var loadAdultMicroGame3 = function(){
@@ -1081,6 +1322,7 @@ var loadAdultMicroGame3 = function(){
 
     PS.dbEvent("StoryGamePrototype", "AdultGameStart", 0);
     PS.touch = ag3_TouchFunc;
+    PS.enter = ag3_EnterFunc;
     PS.gridPlane(bg_plane);
     for ( y = 0; y < a_mg3.height; y += 1 ) {
         for (x = 0; x < a_mg3.width; x += 1) {
@@ -1107,8 +1349,22 @@ var ag3_TouchFunc = function(x, y, data, options) {
     "use strict"; // Do not remove this directive!
     if (phone_up) {
         if ((x >= phone_arr_pos[0] && x <= phone_arr_pos[0] + 6) && (y >= phone_arr_pos[1] && y <= phone_arr_pos[1] + 6)) {
+            can_hover = false;
             PS.spriteDelete(arr_down);
+            PS.spriteDelete(arr_down_hover);
             phoneTimer = PS.timerStart(1, phoneTick);
+        }
+    }
+
+}
+
+var ag3_EnterFunc = function(x, y, data, options) {
+    "use strict"; // Do not remove this directive!
+    if (can_hover) {
+        if ((x >= phone_arr_pos[0] && x <= phone_arr_pos[0] + 6) && (y >= phone_arr_pos[1] && y <= phone_arr_pos[1] + 6)) {
+            PS.spriteShow(arr_down, false);
+        } else {
+            PS.spriteShow(arr_down, true);
         }
     }
 
@@ -1142,6 +1398,8 @@ var phoneTick = function() {
             printNextGripe();
             phone_up = true;
             spawnPhoneArrow();
+            spawnPhoneArrowHover();
+            can_hover = true;
             PS.timerStop(phoneTimer);
         } else {
             PS.spriteMove(phone, phone_pos[0], phone_pos[1]);
@@ -1181,12 +1439,25 @@ var spawnPhoneArrow = function() {
 
     loader = function (data) {
         arr_down = PS.spriteImage( data );
-        PS.spritePlane( arr_down, arrow_plane);
+        PS.spritePlane( arr_down, arrow_plane+1);
         phone_arr_pos[0] = 13;
         phone_arr_pos[1] = 25;
         PS.spriteMove(arr_down, phone_arr_pos[0], phone_arr_pos[1]);
     };
     PS.imageLoad("images/amg_arrow_down.png", loader);
+}
+
+var spawnPhoneArrowHover = function() {
+    var loader;
+
+    loader = function (data) {
+        arr_down_hover = PS.spriteImage( data );
+        PS.spritePlane( arr_down_hover, arrow_plane);
+        phone_arr_pos[0] = 13;
+        phone_arr_pos[1] = 25;
+        PS.spriteMove(arr_down_hover, phone_arr_pos[0], phone_arr_pos[1]);
+    };
+    PS.imageLoad("images/amg_arrow_down_hover.png", loader);
 }
 
 var printNextGripe = function() {
@@ -1360,6 +1631,11 @@ var cg2_TouchFunc = function (x, y, data, options) {
 
 };
 
+var cg2_EnterFunc = function (x, y, data, options) {
+    "use strict";
+
+}
+
 
 var loadChildMicroGame2 = function () {
     var gridWidth = c_mg2.width;
@@ -1397,6 +1673,7 @@ var loadChildMicroGame2 = function () {
         }
     }
     PS.touch = cg2_TouchFunc;
+    PS.enter = cg2_EnterFunc;
     cmg2Timer = PS.timerStart(15, tickFunc);
 };
 
@@ -1451,52 +1728,7 @@ This function doesn't have to do anything. Any value returned is ignored.
 
 // UNCOMMENT the following code BLOCK to expose the PS.touch() event handler:
 
-var menuTouchFunc = function (x, y, data, options) {
-    "use strict"; // Do not remove this directive!
 
-    if (ch_food_check){
-        if ((y < child_food_pos[1] + 8 && y > child_food_pos[1]) && (x < child_food_pos[0] + 8 && x > child_food_pos[0])) {
-            ch_food_check = false;
-            mg_index = 0;
-            loadChildMicroGame1();
-        }
-    }
-    if (child_amuse_check){
-        if ((y < ch_amusement_pos[1] + 8 && y > ch_amusement_pos[1]) && (x < ch_amusement_pos[0] + 8 && x > ch_amusement_pos[0])) {
-            child_amuse_check = false;
-            mg_index = 1;
-            loadChildMicroGame2()
-        }
-    }
-    if (ch_sleep_check) {
-        if ((y < child_sleep_pos[1] + 8 && y > child_sleep_pos[1]) && (x < child_sleep_pos[0] + 8 && x > child_sleep_pos[0])) {
-            ch_sleep_check = false;
-            //mg_index++;
-            //load the game, boyo
-        }
-    }
-    if (ad_food_check){
-        if ((y < adult_food_pos[1] + 8 && y > adult_food_pos[1]) && (x < adult_food_pos[0] + 8 && x > adult_food_pos[0])) {
-            ad_food_check = false;
-            mg_index = 3;
-            loadAdultMicroGame1();
-        }
-    }
-    if (ad_amuse_check) {
-        if ((y < adult_amusement_pos[1] + 8 && y > adult_amusement_pos[1]) && (x < adult_amusement_pos[0] + 8 && x > adult_amusement_pos[0])) {
-            ad_amuse_check = false;
-            mg_index = 4;
-            loadAdultMicroGame2();
-        }
-    }
-    if (ad_sleep_check) {
-        if ((y < adult_sleep_pos[1] + 8 && y > adult_sleep_pos[1]) && (x < adult_sleep_pos[0] + 8 && x > adult_sleep_pos[0])) {
-            ad_sleep_check = false;
-            mg_index = 5;
-            loadAdultMicroGame3();
-        }
-    }
-}
 
 
 
@@ -1539,7 +1771,7 @@ This function doesn't have to do anything. Any value returned is ignored.
 // UNCOMMENT the following code BLOCK to expose the PS.enter() event handler:
 
 
-
+/*
 PS.enter = function( x, y, data, options ) {
 	"use strict"; // Do not remove this directive!
 
@@ -1547,38 +1779,10 @@ PS.enter = function( x, y, data, options ) {
 
     // PS.debug( "PS.enter() @ " + x + ", " + y + "\n" );
 	if (mg_index === -1) {
-        if (ch_food_check){
-            if ((y < child_food_pos[1] + 8 && y > child_food_pos[1]) && (x < child_food_pos[0] + 8 && x > child_food_pos[0])) {
-                PS.statusText("Food Problems");
-            }
-        }
-        if (child_amuse_check){
-            if ((y < ch_amusement_pos[1] + 8 && y > ch_amusement_pos[1]) && (x < ch_amusement_pos[0] + 8 && x > ch_amusement_pos[0])) {
-                PS.statusText("Not-So-Amusing Amusement Parks");
-            }
-        }
-        if (ch_sleep_check) {
-            if ((y < child_sleep_pos[1] + 8 && y > child_sleep_pos[1]) && (x < child_sleep_pos[0] + 8 && x > child_sleep_pos[0])) {
-                PS.statusText("Sleeping is Hard");
-            }
-        }
-        if (ad_food_check){
-            if ((y < adult_food_pos[1] + 8 && y > adult_food_pos[1]) && (x < adult_food_pos[0] + 8 && x > adult_food_pos[0])) {
-                PS.statusText("Food Problems");
-            }
-        }
-        if (ad_amuse_check) {
-            if ((y < adult_amusement_pos[1] + 8 && y > adult_amusement_pos[1]) && (x < adult_amusement_pos[0] + 8 && x > adult_amusement_pos[0])) {
-                PS.statusText("Not-So-Amusing Amusement Parks");
-            }
-        }
-        if (ad_sleep_check) {
-            if ((y < adult_sleep_pos[1] + 8 && y > adult_sleep_pos[1]) && (x < adult_sleep_pos[0] + 8 && x > adult_sleep_pos[0])) {
-                PS.statusText("Sleeping is Hard");
-            }
-        }
+
 	}
 };
+*/
 
 
 
