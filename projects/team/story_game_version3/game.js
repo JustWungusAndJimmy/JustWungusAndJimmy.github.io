@@ -1457,14 +1457,14 @@ var menuTouchFunc = function (x, y, data, options) {
     if (ch_food_check){
         if ((y < child_food_pos[1] + 8 && y > child_food_pos[1]) && (x < child_food_pos[0] + 8 && x > child_food_pos[0])) {
             ch_food_check = false;
-            mg_index++;
+            mg_index = 0;
             loadChildMicroGame1();
         }
     }
     if (child_amuse_check){
         if ((y < ch_amusement_pos[1] + 8 && y > ch_amusement_pos[1]) && (x < ch_amusement_pos[0] + 8 && x > ch_amusement_pos[0])) {
             child_amuse_check = false;
-            mg_index++;
+            mg_index = 1;
             loadChildMicroGame2()
         }
     }
@@ -1478,21 +1478,21 @@ var menuTouchFunc = function (x, y, data, options) {
     if (ad_food_check){
         if ((y < adult_food_pos[1] + 8 && y > adult_food_pos[1]) && (x < adult_food_pos[0] + 8 && x > adult_food_pos[0])) {
             ad_food_check = false;
-            mg_index++;
+            mg_index = 3;
             loadAdultMicroGame1();
         }
     }
     if (ad_amuse_check) {
         if ((y < adult_amusement_pos[1] + 8 && y > adult_amusement_pos[1]) && (x < adult_amusement_pos[0] + 8 && x > adult_amusement_pos[0])) {
             ad_amuse_check = false;
-            mg_index++;
+            mg_index = 4;
             loadAdultMicroGame2();
         }
     }
     if (ad_sleep_check) {
         if ((y < adult_sleep_pos[1] + 8 && y > adult_sleep_pos[1]) && (x < adult_sleep_pos[0] + 8 && x > adult_sleep_pos[0])) {
             ad_sleep_check = false;
-            mg_index++;
+            mg_index = 5;
             loadAdultMicroGame3();
         }
     }
