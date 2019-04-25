@@ -27,15 +27,41 @@ var COLOR_VOMIT = 0x667c54;
 
 ///MENU MAP
 var menuMap = {
-    width: 6, height: 6, pixelSize: 1,
+    width: 32, height: 32, pixelSize: 1,
     data: [
-        [0, 0, 0, 0, 0, 0],
-        [0, 1, 1, 2, 2, 0],
-        [0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0],
-        [0, 1, 1, 2, 2, 0],
-        [0, 0, 0, 0, 0, 0]
-        ]
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ]
 };
 
 ///ENDING
@@ -117,6 +143,7 @@ var loadEnding = function() {
 }
 
 var endTouchFunc = function(x, y, data, options){
+    "use strict"; // Do not remove this directive!
     if ((x >= switch_pos[0] && x <= switch_pos[0] + 9) && (y >= switch_pos[1] && y <= switch_pos[1] + 6) && !won) {
         PS.spriteDelete(switch_button);
         spawnTrueKid();
@@ -225,14 +252,117 @@ var loadMenu = function () {
     for (var y = 0; y < gridHeight; y++) {
         for (var x = 0; x < gridWidth; x++) {
             if (menuMap.data[y][x] === 0)
-                PS.color(x, y, PS.COLOR_WHITE);
-            if (menuMap.data[y][x] === 1)
                 PS.color(x, y, COLOR_CHILD_YELLOW);
-            if (menuMap.data[y][x] === 2)
-                PS.color(x, y, COLOR_ADULT_DARK_RED);
         }
     }
+    spawnAllIcons();
 };
+
+//variables
+var child_food;
+var child_food_pos = [];
+var ch_food_check = true;
+var child_amusement;
+var ch_amusement_pos = [];
+var child_amuse_check = true;
+var child_sleep;
+var child_sleep_pos = [];
+var ch_sleep_check = true;
+var adult_food;
+var adult_food_pos = [];
+var ad_food_check = true;
+var adult_amusement;
+var adult_amusement_pos = [];
+var ad_amuse_check = true;
+var adult_sleep;
+var adult_sleep_pos = [];
+var ad_sleep_check = true;
+
+var spawnAllIcons = function() {
+    var loader1, loader2, loader3, loader4, loader5, loader6;
+
+    if (ch_food_check) {
+        loader1 = function(data) {
+            child_food = PS.spriteImage( data );
+            PS.spritePlane( child_food, sprite_plane);
+            child_food_pos[0] = 4;
+            child_food_pos[1] = 2;
+            PS.spriteMove(child_food, child_food_pos[0], child_food_pos[1]);
+        }
+        PS.imageLoad("images/child_food.png", loader1);
+    }
+    if (ad_food_check) {
+        loader2 = function(data) {
+            adult_food = PS.spriteImage( data );
+            PS.spritePlane( adult_food, sprite_plane);
+            adult_food_pos[0] = 20;
+            adult_food_pos[1] = 2;
+            PS.spriteMove(adult_food, adult_food_pos[0], adult_food_pos[1]);
+        }
+        PS.imageLoad("images/adult_food.png", loader2);
+    }
+    if (child_amuse_check) {
+        loader3 = function(data) {
+            child_amusement = PS.spriteImage( data );
+            PS.spritePlane( child_amusement, sprite_plane);
+            ch_amusement_pos[0] = 4;
+            ch_amusement_pos[1] = 12;
+            PS.spriteMove(child_amusement, ch_amusement_pos[0], ch_amusement_pos[1]);
+        }
+        PS.imageLoad("images/child_amusement.png", loader3);
+    }
+    if (ad_amuse_check) {
+        loader4 = function(data) {
+            adult_amusement = PS.spriteImage( data );
+            PS.spritePlane( adult_amusement, sprite_plane);
+            adult_amusement_pos[0] = 20;
+            adult_amusement_pos[1] = 12;
+            PS.spriteMove(adult_amusement, adult_amusement_pos[0], adult_amusement_pos[1]);
+        }
+        PS.imageLoad("images/adult_amusement.png", loader4);
+    }
+    if (ch_sleep_check) {
+        loader5 = function(data) {
+            child_sleep = PS.spriteImage( data );
+            PS.spritePlane( child_amusement, sprite_plane);
+            child_sleep_pos[0] = 4;
+            child_sleep_pos[1] = 22;
+            PS.spriteMove(child_sleep, child_sleep_pos[0], child_sleep_pos[1]);
+        }
+        PS.imageLoad("images/child_sleep.png", loader5);
+    }
+    if (ad_sleep_check) {
+        loader6 = function(data) {
+            adult_sleep = PS.spriteImage( data );
+            PS.spritePlane( adult_sleep, sprite_plane);
+            adult_sleep_pos[0] = 20;
+            adult_sleep_pos[1] = 22;
+            PS.spriteMove(adult_sleep, adult_sleep_pos[0], adult_sleep_pos[1]);
+        }
+        PS.imageLoad("images/adult_sleep.png", loader6);
+    }
+}
+
+var deleteAllIcons = function(){
+    if (ch_food_check) {
+        PS.spriteDelete(child_food);
+    }
+    if (ad_food_check) {
+        PS.spriteDelete(adult_food);
+    }
+    if (child_amuse_check) {
+        PS.spriteDelete(child_amusement);
+    }
+    if (ad_amuse_check) {
+        PS.spriteDelete(adult_amusement);
+    }
+    if (ch_sleep_check) {
+        PS.spriteDelete(child_sleep);
+    }
+    if (ad_sleep_check) {
+        PS.spriteDelete(adult_sleep);
+    }
+}
 
 var gameCompleteFunction = function () {
     counter++;
@@ -242,7 +372,7 @@ var gameCompleteFunction = function () {
 
 
         //every game has been completed, put code for activating ending here
-        if (totalGames === 4) {
+        if (totalGames === 5) {
             //ENDING CODE GOES HERE
             //PS.debug("All Games Completed, here's the ending\n");
             loadEnding();
@@ -300,6 +430,7 @@ var c_mg1 = {
     ],
 
     touchFunc : function(x, y, data, options){
+        "use strict"; // Do not remove this directive!
         //child food game
         //else if (mg_index == 1) {
         if (touch_enabled) {
@@ -344,8 +475,8 @@ var c_mg1 = {
                 PS.dbEvent("StoryGamePrototype", "FoodClick", 0);
 
                 PS.border(PS.ALL, PS.ALL, 0);
-                var gridWidth = child_mgs[mg_index].width;
-                var gridHeight = child_mgs[mg_index].height;
+                var gridWidth = c_mg1.width;
+                var gridHeight = c_mg1.height;
                 for (var y = 0; y < gridHeight; y++) {
                     for (var x = 0; x < gridWidth; x++) {
                         if (c_mg1.data[y][x] === 2 || c_mg1.data[y][x] === 3)
@@ -369,8 +500,8 @@ var c_mg1 = {
 var loadChildMicroGame1 = function () {
     //PS.debug(child_mgs[mg_index].width);
     //get level width and height for variable level sizes
-    var gridWidth = child_mgs[mg_index].width;
-    var gridHeight = child_mgs[mg_index].height;
+    var gridWidth = c_mg1.width;
+    var gridHeight = c_mg1.height;
     PS.gridSize(gridWidth, gridHeight);
     PS.touch = c_mg1.touchFunc;
     //Initialize beginning values
@@ -624,6 +755,7 @@ var swipeTick = function (){
 
 
 var ag1_TouchFunc = function (x, y, data, options) {
+    "use strict"; // Do not remove this directive!
     if (touch_enabled) {
         if (!is_moving && food_cnt < food_goal) {
             if (((x >= left_arr_pos[0] && x <= left_arr_pos[0] + 6) && (y >= left_arr_pos[1] && y <= left_arr_pos[1] + 6)) && move_left) {
@@ -845,6 +977,7 @@ var vomitTick = function() {
 }
 
 var ag2_TouchFunc = function (x, y, data, options) {
+    "use strict"; // Do not remove this directive!
     if (touch_enabled) {
         if ((x >= face_pos[0] && x <= face_pos[0] + 10) && (y >= face_pos[1] && y <= face_pos[1] + 10)) {
             if (click_cnt == 5) {
@@ -971,6 +1104,7 @@ var loadAdultMicroGame3 = function(){
 };
 
 var ag3_TouchFunc = function(x, y, data, options) {
+    "use strict"; // Do not remove this directive!
     if (phone_up) {
         if ((x >= phone_arr_pos[0] && x <= phone_arr_pos[0] + 6) && (y >= phone_arr_pos[1] && y <= phone_arr_pos[1] + 6)) {
             PS.spriteDelete(arr_down);
@@ -1196,6 +1330,7 @@ var tickFunc = function () {
     }
 }
 var cg2_TouchFunc = function (x, y, data, options) {
+    "use strict"; // Do not remove this directive!
 
     /*
     if (c_mg2.data2[y][x] === 1) {
@@ -1319,43 +1454,49 @@ This function doesn't have to do anything. Any value returned is ignored.
 var menuTouchFunc = function (x, y, data, options) {
     "use strict"; // Do not remove this directive!
 
-
-    //Food Games
-    if (y === 1) {
-        if (menuMap.data[y][x] === 1) {
-            mg_index = 1;
-            menuMap.data[1][1] = 0;
-            menuMap.data[1][2] = 0;
+    if (ch_food_check){
+        if ((y < child_food_pos[1] + 8 && y > child_food_pos[1]) && (x < child_food_pos[0] + 8 && x > child_food_pos[0])) {
+            ch_food_check = false;
+            mg_index++;
             loadChildMicroGame1();
         }
-        if (menuMap.data[y][x] === 2) {
-            mg_index = 0;
-            menuMap.data[1][3] = 0;
-            menuMap.data[1][4] = 0;
+    }
+    if (child_amuse_check){
+        if ((y < ch_amusement_pos[1] + 8 && y > ch_amusement_pos[1]) && (x < ch_amusement_pos[0] + 8 && x > ch_amusement_pos[0])) {
+            child_amuse_check = false;
+            mg_index++;
+            loadChildMicroGame2()
+        }
+    }
+    if (ch_sleep_check) {
+        if ((y < child_sleep_pos[1] + 8 && y > child_sleep_pos[1]) && (x < child_sleep_pos[0] + 8 && x > child_sleep_pos[0])) {
+            ch_sleep_check = false;
+            //mg_index++;
+            //load the game, boyo
+        }
+    }
+    if (ad_food_check){
+        if ((y < adult_food_pos[1] + 8 && y > adult_food_pos[1]) && (x < adult_food_pos[0] + 8 && x > adult_food_pos[0])) {
+            ad_food_check = false;
+            mg_index++;
             loadAdultMicroGame1();
         }
     }
-
-    //Amusement Park Games
-    if (y === 4) {
-        if (menuMap.data[y][x] === 1) {
-            mg_index = 0;
-            menuMap.data[4][1] = 0;
-            menuMap.data[4][2] = 0;
-            loadChildMicroGame2();
-        }
-        if (menuMap.data[y][x] === 2) {
-            mg_index = 1;
-            menuMap.data[4][3] = 0;
-            menuMap.data[4][4] = 0;
+    if (ad_amuse_check) {
+        if ((y < adult_amusement_pos[1] + 8 && y > adult_amusement_pos[1]) && (x < adult_amusement_pos[0] + 8 && x > adult_amusement_pos[0])) {
+            ad_amuse_check = false;
+            mg_index++;
             loadAdultMicroGame2();
         }
     }
+    if (ad_sleep_check) {
+        if ((y < adult_sleep_pos[1] + 8 && y > adult_sleep_pos[1]) && (x < adult_sleep_pos[0] + 8 && x > adult_sleep_pos[0])) {
+            ad_sleep_check = false;
+            mg_index++;
+            loadAdultMicroGame3();
+        }
+    }
 }
-
-
-var adult_mgs = [a_mg1, a_mg2];
-var child_mgs = ["", c_mg1];
 
 
 
@@ -1406,15 +1547,37 @@ PS.enter = function( x, y, data, options ) {
 
     // PS.debug( "PS.enter() @ " + x + ", " + y + "\n" );
 	if (mg_index === -1) {
-	    if (y === 1 && menuMap.data[y][x] !== 0)
-	        PS.statusText("Food Problems");
-	    if (y === 4 && menuMap.data[y][x] !== 0)
-	        PS.statusText("Not-So-Amusing Amusment Parks");
-	    if (menuMap.data[y][x] === 0)
-	        PS.statusText("Choose a Game Set");
+        if (ch_food_check){
+            if ((y < child_food_pos[1] + 8 && y > child_food_pos[1]) && (x < child_food_pos[0] + 8 && x > child_food_pos[0])) {
+                PS.statusText("Food Problems");
+            }
+        }
+        if (child_amuse_check){
+            if ((y < ch_amusement_pos[1] + 8 && y > ch_amusement_pos[1]) && (x < ch_amusement_pos[0] + 8 && x > ch_amusement_pos[0])) {
+                PS.statusText("Not-So-Amusing Amusement Parks");
+            }
+        }
+        if (ch_sleep_check) {
+            if ((y < child_sleep_pos[1] + 8 && y > child_sleep_pos[1]) && (x < child_sleep_pos[0] + 8 && x > child_sleep_pos[0])) {
+                PS.statusText("Sleeping is Hard");
+            }
+        }
+        if (ad_food_check){
+            if ((y < adult_food_pos[1] + 8 && y > adult_food_pos[1]) && (x < adult_food_pos[0] + 8 && x > adult_food_pos[0])) {
+                PS.statusText("Food Problems");
+            }
+        }
+        if (ad_amuse_check) {
+            if ((y < adult_amusement_pos[1] + 8 && y > adult_amusement_pos[1]) && (x < adult_amusement_pos[0] + 8 && x > adult_amusement_pos[0])) {
+                PS.statusText("Not-So-Amusing Amusement Parks");
+            }
+        }
+        if (ad_sleep_check) {
+            if ((y < adult_sleep_pos[1] + 8 && y > adult_sleep_pos[1]) && (x < adult_sleep_pos[0] + 8 && x > adult_sleep_pos[0])) {
+                PS.statusText("Sleeping is Hard");
+            }
+        }
 	}
-
-	// Add code here for when the mouse cursor/touch enters a bead.
 };
 
 
