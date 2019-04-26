@@ -498,7 +498,7 @@ var gameCompleteFunction = function () {
         });
         PS.radius(PS.ALL, PS.ALL, 0);
         //every game has been completed, put code for activating ending here
-        if (totalGames === 5) {
+        if (totalGames === 6) {
             //ENDING CODE GOES HERE
             //PS.debug("All Games Completed, here's the ending\n");
             loadEnding();
@@ -1912,7 +1912,9 @@ var cg3_TimeFunc = function () {
         PS.touch = function (x, y, data, options) {
             "use strict"
         };
+        PS.audioStop(cg3Audio);
         PS.timerStop(cg3Timer);
+        counter = 0;
         totalGames++;
         gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
         return;
