@@ -253,12 +253,27 @@ var arrow_plane = 2;
 var touch_enabled = true;
 
 var totalGames = 0;
-var gameSet = 0;
 
 var gameCompleteTimer = null;
 var counter = 0;
 
+var spriteTimer = null;
+var spr_time_cnt = 0;
+var spr_time_total = 10;
+var allow_spr = false;
+
 //GLOBAL FUNCTIONS
+var sprTimeTick = function () {
+    if (spr_time_cnt == spr_time_total) {
+        spr_time_cnt = 0;
+        allow_spr = true;
+        PS.timerStop(spriteTimer);
+        return;
+    }
+    spr_time_cnt++;
+}
+
+
 var loadMenu = function () {
     //PS.debug(child_mgs[mg_index].width);
     //get level width and height for variable level sizes
@@ -848,6 +863,7 @@ var spawnJarHover = function() {
 
 var placeFood = function(){
     PS.statusText("");
+    allow_spr = false;
     if (food_cnt < food_goal) {
         spawnFood();
         if (food_cnt === 0)
@@ -859,17 +875,17 @@ var placeFood = function(){
         if (move_left){
             spawnLeftArrowHover();
             spawnLeftArrow();
-            spawned = true;
+            spriteTimer = PS.timerStart(1, sprTimeTick);
         } else {
             spawnRightArrowHover();
             spawnRightArrow();
-            spawned = true;
+            spriteTimer = PS.timerStart(1, sprTimeTick);
         }
     } if (food_cnt == food_goal){
         PS.statusText("Delicious. That's mine.");
         spawnJarHover();
         spawnFood();
-        spawned = true;
+        spriteTimer = PS.timerStart(1, sprTimeTick);
     }
 };
 
@@ -936,7 +952,7 @@ var swipeTick = function (){
 
 var ag1_TouchFunc = function (x, y, data, options) {
     "use strict"; // Do not remove this directive!
-    if (touch_enabled) {
+    if (touch_enabled && allow_spr) {
         if (!is_moving && food_cnt < food_goal) {
             if (((x >= left_arr_pos[0] && x <= left_arr_pos[0] + 6) && (y >= left_arr_pos[1] && y <= left_arr_pos[1] + 6)) && move_left) {
                 is_moving = true;
@@ -968,7 +984,7 @@ var ag1_TouchFunc = function (x, y, data, options) {
 
 var ag1_EnterFunc = function (x, y, data, options) {
     "use strict"; // Do not remove this directive!
-    if (touch_enabled && spawned) {
+    if (allow_spr) {
         if (!is_moving && food_cnt < food_goal) {
             if (((x >= left_arr_pos[0] && x <= left_arr_pos[0] + 6) && (y >= left_arr_pos[1] && y <= left_arr_pos[1] + 6)) && move_left ) {
                 PS.spriteShow(left_arrow, false);
@@ -1023,8 +1039,8 @@ var a_mg2 = {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 5, 5, 4, 1, 3, 0, 0, 0, 0, 3, 4, 5, 5, 5, 5, 4, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 4, 1, 1, 1, 1, 1, 1, 1,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 0, 0, 0, 0, 0, 0, 0, 0,
-        2, 2, 2, 2, 0, 2, 2, 2, 2, 0, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 0, 2, 2, 2, 2, 0, 2, 2,
-        0, 2, 2, 2, 2, 0, 2, 2, 2, 2, 0, 2, 2, 2, 2, 0, 2, 2, 2, 2, 0, 2, 2, 2, 2, 0, 2, 2, 2, 2, 0, 2,
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -1099,8 +1115,10 @@ var loadAdultMicroGame2 = function(){
         }
     }
     spawnLegs();
+    allow_spr = false;
     spawnFace1Hover();
     spawnFace1();
+    spriteTimer = PS.timerStart(1, sprTimeTick);
 };
 
 var legTick = function () {
@@ -1219,21 +1237,23 @@ var vomitTick = function() {
 
 var ag2_TouchFunc = function (x, y, data, options) {
     "use strict"; // Do not remove this directive!
-    if (touch_enabled) {
+    if (touch_enabled && allow_spr) {
         if ((x >= face_pos[0] && x <= face_pos[0] + 10) && (y >= face_pos[1] && y <= face_pos[1] + 10)) {
             if (click_cnt == 5) {
                 PS.spriteDelete(cur_facebutton);
                 PS.spriteDelete(cur_facebutton_hover);
+                allow_spr = false;
                 spawnFace2Hover();
                 spawnFace2();
+                spriteTimer = PS.timerStart(1, sprTimeTick);
+
             } else if (click_cnt == 10) {
                 PS.spriteDelete(cur_facebutton);
                 PS.spriteDelete(cur_facebutton_hover);
+                allow_spr = false;
                 spawnFace3();
                 spawnVomit();
-                //this minigame is won - jordan do your thing
-                //PS.debug("Blech");
-
+                spriteTimer = PS.timerStart(1, sprTimeTick);
                 PS.timerStop(legTimer);
                 totalGames++;
                 gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
@@ -1245,7 +1265,7 @@ var ag2_TouchFunc = function (x, y, data, options) {
 
 var ag2_EnterFunc = function(x, y, data, options) {
     "use strict"; // Do not remove this directive!
-    if (touch_enabled) {
+    if (touch_enabled && allow_spr) {
         if ((x >= face_pos[0] && x <= face_pos[0] + 10) && (y >= face_pos[1] && y <= face_pos[1] + 10)) {
             PS.spriteShow(cur_facebutton, false);
         } else {
@@ -1362,7 +1382,7 @@ var loadAdultMicroGame3 = function(){
 
 var ag3_TouchFunc = function(x, y, data, options) {
     "use strict"; // Do not remove this directive!
-    if (phone_up) {
+    if (can_hover && allow_spr) {
         if ((x >= phone_arr_pos[0] && x <= phone_arr_pos[0] + 6) && (y >= phone_arr_pos[1] && y <= phone_arr_pos[1] + 6)) {
             can_hover = false;
             PS.spriteDelete(arr_down);
@@ -1375,7 +1395,7 @@ var ag3_TouchFunc = function(x, y, data, options) {
 
 var ag3_EnterFunc = function(x, y, data, options) {
     "use strict"; // Do not remove this directive!
-    if (can_hover) {
+    if (can_hover && allow_spr) {
         if ((x >= phone_arr_pos[0] && x <= phone_arr_pos[0] + 6) && (y >= phone_arr_pos[1] && y <= phone_arr_pos[1] + 6)) {
             PS.spriteShow(arr_down, false);
         } else {
@@ -1412,8 +1432,10 @@ var phoneTick = function() {
         if (phone_pos[1] == 7) {
             printNextGripe();
             phone_up = true;
+            allow_spr = false;
             spawnPhoneArrow();
             spawnPhoneArrowHover();
+            spriteTimer = PS.timerStart(1, sprTimeTick);
             can_hover = true;
             PS.timerStop(phoneTimer);
         } else {
