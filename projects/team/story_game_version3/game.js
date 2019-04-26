@@ -451,6 +451,7 @@ var menuTouchFunc = function (x, y, data, options) {
             ch_sleep_check = false;
             //mg_index++;
             //load the game, boyo
+            loadChildMicroGame3();
         }
     }
     if (ad_food_check){
@@ -484,6 +485,10 @@ var gameCompleteFunction = function () {
     touch_enabled = false;
     if (counter == 120) {
         PS.timerStop(gameCompleteTimer);
+
+        PS.audioStop(ag1Audio);
+        PS.audioStop(ag2Audio);
+        PS.audioStop(cg2Audio);
 
         PS.border(PS.ALL, PS.ALL, {
             top: 0,
@@ -952,7 +957,7 @@ var ag1_TouchFunc = function (x, y, data, options) {
         if (food_cnt == food_goal) {
             if ((x >= spr_pos[0] && x <= spr_pos[0] + 16) && (y >= spr_pos[1] && y <= spr_pos[1] + 16)) {
                 PS.statusText("Someone ate it already...");
-                PS.audioStop(ag1Audio);
+                
                 totalGames++;
                 gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
 
@@ -1228,7 +1233,7 @@ var ag2_TouchFunc = function (x, y, data, options) {
                 spawnVomit();
                 //this minigame is won - jordan do your thing
                 //PS.debug("Blech");
-                PS.audioStop(ag2Audio);
+
                 PS.timerStop(legTimer);
                 totalGames++;
                 gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
@@ -1573,11 +1578,11 @@ var tickFunc = function () {
     var y2 = p[1];
 
     
-    if (childy === endy && (childx === endx || childx === endx + 1)) {
+    if ((childy === endy || childy === endy -1) && (childx === endx || childx === endx + 1)) {
         path = null;
         PS.timerStop(cmg2Timer);
         PS.statusText("Sorry, but you're too short!");
-        PS.audioStop(cg2Audio);
+        
         totalGames++;
         gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
         return;
@@ -1728,6 +1733,345 @@ var loadChildMicroGame2 = function () {
 
 
 
+
+//CHILD SLEEP GAME
+/*
+0 background
+1 brown wood
+2 yellow
+3 black
+
+4 gameboy gray
+
+
+5 gameboy screen
+
+6 light switch
+
+7 mom skin
+8 mom shirt
+9 mom pants
+*/
+
+var c_mg3 = {
+    width: 32, height: 32, pixelSize: 1,
+    data: [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1, 0],
+        [0, 0, 0, 0, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1, 0],
+        [0, 0, 0, 0, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1, 0],
+        [0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1, 0],
+        [0, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1, 0],
+        [0, 4, 3, 5, 5, 5, 5, 5, 5, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1, 0],
+        [0, 4, 3, 5, 5, 5, 5, 5, 5, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1, 0],
+        [0, 4, 3, 5, 5, 5, 5, 5, 5, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1, 0],
+        [0, 4, 3, 5, 5, 5, 5, 5, 5, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 4, 4, 3, 4, 4, 4, 4, 4, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 4, 3, 3, 3, 4, 4, 4, 3, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 4, 4, 3, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 4, 4, 4, 4, 3, 4, 3, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ]
+
+}
+
+var powerOn = false;
+var momWatching = false;
+var timePlayed = -1;
+var cg3Audio;
+var gbX = [1, 10];
+var gbY = [13, 28];
+var screenX = [3, 8];
+var screenY = [15, 18];
+var doorX = [20, 30];
+var doorY = [2, 19];
+var cg3Timer;
+var counter = 0;
+var barStart = [16, 30];
+var barY = 30;
+var door = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [2, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1],
+    [1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1],
+    [1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1],
+    [1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1],
+    [1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1],
+    [1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1],
+    [1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1],
+    [1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1],
+    [1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1],
+    [1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1],
+    [1, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1],
+    [2, 1, 1, 3, 3, 1, 3, 3, 1, 1, 1],
+    [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+];
+    
+var mom = [
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [2, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0],
+        [1, 0, 0, 2, 7, 7, 7, 2, 0, 0, 0],
+        [1, 0, 0, 2, 7, 7, 7, 2, 0, 0, 0],
+        [1, 0, 2, 0, 7, 7, 7, 0, 2, 0, 0],
+        [1, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 8, 8, 8, 0, 0, 0, 0],
+        [1, 0, 8, 8, 8, 8, 8, 8, 8, 0, 0],
+        [1, 8, 0, 8, 8, 8, 8, 8, 0, 8, 0],
+        [1, 7, 0, 8, 8, 8, 8, 8, 0, 7, 0],
+        [1, 7, 0, 8, 8, 8, 8, 8, 0, 7, 0],
+        [1, 7, 0, 8, 8, 8, 8, 8, 0, 7, 0],
+        [1, 0, 0, 0, 9, 0, 9, 0, 0, 0, 0],
+        [1, 0, 0, 0, 9, 0, 9, 0, 0, 0, 0],
+        [2, 0, 0, 0, 9, 0, 9, 0, 0, 0, 0],
+        [2, 0, 0, 9, 9, 9, 9, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ]
+var cg3_TimeFunc = function () {
+    counter++;
+    
+
+    if (powerOn) {
+        for (var y = screenY[0]; y <= screenY[1]; y++) {
+            for (var x = screenX[0]; x <= screenX[1]; x++) {
+                var rand = Math.floor(Math.random() * 4);
+                if (rand === 0) {
+                    PS.color(x, y, 0xabc34a);
+                }
+                if (rand === 1) {
+                    PS.color(x, y, 0xff9800);
+                }
+                if (rand === 2) {
+                    PS.color(x, y, 0x90caf9);
+                }
+                if (rand === 3) {
+                    PS.color(x, y, 0xb0becf);
+                }
+            }
+        }
+    }
+    if (!powerOn) {
+        for (var y = screenY[0]; y <= screenY[1]; y++) {
+            for (var x = screenX[0]; x <= screenX[1]; x++) {
+                PS.color(x, y, 0xffffff);
+            }
+        }
+    }
+    if (counter === 50) {
+        PS.statusText("Mom's Coming! Power Off!");
+        PS.audioPlay("stairs", { path: "sounds/", fileTypes: ["wav"] });
+    }
+    if (counter === 60) {
+        PS.audioPlay("stairs", { path: "sounds/", fileTypes: ["wav"] });
+    }
+    if (counter === 70) {
+        PS.audioPlay("dooropen", { path: "sounds/", fileTypes: ["wav"] });
+        momWatching = true;
+        for (var y = 0; y < mom.length; y++) {
+            for (var x = 0; x < mom[y].length; x++) {
+                if (mom[y][x] === 0)
+                    PS.color(x + doorX[0], y + doorY[0], 0x000000);
+                if (mom[y][x] === 1)
+                    PS.color(x + doorX[0], y + doorY[0], 0x795548);
+                if (mom[y][x] === 2)
+                    PS.color(x + doorX[0], y + doorY[0], 0xffeb3b);
+                if (mom[y][x] === 7)
+                    PS.color(x + doorX[0], y + doorY[0], 0xeac086);
+                if (mom[y][x] === 8)
+                    PS.color(x + doorX[0], y + doorY[0], 0xe91e63);
+                if (mom[y][x] === 9)
+                    PS.color(x + doorX[0], y + doorY[0], 0x795548);
+            }
+        }
+    }
+    if (momWatching && powerOn) {
+        PS.statusText("\"You're supposed to be asleep!\"");
+        PS.enter = function (x, y, data, options) {
+            "use strict"
+        };
+        PS.touch = function (x, y, data, options) {
+            "use strict"
+        };
+        PS.timerStop(cg3Timer);
+        totalGames++;
+        gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
+        return;
+
+    }
+
+    if (counter === 100) {
+        PS.audioPlay("doorclose", { path: "sounds/", fileTypes: ["wav"] });
+        counter = 0;
+        momWatching = false;
+        PS.statusText("Mom's gone, time to play!");
+        for (var y = 0; y < door.length; y++) {
+            for (var x = 0; x < door[y].length; x++) {
+                if (door[y][x] === 1)
+                    PS.color(x + doorX[0], y + doorY[0], 0x795548);
+                if (door[y][x] === 2)
+                    PS.color(x + doorX[0], y + doorY[0], 0xffeb3b);
+                if (door[y][x] === 3)
+                    PS.color(x + doorX[0], y + doorY[0], 0x000000);
+            }
+        }
+    }
+}
+
+var loadChildMicroGame3 = function () {
+    var gridWidth = c_mg3.width;
+    var gridHeight = c_mg3.height;
+    PS.gridSize(gridWidth, gridHeight);
+
+    PS.touch = cg3_TouchFunc;
+    PS.enter = cg3_EnterFunc;
+    //Initialize beginning values
+    //This will alternate between the darkest color in the two schemes depending on which microgame set is being played
+    PS.gridColor(COLOR_ADULT_DARK_BLUE);
+    PS.statusColor(PS.COLOR_WHITE);
+    PS.statusText("Time to play GameBoy!");
+    PS.border(PS.ALL, PS.ALL, 0);
+    PS.gridShadow(true, PS.COLOR_BLACK);
+
+    for (var y = 0; y < gridHeight; y++) {
+        for (var x = 0; x <gridWidth; x++) {
+            if (c_mg3.data[y][x] === 0) {
+                PS.color(x, y, COLOR_CHILD_DARK_BLUE);
+            }
+            if (c_mg3.data[y][x] === 1) {
+                PS.color(x, y, 0x795548);
+            }
+            if (c_mg3.data[y][x] === 2) {
+                PS.color(x, y, 0xffeb3b);
+            }
+            if (c_mg3.data[y][x] === 3) {
+                PS.color(x, y, 0x000000);
+            }
+            if (c_mg3.data[y][x] === 4) {
+                PS.color(x, y, 0x9e9e9e);
+            }
+
+            if (c_mg3.data[y][x] === 6) {
+                PS.color(x, y, 0x000000);
+                PS.glyph(x, y, 0x26a1);
+            }
+        }
+    }
+    var leftBorder = 0;
+    var rightBorder = 0;
+    for (var x = barStart[0]; x <= barStart[1]; x++) {
+        if (x === barStart[0])
+            leftBorder = 2;
+        else
+            leftBorder = 0;
+        if (x === barStart[1])
+            rightBorder = 2;
+        else
+            rightBorder = 0;
+        PS.border(x, barY, {
+            top: 2,
+            left: leftBorder,
+            bottom: 2,
+            right: rightBorder
+        });
+        PS.borderColor(x, barY, 0x000000);
+    }
+    PS.glyph(barStart[1], barY, 0x2728);
+}
+var cg3_EnterFunc = function (x, y, data, options) {
+    if (c_mg3.data[y][x] === 6) {
+        if (powerOn)
+            PS.statusText("Power Off");
+        if (!powerOn)
+            PS.statusText("Power On");
+    }
+    else if (x >= doorX[0] && x <= doorX[1]) {
+        if (y >= doorY[0] && y <= doorY[1]) {
+            if (counter > 50 && counter < 70)
+                PS.statusText("I hear Mom coming!");
+            else if (counter > 70)
+                PS.statusText("I'm pretending to be asleep...");
+            else
+                PS.statusText("I don't hear Mom...");
+        }
+    }
+
+    else if (x >= gbX[0] && x <= gbX[1]) {
+        if (y >= gbY[0] && y <= gbY[1]) {
+            if (powerOn === true && counter < 50)
+                PS.statusText("This game is awesome!");
+        }
+    }
+
+
+}
+var cg3_TouchFunc = function (x, y, data, options) {
+    if (powerOn === true) {
+        if (c_mg3.data[y][x] === 6) {
+            powerOn = false;
+            //PS.debug("LightsOut");
+            PS.audioPause(cg3Audio);
+        }
+        if (x >= gbX[0] && x <= gbX[1]) {
+            if (y >= gbY[0] && y <= gbY[1]) {
+                timePlayed++;
+                if (timePlayed % 6 === 0) {
+                    var barFill = timePlayed / 6;
+                    PS.color(barStart[0] + barFill, barY, COLOR_CHILD_YELLOW);
+                }
+                if (timePlayed === 84) {
+                    PS.statusText("I won!");
+                    PS.enter = function (x, y, data, options) {
+                        "use strict"
+                    };
+                    PS.touch = function (x, y, data, options) {
+                        "use strict"
+                    };
+                    PS.timerStop(cg3Timer);
+                    PS.audioPlay("pokevictory", { path: "sounds/", fileTypes: ["wav"] });
+                    PS.audioStop(cg3Audio);
+                    totalGames++;
+                    gameCompleteTimer = PS.timerStart(1, gameCompleteFunction);
+                    return;
+                }
+            }
+        }
+    }
+    else if (powerOn === false) {
+        if (c_mg3.data[y][x] === 6) {
+            powerOn = true;
+            if (!cg3Timer) {
+                cg3Timer = PS.timerStart(6, cg3_TimeFunc);
+                var gbEnd = function () {
+                    PS.audioPlayChannel(cg3Audio, { loop: true });
+                };
+                PS.audioPlay("gbstart", { path: "sounds/", fileTypes: ["wav"], onEnd: gbEnd });
+            }
+            else
+                PS.audioPause(cg3Audio);
+        }
+    }
+
+}
 /*
 PS.init( system, options )
 Called once after engine is initialized but before event-polling begins.
@@ -1741,17 +2085,20 @@ PS.init = function( system, options ) {
     "use strict"; // Do not remove this directive!
     var a1Load = function ( data ) {
         ag1Audio = data.channel;
-        PS.debug(ag1Audio + "\n");
+        //PS.debug(ag1Audio + "\n");
     }
     var a2Load = function (data) {
         ag2Audio = data.channel;
-        PS.debug(ag2Audio + "\n");
+        //PS.debug(ag2Audio + "\n");
     }
     var c2Load = function (data) {
         cg2Audio = data.channel;
-        PS.debug(cg2Audio + "\n");
+        //PS.debug(cg2Audio + "\n");
     }
-
+    var c3Load = function (data) {
+        cg3Audio = data.channel;
+        //PS.debug(cg3Audio + "\n");
+    }
     PS.dbInit("StoryGamePrototype");
     PS.audioLoad("crunch1", { path: "sounds/", fileTypes: ["wav"], lock: true });
     PS.audioLoad("crunch2", { path: "sounds/", fileTypes: ["wav"], lock: true });
@@ -1764,7 +2111,14 @@ PS.init = function( system, options ) {
 
     PS.audioLoad("crowd", { path: "sounds/", fileTypes: ["wav"], onLoad : c2Load});
 
-    PS.audioLoad("rollerCoaster", { path: "sounds/", fileTypes: ["wav"], onLoad : a2Load });
+    PS.audioLoad("rollerCoaster", { path: "sounds/", fileTypes: ["wav"], onLoad: a2Load });
+
+    PS.audioLoad("gbstart", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("stairs", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("dooropen", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("doorclose", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("stairs", { path: "sounds/", fileTypes: ["wav"], lock: true });
+    PS.audioLoad("pokemusic", { path: "sounds/", fileTypes: ["wav"], onLoad : c3Load });
     loadMenu();
 };
 
