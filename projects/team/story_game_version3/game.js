@@ -453,7 +453,7 @@ var menuTouchFunc = function (x, y, data, options) {
             loadChildMicroGame1();
         }
     }
-    if (child_amuse_check){
+    if (child_amuse_check && cg2Audio){
         if ((y < ch_amusement_pos[1] + 8 && y > ch_amusement_pos[1]) && (x < ch_amusement_pos[0] + 8 && x > ch_amusement_pos[0])) {
             deleteAllIcons();
             child_amuse_check = false;
@@ -461,7 +461,7 @@ var menuTouchFunc = function (x, y, data, options) {
             loadChildMicroGame2()
         }
     }
-    if (ch_sleep_check) {
+    if (ch_sleep_check && cg3Audio) {
         if ((y < child_sleep_pos[1] + 8 && y > child_sleep_pos[1]) && (x < child_sleep_pos[0] + 8 && x > child_sleep_pos[0])) {
             ch_sleep_check = false;
             //mg_index++;
@@ -469,7 +469,7 @@ var menuTouchFunc = function (x, y, data, options) {
             loadChildMicroGame3();
         }
     }
-    if (ad_food_check){
+    if (ad_food_check && ag1Audio){
         if ((y < adult_food_pos[1] + 8 && y > adult_food_pos[1]) && (x < adult_food_pos[0] + 8 && x > adult_food_pos[0])) {
             deleteAllIcons();
             ad_food_check = false;
@@ -477,7 +477,7 @@ var menuTouchFunc = function (x, y, data, options) {
             loadAdultMicroGame1();
         }
     }
-    if (ad_amuse_check) {
+    if (ad_amuse_check && ag2Audio) {
         if ((y < adult_amusement_pos[1] + 8 && y > adult_amusement_pos[1]) && (x < adult_amusement_pos[0] + 8 && x > adult_amusement_pos[0])) {
             deleteAllIcons();
             ad_amuse_check = false;
@@ -596,6 +596,11 @@ var c_mg1 = {
             }
 
             if (c_mg1.data[y][x] === 2 || c_mg1.data[y][x] === 3) {
+
+                PS.gridColor(COLOR_CHILD_VEGGIE2);
+                PS.gridFade(20, { onEnd: bgFade });
+                PS.gridColor(COLOR_ADULT_DARK_BLUE);
+
                 PS.statusText("");
                 var rand = Math.floor(Math.random() * 3);
                 if (rand === 0)
@@ -637,7 +642,9 @@ var c_mg1 = {
 	       
     }
 }
-
+var bgFade = function () {
+    PS.gridFade(0);
+}
 var c_mg1EnterFunc = function(x, y, data, options) {
     "use strict";
 }
@@ -1212,6 +1219,7 @@ var spawnFace3 = function() {
         PS.spriteMove(cur_facebutton, face_pos[0], face_pos[1]);
     };
     PS.imageLoad("images/amg_face3.png", loader);
+    PS.audioPlay("vomit", { path: "sounds/", fileTypes: ["wav"] });
     PS.statusText(" ");
 };
 
@@ -1499,6 +1507,12 @@ var spawnPhoneArrowHover = function() {
 
 var printNextGripe = function() {
     PS.statusText(annoyed_lines[line_count]);
+    if (line_count === 0)
+        PS.audioPlay("text2", { path: "sounds/", fileTypes: ["wav"] });
+    if (line_count === 1)
+        PS.audioPlay("text1", { path: "sounds/", fileTypes: ["wav"] });
+    if (line_count === 2)
+        PS.audioPlay("tweet", { path: "sounds/", fileTypes: ["wav"] });
     line_count++;
 }
 
@@ -2136,13 +2150,22 @@ PS.init = function( system, options ) {
     PS.audioLoad("crowd", { path: "sounds/", fileTypes: ["wav"], onLoad : c2Load});
 
     PS.audioLoad("rollerCoaster", { path: "sounds/", fileTypes: ["wav"], onLoad: a2Load });
+    PS.audioLoad("vomit", { path: "sounds/", fileTypes: ["wav"], lock: true });
+
 
     PS.audioLoad("gbstart", { path: "sounds/", fileTypes: ["wav"], lock: true });
     PS.audioLoad("stairs", { path: "sounds/", fileTypes: ["wav"], lock: true });
     PS.audioLoad("dooropen", { path: "sounds/", fileTypes: ["wav"], lock: true });
     PS.audioLoad("doorclose", { path: "sounds/", fileTypes: ["wav"], lock: true });
     PS.audioLoad("stairs", { path: "sounds/", fileTypes: ["wav"], lock: true });
-    PS.audioLoad("pokemusic", { path: "sounds/", fileTypes: ["wav"], onLoad : c3Load });
+    PS.audioLoad("pokemusic", { path: "sounds/", fileTypes: ["wav"], onLoad: c3Load });
+
+
+    PS.audioLoad("text1", { path: "sounds/", fileTypes: ["wav"]});
+    PS.audioLoad("text2", { path: "sounds/", fileTypes: ["wav"]});
+    PS.audioLoad("tweet", { path: "sounds/", fileTypes: ["wav"]});
+
+
     loadMenu();
 };
 
