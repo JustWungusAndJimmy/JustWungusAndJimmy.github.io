@@ -141,27 +141,31 @@ var loadEnding = function() {
 
     spawnAdultKid();
     spawnKidAdult();
+    allow_spr = false;
     spawnSwitchHover();
     spawnSwitch();
+    spriteTimer = PS.timerStart(1, sprTimeTick);
 }
 
 var endTouchFunc = function(x, y, data, options){
     "use strict"; // Do not remove this directive!
-    if ((x >= switch_pos[0] && x <= switch_pos[0] + 9) && (y >= switch_pos[1] && y <= switch_pos[1] + 6) && !won) {
-        PS.spriteDelete(switch_button);
-        PS.spriteDelete(switch_button_hover);
-        spawnTrueKid();
-        spawnTrueAdult();
-        PS.fade(PS.ALL, PS.ALL, 360);
-        PS.color(PS.ALL, PS.ALL, PS.COLOR_BLACK);
-        PS.statusText("We're not so different.");
-        won = true;
+    if (allow_spr) {
+        if ((x >= switch_pos[0] && x <= switch_pos[0] + 9) && (y >= switch_pos[1] && y <= switch_pos[1] + 6) && !won) {
+            PS.spriteDelete(switch_button);
+            PS.spriteDelete(switch_button_hover);
+            spawnTrueKid();
+            spawnTrueAdult();
+            PS.fade(PS.ALL, PS.ALL, 360);
+            PS.color(PS.ALL, PS.ALL, PS.COLOR_BLACK);
+            PS.statusText("We're not so different.");
+            won = true;
+        }
     }
 }
 
 var endEnterFunc = function (x, y, data, options) {
     "use strict";
-    if (!won) {
+    if (!won && allow_spr) {
         if ((x >= switch_pos[0] && x <= switch_pos[0] + 9) && (y >= switch_pos[1] && y <= switch_pos[1] + 6) && !won) {
             PS.spriteShow(switch_button, false);
         } else {
